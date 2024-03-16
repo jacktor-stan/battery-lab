@@ -40,7 +40,7 @@
     <color name="md_theme_primaryInverse">#abc7ff</color>
     <color name="md_theme_secondary">#565e71</color>
     <color name="md_theme_secondaryContainer">#dae2f9</color>
-    <color name="md_theme_surface">#fdfbff</color>
+    <color name="md_theme_surface">#ffffff</color>
     <color name="md_theme_surfaceVariant">#e1e2ec</color>
     <color name="md_theme_tertiary">#705573</color>
     <color name="md_theme_tertiaryContainer">#fbd8fc</color>
