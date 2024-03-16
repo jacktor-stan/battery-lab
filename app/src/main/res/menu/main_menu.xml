@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/premium"
+        android:title="@string/premium"
+        android:icon="@drawable/ic_premium_24"
+        app:showAsAction="ifRoom"/>
+
+    <item
+            android:id="@+id/more_menu"
+            android:title="@string/more"
+            android:icon="@drawable/ic_more_vert_24dp"
+            app:showAsAction="ifRoom">
+
+        <menu>
+
+            <item
+                    android:id="@+id/instruction"
+                    android:title="@string/instruction"
+                    android:icon="@drawable/ic_instruction_not_supported_24dp"
+                    app:showAsAction="never"/>
+
+            <item
+                    android:id="@+id/tips"
+                    android:title="@string/tips_menu"
+                    android:icon="@drawable/ic_tips_for_extending_battery_life_24dp"
+                    app:showAsAction="never"/>
+
+            <item
+                    android:id="@+id/faq"
+                    android:title="@string/faq"
+                    android:icon="@drawable/ic_faq_question_24dp"
+                    app:showAsAction="never"/>
+        </menu>
+
+    </item>
+
+</menu>

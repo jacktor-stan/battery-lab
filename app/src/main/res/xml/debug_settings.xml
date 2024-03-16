@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <SwitchPreferenceCompat
+                android:title="@string/forcibly_show_rate_the_app"
+                android:defaultValue="@bool/forcibly_show_rate_the_app"
+                app:singleLineTitle="false"
+                app:icon="@drawable/ic_rate_the_app_24dp"
+                android:key="forcibly_show_rate_the_app"/>
+
+        <SwitchPreferenceCompat
+            android:title="@string/auto_start_boot"
+            android:defaultValue="@bool/auto_start_boot"
+            app:singleLineTitle="false"
+            android:key="auto_start_boot"/>
+
+        <SwitchPreferenceCompat
+            android:title="@string/auto_start_open_app"
+            android:defaultValue="@bool/auto_start_open_app"
+            app:singleLineTitle="false"
+            android:key="auto_start_open_app"/>
+
+        <SwitchPreferenceCompat
+            android:title="@string/auto_start_update_app"
+            android:defaultValue="@bool/auto_start_update_app"
+            app:singleLineTitle="false"
+            android:key="auto_start_update_app"/>
+
+        <Preference
+                android:title="@string/add_setting"
+                app:singleLineTitle="false"
+                app:icon="@drawable/ic_add_setting_24dp"
+                android:key="add_setting"/>
+
+        <Preference
+                android:title="@string/change_setting"
+                app:singleLineTitle="false"
+                app:icon="@drawable/ic_change_setting_24dp"
+                android:key="change_setting"/>
+
+        <Preference
+                android:title="@string/reset_setting"
+                app:singleLineTitle="false"
+                app:icon="@drawable/ic_reset_setting_24dp"
+                android:key="reset_setting"/>
+
+        <Preference
+                android:title="@string/reset_settings"
+                app:singleLineTitle="false"
+                app:icon="@drawable/ic_reset_all_settings_24dp"
+                android:key="reset_settings"/>
+
+        <Preference
+            android:title="@string/reset_screen_time"
+            app:singleLineTitle="false"
+            app:icon="@drawable/ic_reset_screen_time_at_any_charge_level"
+            android:key="reset_screen_time"/>
+
+        <Preference
+            android:title="@string/add_custom_history"
+            app:singleLineTitle="false"
+            android:key="add_custom_history"/>
+
+        <Preference
+            android:title="@string/add_history"
+            app:singleLineTitle="false"
+            android:key="add_history"/>
+
+        <Preference
+            android:title="@string/add_ten_history"
+            app:singleLineTitle="false"
+            android:key="add_ten_history"/>
+
+        <Preference
+            android:title="@string/add_fifty_history"
+            app:singleLineTitle="false"
+            android:key="add_fifty_history"/>
+
+        <Preference
+            android:title="@string/history_count"
+            app:singleLineTitle="false"
+            android:key="history_count"/>
+
+        <Preference
+            android:title="@string/start_battery_lab_service"
+            app:singleLineTitle="false"
+            android:key="start_battery_lab_service"/>
+
+        <Preference
+            android:title="@string/stop_battery_lab_service"
+            app:singleLineTitle="false"
+            android:key="stop_battery_lab_service"/>
+
+        <Preference
+            android:title="@string/restart_battery_lab_service"
+            app:singleLineTitle="false"
+            android:key="restart_battery_lab_service"/>
+
+        <Preference
+            android:title="@string/stop_overlay_service"
+            app:singleLineTitle="false"
+            android:key="stop_overlay_service"/>
+
+        <Preference
+            android:title="@string/restart_overlay_service"
+            app:singleLineTitle="false"
+            android:key="restart_overlay_service"/>
+</PreferenceScreen>

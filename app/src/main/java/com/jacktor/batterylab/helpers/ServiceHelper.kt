@@ -1,0 +1,137 @@
+package com.jacktor.batterylab.helpers
+
+import android.app.ForegroundServiceStartNotAllowedException
+import android.app.job.JobInfo
+import android.app.job.JobScheduler
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.os.Build
+import android.widget.Toast
+import androidx.preference.Preference
+import com.jacktor.batterylab.services.BatteryLabService
+import com.jacktor.batterylab.services.CheckPremiumJob
+import com.jacktor.batterylab.services.OverlayService
+import com.jacktor.batterylab.utilities.Constants
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.seconds
+
+object ServiceHelper {
+
+    private var isStartedBatteryLabService = false
+    private var isStartedOverlayService = false
+
+    fun startService(
+        context: Context, serviceName: Class<*>,
+        isStartOverlayServiceFromSettings: Boolean = false
+    ) {
+
+        CoroutineScope(Dispatchers.Main).launch(Dispatchers.Main) {
+
+            try {
+
+                if (serviceName == BatteryLabService::class.java) {
+
+                    isStartedBatteryLabService = true
+
+                    delay(2.5.seconds)
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        context.startForegroundService(Intent(context, serviceName))
+                    } else startService(context, serviceName)
+
+                    delay(1.seconds)
+                    isStartedBatteryLabService = false
+                } else if (serviceName == OverlayService::class.java) {
+
+                    isStartedOverlayService = true
+
+                    if (!isStartOverlayServiceFromSettings) delay(3600L)
+
+                    context.startService(Intent(context, serviceName))
+                    isStartedBatteryLabService = false
+                }
+            } catch (e: Exception) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                    && e is ForegroundServiceStartNotAllowedException
+                ) return@launch
+                else Toast.makeText(context, e.message ?: e.toString(), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    fun isStartedBatteryLabService() = isStartedBatteryLabService
+
+    fun isStartedOverlayService() = isStartedOverlayService
+
+    fun stopService(context: Context, serviceName: Class<*>) =
+        context.stopService(Intent(context, serviceName))
+
+    fun restartService(context: Context, serviceName: Class<*>, preference: Preference? = null) {
+
+        CoroutineScope(Dispatchers.Default).launch {
+
+            withContext(Dispatchers.Main) {
+
+                stopService(context, serviceName)
+
+                if (serviceName == BatteryLabService::class.java) delay(2500L)
+
+                startService(context, serviceName)
+
+                delay(1.seconds)
+                preference?.isEnabled = true
+            }
+        }
+    }
+
+    fun jobSchedule(context: Context, jobName: Class<*>, jobId: Int, periodic: Long) {
+
+        val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as? JobScheduler
+
+        val serviceComponent = ComponentName(context, jobName)
+
+        val jobInfo = JobInfo.Builder(jobId, serviceComponent).apply {
+
+            setPeriodic(periodic)
+
+        }.build()
+
+        if (!isJobSchedule(context, jobId)) jobScheduler?.schedule(jobInfo)
+    }
+
+    fun checkPremiumJobSchedule(context: Context) =
+        jobSchedule(
+            context, CheckPremiumJob::class.java, Constants.CHECK_PREMIUM_JOB_ID,
+            Constants.CHECK_PREMIUM_JOB_SERVICE_PERIODIC
+        )
+
+    private fun isJobSchedule(context: Context, jobId: Int): Boolean {
+
+        val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as? JobScheduler
+
+        jobScheduler?.allPendingJobs?.forEach {
+
+            if (it.id == jobId) return true
+        }
+
+        return false
+    }
+
+    fun cancelJob(context: Context, jobId: Int) {
+
+        val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as? JobScheduler
+
+        if (isJobSchedule(context, jobId)) jobScheduler?.cancel(jobId)
+    }
+
+    fun cancelAllJobs(context: Context) {
+
+        val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as? JobScheduler
+
+        if (jobScheduler?.allPendingJobs?.isNotEmpty() == true) jobScheduler.cancelAll()
+    }
+}

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <Preference
+        android:title="@string/export_settings"
+        app:singleLineTitle="false"
+        app:isPreferenceVisible="@bool/export_settings_visible"
+        app:icon="@drawable/ic_export_settings_24dp"
+        android:key="export_settings"/>
+
+    <Preference
+        android:title="@string/import_settings"
+        app:singleLineTitle="false"
+        app:isPreferenceVisible="@bool/import_settings_visible"
+        app:icon="@drawable/ic_import_settings_24dp"
+        android:key="import_settings"/>
+
+
+    <Preference
+        android:title="@string/export_history"
+        app:singleLineTitle="false"
+        app:isPreferenceVisible="@bool/export_history_visible"
+        android:key="export_history"/>
+
+    <Preference
+        android:title="@string/import_history"
+        app:singleLineTitle="false"
+        app:isPreferenceVisible="@bool/import_history_visible"
+        android:key="import_history"/>
+
+</PreferenceScreen>

@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:key="overlay_screen">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/enabled_overlay"
+        android:key="enabled_overlay"
+        android:title="@string/enable_overlay"
+        app:iconSpaceReserved="false"
+        app:singleLineTitle="false" />
+
+    <SwitchPreferenceCompat
+        android:defaultValue="@bool/only_values_overlay"
+        android:key="only_values_overlay"
+        android:title="@string/only_values"
+        app:enabled="false"
+        app:iconSpaceReserved="false"
+        app:singleLineTitle="false" />
+
+    <ListPreference
+        android:title="@string/overlay_location"
+        app:singleLineTitle="false"
+        android:entries="@array/overlay_location_list"
+        android:entryValues="@array/overlay_location_values"
+        app:defaultValue="@integer/overlay_location_default"
+        app:iconSpaceReserved="false"
+        app:enabled="false"
+        android:key="overlay_location"/>
+
+    <PreferenceCategory
+        android:key="appearance_overlay"
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:enabled="false"
+        app:iconSpaceReserved="false"
+        app:singleLineTitle="false"
+        app:title="@string/appearance">
+
+        <ListPreference
+            android:entries="@array/text_size_list"
+            android:entryValues="@array/text_size_values"
+            android:key="overlay_size"
+            android:title="@string/size"
+            app:defaultValue="2"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <ListPreference
+            android:entries="@array/fonts_list"
+            android:entryValues="@array/fonts_values"
+            android:key="overlay_font"
+            android:title="@string/font_overlay"
+            app:defaultValue="6"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <ListPreference
+            android:entries="@array/text_style_list"
+            android:entryValues="@array/text_style_values"
+            android:key="overlay_text_style"
+            android:title="@string/text_style_overlay"
+            app:defaultValue="0"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <com.jaredrummler.android.colorpicker.ColorPreferenceCompat
+            android:defaultValue="@android:color/white"
+            android:key="overlay_text_color"
+            android:title="@string/overlay_text_color"
+            app:cpv_allowPresets="false"
+            app:cpv_dialogTitle="@string/overlay_text_color"
+            app:cpv_dialogType="custom"
+            app:cpv_showAlphaSlider="true"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SeekBarPreference
+            android:key="overlay_opacity"
+            android:max="@integer/overlay_opacity_max"
+            android:summary="50%"
+            android:title="@string/opacity"
+            app:defaultValue="@integer/overlay_opacity_default"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false"
+            app:updatesContinuously="true" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="show_hide_pref_category"
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:enabled="false"
+        app:iconSpaceReserved="false"
+        app:singleLineTitle="false"
+        app:title="@string/show_hide">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/battery_level_overlay"
+            android:key="battery_level_overlay"
+            android:title="@string/battery_level_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/number_of_charges_overlay"
+            android:key="number_of_charges_overlay"
+            android:title="@string/number_of_charges_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/number_of_full_charges_overlay"
+            android:key="number_of_full_charges_overlay"
+            android:title="@string/number_of_full_charges_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/number_of_cycles_overlay"
+            android:key="number_of_cycles_overlay"
+            android:title="@string/number_of_cycles_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/number_of_cycles_android_overlay"
+            android:key="number_of_cycles_android_overlay"
+            android:title="@string/number_of_cycles_android_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/charging_time_overlay"
+            android:key="charging_time_overlay"
+            android:title="@string/charging_time_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/charging_time_remaining_overlay"
+            android:key="charging_time_remaining_overlay"
+            android:title="@string/charging_time_remaining_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/remaining_battery_time_overlay"
+            android:key="remaining_battery_time_overlay"
+            android:title="@string/remaining_battery_time_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/screen_time_overlay"
+            android:key="screen_time_overlay"
+            android:title="@string/screen_time_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/current_capacity_overlay"
+            android:key="current_capacity_overlay"
+            android:title="@string/current_capacity_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/capacity_added_overlay"
+            android:key="capacity_added_overlay"
+            android:title="@string/capacity_added_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/battery_health_android_overlay"
+            android:key="battery_health_android_overlay"
+            android:title="@string/battery_health_android_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/residual_capacity_overlay"
+            android:key="residual_capacity_overlay"
+            android:title="@string/residual_capacity_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/status_overlay"
+            android:key="status_overlay"
+            android:title="@string/status_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/source_of_power_overlay"
+            android:key="source_of_power_overlay"
+            android:title="@string/source_of_power_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/charge_discharge_current_overlay"
+            android:key="charge_discharge_current_overlay"
+            android:title="@string/charge_discharge_current_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/fast_charge_overlay"
+            android:key="fast_charge_overlay"
+            android:title="@string/fast_charge"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/max_charge_discharge_current_overlay"
+            android:key="max_charge_discharge_current_overlay"
+            android:title="@string/max_charge_discharge_current_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/average_charge_discharge_current_overlay"
+            android:key="average_charge_discharge_current_overlay"
+            android:title="@string/average_charge_discharge_current_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/min_charge_discharge_current_overlay"
+            android:key="min_charge_discharge_current_overlay"
+            android:title="@string/min_charge_discharge_current_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/charging_current_limit_overlay"
+            android:key="charging_current_limit_overlay"
+            android:title="@string/charging_current_limit_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/temperature_overlay"
+            android:key="temperature_overlay"
+            android:title="@string/temperature_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/maximum_temperature_overlay"
+            android:key="maximum_temperature_overlay"
+            android:title="@string/maximum_temperature_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/average_temperature_overlay"
+            android:key="average_temperature_overlay"
+            android:title="@string/average_temperature_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/minimum_temperature_overlay"
+            android:key="minimum_temperature_overlay"
+            android:title="@string/minimum_temperature_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/voltage_overlay"
+            android:key="voltage_overlay"
+            android:title="@string/voltage_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/last_charge_time_overlay"
+            android:key="last_charge_time_overlay"
+            android:title="@string/last_charge_time_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+        <SwitchPreferenceCompat
+            android:defaultValue="@bool/battery_wear_overlay"
+            android:key="battery_wear_overlay"
+            android:title="@string/battery_wear_overlay"
+            app:iconSpaceReserved="false"
+            app:singleLineTitle="false" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="min_design_capacity">2500</integer>
+    <integer name="max_design_capacity">12500</integer>
+    <integer name="battery_level_notify_charged">80</integer>
+    <integer name="battery_level_notify_discharged">20</integer>
+    <integer name="battery_notify_discharged_voltage_min">3200</integer>
+    <integer name="battery_notify_discharged_voltage_max">4350</integer>
+    <integer name="overheat_degrees_default">40</integer>
+    <integer name="overheat_degrees_min">40</integer>
+    <integer name="overheat_degrees_max">60</integer>
+    <integer name="overcool_degrees_default">0</integer>
+    <integer name="overcool_degrees_min">-20</integer>
+    <integer name="overcool_degrees_max">20</integer>
+    <integer name="overlay_opacity_default">127</integer>
+    <integer name="overlay_opacity_max">255</integer>
+    <integer name="fast_charge_min">2500</integer>
+    <integer name="overlay_location_default">0</integer>
+    <integer name="full_charge_reminder_frequency_default">30</integer>
+    <integer name="full_charge_reminder_frequency_default_index">1</integer>
+</resources>

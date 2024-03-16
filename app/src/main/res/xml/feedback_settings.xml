@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!--<PreferenceCategory
+        android:title="@string/telegram"
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:icon="@drawable/ic_telegram"
+        app:singleLineTitle="false">
+
+        <Preference
+            android:key="telegram_developer"
+            app:icon="@drawable/ic_developer_24dp"
+            app:singleLineTitle="false"
+            app:summary="\@deniliandi"
+            app:title="@string/developer" />
+
+    </PreferenceCategory>-->
+
+    <!--<PreferenceCategory
+        android:title="@string/other"
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:icon="@drawable/ic_misc_24dp"
+        app:singleLineTitle="false">-->
+
+        <Preference
+            android:key="email"
+            app:icon="@drawable/ic_email_24dp"
+            app:singleLineTitle="false"
+            app:summary="support@jacktor.com"
+            app:title="@string/email" />
+
+        <Preference
+            android:key="rate_the_app"
+            app:icon="@drawable/ic_rate_the_app_24dp"
+            app:singleLineTitle="false"
+            app:title="@string/rate_the_app" />
+
+        <Preference
+            android:key="share_the_app"
+            app:icon="@drawable/ic_share_24dp"
+            app:singleLineTitle="false"
+            app:title="@string/share_the_app" />
+
+    <!--</PreferenceCategory>-->
+
+</PreferenceScreen>

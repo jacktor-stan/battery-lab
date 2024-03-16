@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="scrollbar_thumb_vertical">@color/blue</color>
+    <color name="text_dialog_list_item">@color/dark_white</color>
+    <color name="title_text">@color/dark_white</color>
+    <color name="subtitle_text">@color/dark_white</color>
+    <color name="menu_text">@color/dark_white</color>
+    <color name="navigation_bar">@color/white</color>
+
+    <color name="battery_charge">@color/md_green_400</color>
+    <color name="battery_discharge">@color/md_blue_600</color>
+    <color name="battery_health">@color/md_pink_700</color>
+    <color name="battery_off">@color/md_grey_700</color>
+    <color name="battery_power">@color/md_yellow_700</color>
+    <color name="battery_temp_cold">@color/md_blue_300</color>
+    <color name="battery_temp_hot">@color/md_red_700</color>
+    <color name="battery_temp_normal">@color/md_blue_400</color>
+    <color name="battery_temp_very_hot">@color/md_pink_900</color>
+    <color name="battery_temp_warm">@color/md_yellow_700</color>
+    <color name="battery_unknown">@color/md_purple_700</color>
+
+    <color name="md_theme_error">#ba1b1b</color>
+    <color name="md_theme_errorContainer">#ffdad4</color>
+    <color name="md_theme_inverseOnSurface">#f2f0f4</color>
+    <color name="md_theme_inverseSurface">#2f3033</color>
+    <color name="md_theme_onBackground">#1b1b1d</color>
+    <color name="md_theme_onError">#ffffff</color>
+    <color name="md_theme_onErrorContainer">#410001</color>
+    <color name="md_theme_onPrimary">#ffffff</color>
+    <color name="md_theme_onPrimaryContainer">#001a42</color>
+    <color name="md_theme_onSecondary">#ffffff</color>
+    <color name="md_theme_onSecondaryContainer">#131b2c</color>
+    <color name="md_theme_onSurface">#1b1b1d</color>
+    <color name="md_theme_onSurfaceVariant">#44474f</color>
+    <color name="md_theme_onTertiary">#ffffff</color>
+    <color name="md_theme_onTertiaryContainer">#29132d</color>
+    <color name="md_theme_outline">#74777f</color>
+    <color name="md_theme_primary">#005ac1</color>
+    <color name="md_theme_primaryContainer">#005ac1</color>
+    <color name="md_theme_primaryInverse">#abc7ff</color>
+    <color name="md_theme_secondary">#565e71</color>
+    <color name="md_theme_secondaryContainer">#dae2f9</color>
+    <color name="md_theme_surface">#fdfbff</color>
+    <color name="md_theme_surfaceVariant">#e1e2ec</color>
+    <color name="md_theme_tertiary">#705573</color>
+    <color name="md_theme_tertiaryContainer">#fbd8fc</color>
+
+    <color name="md_blue_300">#64b5f6</color>
+    <color name="md_blue_400">#42a5f5</color>
+    <color name="md_blue_600">#1e88e5</color>
+    <color name="md_green_400">#66bb6a</color>
+    <color name="md_green_600">#43a047</color>
+    <color name="md_grey_400">#bdbdbd</color>
+    <color name="md_grey_700">#616161</color>
+    <color name="md_pink_400">#ec407a</color>
+    <color name="md_pink_700">#c2185b</color>
+    <color name="md_pink_900">#880e4f</color>
+    <color name="md_purple_400">#ab47bc</color>
+    <color name="md_purple_700">#7b1fa2</color>
+    <color name="md_red_500">#f44336</color>
+    <color name="md_red_700">#d32f2f</color>
+    <color name="md_yellow_400">#ffee58</color>
+    <color name="md_yellow_600">#fdd835</color>
+    <color name="md_yellow_700">#fbc02d</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="blue">#2196F3</color>
+    <color name="red">#CC0000</color>
+    <color name="green">#05BA7D</color>
+    <color name="black">#000000</color>
+
+
+    <color name="dark">#121212</color>
+    <color name="dark_white">#5F6368</color>
+    <color name="icons">@color/dark_white</color>
+    <color name="icons_pref_category">@color/blue</color>
+    <color name="overheat_overcool">@color/red</color>
+    <color name="battery_charged">@color/green</color>
+    <color name="battery_discharged">@color/red</color>
+    <color name="service_notification_text">@android:color/black</color>
+    <color name="swipe_refresh_layout_progress">@color/blue</color>
+    <color name="swipe_refresh_layout_progress_background">@android:color/white</color>
+</resources>

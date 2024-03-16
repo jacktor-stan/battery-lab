@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="power_connection_service"
+        android:title="@string/power_connection_service"
+        app:icon="@drawable/ic_power_connection_24dp"
+        app:singleLineTitle="false" />
+
+    <PreferenceCategory
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:icon="@drawable/ic_sound_24dp"
+        android:title="@string/category_sound">
+        <Preference
+            android:key="ac_connected_sound"
+            android:title="@string/pref_power_connected_ac_sound_title"
+            app:singleLineTitle="false" />
+        <Preference
+            android:key="usb_connected_sound"
+            android:title="@string/pref_power_connected_usb_sound_title"
+            app:singleLineTitle="false" />
+        <Preference
+            android:key="disconnected_sound"
+            android:title="@string/pref_power_disconnected_sound_title"
+            app:singleLineTitle="false" />
+        <EditTextPreference
+            android:defaultValue="550"
+            android:inputType="number"
+            android:key="sound_delay"
+            android:title="@string/pref_sound_delay_title"
+            app:useSimpleSummaryProvider="true"
+            app:singleLineTitle="false" />
+        <Preference
+            android:key="reset_sound"
+            android:title="@string/reset_sound"
+            app:singleLineTitle="false" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:icon="@drawable/ic_vibration_24"
+        android:title="@string/category_vibration">
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="enable_vibration"
+            android:summary="@string/pref_enable_vibration_smry"
+            android:title="@string/pref_enable_vibration_title"
+            app:singleLineTitle="false"/>
+        <ListPreference
+            android:defaultValue="450"
+            android:entries="@array/vibrate_key"
+            android:entryValues="@array/vibrate_value"
+            android:key="vibrate_duration"
+            android:title="@string/pref_vibration_duration_title"
+            app:useSimpleSummaryProvider="true"
+            app:singleLineTitle="false"/>
+        <EditTextPreference
+            android:defaultValue="450"
+            android:inputType="number"
+            android:key="custom_vibrate_duration"
+            android:title="@string/pref_custom_vibration_duration_title"
+            app:useSimpleSummaryProvider="true"
+            app:singleLineTitle="false"/>
+        <ListPreference
+            android:defaultValue="connected"
+            android:entries="@array/vibrate_mode_key"
+            android:entryValues="@array/vibrate_mode_value"
+            android:key="vibrate_mode"
+            android:title="@string/pref_vibration_mode_title"
+            app:useSimpleSummaryProvider="true"
+            app:singleLineTitle="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        app:allowDividerAbove="false"
+        app:allowDividerBelow="false"
+        app:icon="@drawable/ic_developer_24dp"
+        android:title="@string/category_advanced">
+
+        <SwitchPreferenceCompat
+            android:defaultValue="false"
+            android:key="enable_toast"
+            android:summary="@string/pref_show_toast_smry"
+            android:title="@string/pref_show_toast_title"
+            app:singleLineTitle="false"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

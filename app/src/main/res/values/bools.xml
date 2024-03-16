@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <bool name="is_request_rate_the_app">true</bool>
+
+    <!--Settings-->
+    <bool name="show_stop_service">false</bool>
+    <bool name="service_time">false</bool>
+    <bool name="stop_the_service_when_the_cd">false</bool>
+    <bool name="show_battery_information">true</bool>
+    <bool name="show_expanded_notification">true</bool>
+    <bool name="auto_dark_mode">true</bool>
+    <bool name="dark_mode">false</bool>
+    <bool name="capacity_in_wh">false</bool>
+    <bool name="charging_discharge_current_in_watt">false</bool>
+    <bool name="reset_screen_time_at_any_charge_level">false</bool>
+    <bool name="auto_start_boot">true</bool>
+    <bool name="execute_script_on_boot">false</bool>
+    <bool name="fast_charge_setting">false</bool>
+
+    <!--Battery Status Information-->
+    <bool name="bypass_dnd_mode">true</bool>
+    <bool name="notify_overheat_overcool">false</bool>
+    <bool name="notify_battery_is_fully_charged">false</bool>
+    <bool name="notify_full_charge_reminder_default_value">false</bool>
+    <bool name="notify_full_charge_reminder_enabled">false</bool>
+    <bool name="notify_full_charge_reminder_frequency_enabled">false</bool>
+    <bool name="notify_battery_is_charged">false</bool>
+    <bool name="notify_battery_is_discharged">false</bool>
+    <bool name="notify_battery_is_discharged_voltage">false</bool>
+
+    <!--Backup-->
+    <bool name="export_settings_visible">true</bool>
+    <bool name="import_settings_visible">true</bool>
+    <bool name="export_history_visible">true</bool>
+    <bool name="import_history_visible">true</bool>
+
+    <!--Overlay-->
+    <bool name="enabled_overlay">false</bool>
+    <bool name="only_values_overlay">false</bool>
+    <bool name="battery_level_overlay">false</bool>
+    <bool name="number_of_charges_overlay">false</bool>
+    <bool name="number_of_full_charges_overlay">false</bool>
+    <bool name="number_of_cycles_overlay">false</bool>
+    <bool name="number_of_cycles_android_overlay">false</bool>
+    <bool name="charging_time_overlay">false</bool>
+    <bool name="charging_time_remaining_overlay">false</bool>
+    <bool name="remaining_battery_time_overlay">false</bool>
+    <bool name="screen_time_overlay">false</bool>
+    <bool name="current_capacity_overlay">false</bool>
+    <bool name="capacity_added_overlay">false</bool>
+    <bool name="battery_health_android_overlay">false</bool>
+    <bool name="residual_capacity_overlay">false</bool>
+    <bool name="status_overlay">false</bool>
+    <bool name="source_of_power_overlay">false</bool>
+    <bool name="charge_discharge_current_overlay">false</bool>
+    <bool name="fast_charge_overlay">false</bool>
+    <bool name="max_charge_discharge_current_overlay">false</bool>
+    <bool name="average_charge_discharge_current_overlay">false</bool>
+    <bool name="min_charge_discharge_current_overlay">false</bool>
+    <bool name="charging_current_limit_overlay">false</bool>
+    <bool name="temperature_overlay">false</bool>
+    <bool name="maximum_temperature_overlay">false</bool>
+    <bool name="average_temperature_overlay">false</bool>
+    <bool name="minimum_temperature_overlay">false</bool>
+    <bool name="voltage_overlay">false</bool>
+    <bool name="last_charge_time_overlay">false</bool>
+    <bool name="battery_wear_overlay">false</bool>
+
+    <!--Debug-->
+    <bool name="enabled_debug_options">false</bool>
+    <bool name="forcibly_show_rate_the_app">false</bool>
+    <bool name="auto_start_open_app">true</bool>
+    <bool name="auto_start_update_app">true</bool>
+</resources>
