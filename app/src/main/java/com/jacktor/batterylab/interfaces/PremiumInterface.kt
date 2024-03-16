@@ -9,7 +9,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
 import android.view.View
-import android.widget.Toast
 import com.android.billingclient.api.AcknowledgePurchaseParams
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
@@ -94,7 +93,7 @@ interface PremiumInterface : PurchasesUpdatedListener {
             )
             val tokenPref = pref.getString(TOKEN_PREF, null)
             isPremium = tokenPref != null && tokenPref.count() == TOKEN_COUNT
-            if(isPremium) premiumFeaturesUnlocked(premiumContext!!, false)
+            if(isPremium) premiumFeaturesUnlocked(premiumContext!!)
             ServiceHelper.checkPremiumJobSchedule(premiumContext!!)
         }
     }
@@ -164,11 +163,6 @@ interface PremiumInterface : PurchasesUpdatedListener {
                 isPremium = tokenPref != null && tokenPref.count() == TOKEN_COUNT
 
                 PremiumActivity.instance?.reloadScreen()
-
-                Toast.makeText(
-                    premiumContext, R.string.premium_features_unlocked,
-                    Toast.LENGTH_LONG
-                ).show()
                 //MainActivity.instance?.topAppBar?.menu?.findItem(R.id.premium)?.isVisible = false
                 MainActivity.instance?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
                     false
@@ -314,11 +308,9 @@ interface PremiumInterface : PurchasesUpdatedListener {
         }
     }
 
-    private fun premiumFeaturesUnlocked(context: Context, isShowToast: Boolean = true) {
+    private fun premiumFeaturesUnlocked(context: Context) {
         PremiumActivity.instance?.reloadScreen()
 
-        if(isShowToast)
-            Toast.makeText(context, R.string.premium_features_unlocked, Toast.LENGTH_LONG).show()
         val mainActivity = MainActivity.instance
         val historyFragment = HistoryFragment.instance
         val isHistoryNotEmpty = HistoryHelper.isHistoryNotEmpty(context)
