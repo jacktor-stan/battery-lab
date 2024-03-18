@@ -16,7 +16,7 @@
 
     <item
         android:id="@+id/kernel_navigation"
-        android:title="@string/kernel"
+        android:title="@string/experiment"
         android:icon="@drawable/ic_settings_kernel_24"
         app:showAsAction="always"/>
 

@@ -63,7 +63,7 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), MenuInterface, Kernel
 
         if (rootChecker!!.isRooted && Shell.cmd("su").exec().isSuccess) {
             shellDialog(
-                requireContext(), getString(R.string.kernel),
+                requireContext(), getString(R.string.experiment),
                 "root:~# ls -p /sys/class/power_supply/battery | grep -v /\n\n"
                         + getString(R.string.get_kernel_information)
             )

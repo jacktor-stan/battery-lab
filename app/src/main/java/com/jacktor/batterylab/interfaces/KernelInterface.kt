@@ -312,7 +312,7 @@ interface KernelInterface {
             Shell.cmd("su && sh ${context.filesDir.path}/$SCRIPT_FILE_NAME").exec().apply {
                 if (isSuccess) {
                     shellDialog(
-                        context, context.getString(R.string.kernel),
+                        context, context.getString(R.string.experiment),
                         "su && sh $SCRIPT_FILE_NAME\n\n" + context.getString(R.string.executes_and_update_info)
                     )
 
@@ -323,7 +323,7 @@ interface KernelInterface {
                     )
                 } else shellDialog(
                     context,
-                    context.getString(R.string.kernel),
+                    context.getString(R.string.experiment),
                     context.getString(R.string.execute_failed),
                     0
                 )

@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                 else R.string.discharge
             )
 
-            is KernelFragment -> getString(R.string.kernel)
+            is KernelFragment -> getString(R.string.experiment)
             is HistoryFragment -> getString(R.string.history)
             is SettingsFragment -> getString(R.string.settings)
             is DebugFragment -> getString(R.string.debug)
@@ -299,7 +299,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
             )
 
             is HistoryFragment -> getString(R.string.history)
-            is KernelFragment -> getString(R.string.kernel)
+            is KernelFragment -> getString(R.string.experiment)
             is SettingsFragment -> getString(R.string.settings)
             is BatteryStatusInformationFragment -> getString(R.string.battery_status_information)
             is PowerConnectionSettingsFragment -> getString(R.string.power_connection)

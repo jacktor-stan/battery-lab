@@ -76,7 +76,7 @@ interface NavigationInterface : BatteryInfoInterface {
 
                         fragment = KernelFragment()
 
-                        topAppBar.title = getString(R.string.kernel)
+                        topAppBar.title = getString(R.string.experiment)
 
                         topAppBar.navigationIcon = null
 
