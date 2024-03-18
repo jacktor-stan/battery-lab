@@ -14,4 +14,5 @@
     <dimen name="medium_text_size">14sp</dimen>
     <dimen name="large_text_size">18sp</dimen>
     <dimen name="very_large_text_size">24sp</dimen>
+    <dimen name="card_elevation">0.2dp</dimen>
 </resources>

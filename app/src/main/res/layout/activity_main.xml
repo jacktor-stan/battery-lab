@@ -24,9 +24,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/navigation"
         android:layout_alignParentBottom="true"
-        app:labelVisibilityMode="labeled"
-        app:elevation="@dimen/navigation_elevation"
         android:textAlignment="center"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/navigation_menu"/>
 
 </RelativeLayout>
