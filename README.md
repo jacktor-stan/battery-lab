@@ -1,24 +1,27 @@
-# Battery Lab 
-Battery Lab is a further development of [BNotifier](https://github.com/JacktorStan/BNotifier), This is the official Battery Lab repository 
+<p align="center">
+ <b>Download from Google Play:</b>
+</p>
 
+<p align="center">
+<a href="https://play.google.com/store/apps/details?id=com.jacktor.batterylab">
+<img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
+alt="Get it on Google Play" width="323" height="125" border="10"/></a></p>
 
-[![Play Store](https://img.shields.io/endpoint?color=green&logo=google-play&logoColor=green&url=https%3A%2F%2Fplay.cuzi.workers.dev%2Fplay%3Fi%3Dcom.jacktor.batterylab%26l%3DPlay%2520Store%26m%3D%24version%2520-%2520%2520%2524updated
-)](https://play.google.com/store/apps/details?id=com.jacktor.batterylab)
+---
+<p align="center">
+<b>About:</b>
+</p>
 
-## Screenshots
+Battery Lab is a development of:
+- <a href="https://github.com/jacktor-stan/BNotifier">BNotifier</a>
+- <a href="https://github.com/Ph03niX-X/CapacityInfo">Capacity Info</a>
 
-![App Screenshot](https://github.com/JacktorStan/batterylab-official/assets/132134148/ae834d8a-b05f-494c-8389-ea42c6b7d112)
+---
 
-## Features
--
+Battery Lab rarely updates because we are busy IRL.
 
+Currently the kernel/experiment feature is still in beta and may not work on some devices.
 
+Then the Power Connection feature is based on the BNotifier feature and has not been fully tested.
 
-
-## Support
-
-For support, email support@jacktor.com or join our [Telegram group](https://t.me/JacktorSupport).
-
-## Authors
-
-- [@JacktorStan - Deni liandi](https://www.github.com/JacktorStan)
+Please contact us by email at support@jacktor.com if you have any questions.
