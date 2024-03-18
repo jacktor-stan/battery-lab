@@ -192,8 +192,31 @@ class ChargeDischargeFragment : Fragment(R.layout.charge_discharge_fragment), Se
                             getBatteryLevel(requireContext()),
                             status == BatteryManager.BATTERY_STATUS_CHARGING
                         )
+
                     )
 
+                    //battery level color
+                    if (status != BatteryManager.BATTERY_STATUS_CHARGING) {
+                        when (getBatteryLevel(requireContext())) {
+                            in 0..20 -> binding.icBatteryLevel.setColorFilter(
+                                ContextCompat.getColor(
+                                    requireContext(), R.color.red
+                                )
+                            )
+
+                            else -> binding.icBatteryLevel.setColorFilter(
+                                ContextCompat.getColor(
+                                    requireContext(), R.color.green
+                                )
+                            )
+                        }
+                    } else {
+                        binding.icBatteryLevel.setColorFilter(
+                            ContextCompat.getColor(
+                                requireContext(), R.color.blue
+                            )
+                        )
+                    }
 
                     //plugged icon
                     val pluggedTypeIcon = binding.icPluggedType

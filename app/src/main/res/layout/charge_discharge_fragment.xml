@@ -171,7 +171,7 @@
                                 android:layout_width="28.0dip"
                                 android:layout_height="28.0dip"
                                 app:srcCompat="@drawable/ic_battery_is_discharged_100_24dp"
-                                app:tint="@color/battery_discharge" />
+                                app:tint="@color/green" />
                             <!--android:alpha="0.66"-->
 
                             <androidx.appcompat.widget.AppCompatTextView
@@ -267,7 +267,7 @@
                                 android:layout_width="28.0dip"
                                 android:layout_height="28.0dip"
                                 app:srcCompat="@drawable/ic_battery_status_24"
-                                app:tint="@color/battery_discharge" />
+                                app:tint="@color/blue" />
                             <!--android:alpha="0.66"-->
 
                             <androidx.appcompat.widget.AppCompatTextView
