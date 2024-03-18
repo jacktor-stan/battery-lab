@@ -261,7 +261,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
             // Respond to negative button press
             //}
             .setPositiveButton(getString(R.string.yes_continue)) { _, _ ->
-                openURL.data = Uri.parse("https://jacktor.com/user/" + data.username + "/")
+                openURL.data = Uri.parse("https://jacktor.com/members/" + data.username + "/")
                 startActivity(openURL)
             }
             .show()
