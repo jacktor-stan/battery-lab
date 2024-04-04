@@ -455,4 +455,9 @@
     <string name="minutes_45">45 Minutes</string>
     <string name="hour_1">1 Hour</string>
     <string name="temperature_celsius">Temperature: %1$s °C</string>
+    <string name="github" translatable="false">Github</string>
+    <string name="license">License: Apache 2.0</string>
+    <string name="become_a_beta_tester">Become a beta tester</string>
+    <string name="become_a_beta_tester_summary">Be the first to receive updates</string>
+    <string name="capacity_info" translatable="false">Capacity Info</string>
 </resources>

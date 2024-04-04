@@ -1,10 +1,12 @@
 package com.jacktor.batterylab.interfaces.views
 
 
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Toast
@@ -212,6 +214,26 @@ interface MenuInterface {
                 topAppBar.menu.findItem(R.id.premium).setOnMenuItemClickListener {
                     val intent = Intent(applicationContext, PremiumActivity::class.java)
                     startActivity(intent)
+                    true
+                }
+
+                topAppBar.menu.findItem(R.id.capacity_info_app).setOnMenuItemClickListener {
+                    val capacityInfoPackageName = "com.ph03nix_x.capacityinfo"
+                    try {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("market://details?id=$capacityInfoPackageName")
+                            )
+                        )
+                    } catch (anfe: ActivityNotFoundException) {
+                        startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://play.google.com/store/apps/details?id=$capacityInfoPackageName")
+                            )
+                        )
+                    }
                     true
                 }
             }

@@ -403,5 +403,8 @@
     <string name="minutes_30">30 Menit</string>
     <string name="minutes_45">45 Menit</string>
     <string name="hour_1">1 Jam</string>
-    <string name="temperature_celsius">Temperature: %1$s °C</string>
+    <string name="temperature_celsius">Suhu: %1$s °C</string>
+    <string name="license">Lisensi: Apache 2.0</string>
+    <string name="become_a_beta_tester">Menjadi penguji beta</string>
+    <string name="become_a_beta_tester_summary">Jadilah yang pertama menerima pembaruan</string>
 </resources>

@@ -33,24 +33,24 @@
         app:singleLineTitle="false"
         app:icon="@drawable/ic_check_update_24dp"
         android:key="check_update"/>
-    <Preference
+    <!--<Preference
         app:title="Team"
         app:singleLineTitle="false"
         app:icon="@drawable/ic_group_work_24dp"
-        android:key="team"/>
+        android:key="team"/>-->
 
-    <!--<Preference
+    <Preference
             app:title="@string/github"
             app:summary="@string/license"
             app:singleLineTitle="false"
-            app:icon="@drawable/ic_github"
-            android:key="github"/>-->
+            app:icon="@drawable/ic_github_24dp"
+            android:key="github"/>
 
-    <!--<Preference
+    <Preference
             app:title="@string/become_a_beta_tester"
             app:summary="@string/become_a_beta_tester_summary"
             app:singleLineTitle="false"
-            app:icon="@drawable/ic_beta"
-            app:key="become_a_beta_tester"/>-->
+            app:icon="@drawable/ic_beta_24dp"
+            app:key="become_a_beta_tester"/>
 
 </PreferenceScreen>
