@@ -164,10 +164,14 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
                 preference.isEnabled = false
                 isShowExtendedNotification?.isEnabled = false
 
-                ServiceHelper.restartService(
-                    requireContext(), BatteryLabService::class.java,
-                    preference
-                )
+                try {
+                    ServiceHelper.restartService(
+                        requireContext(), BatteryLabService::class.java,
+                        preference
+                    )
+                } catch (e: Exception) {
+                    Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_LONG).show()
+                }
 
                 CoroutineScope(Dispatchers.Default).launch {
 
@@ -290,7 +294,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
             setOnPreferenceChangeListener { preference, newValue ->
 
                 preference.summary = resources.getStringArray(R.array.fonts_list)[
-                        (newValue as? String)?.toInt() ?: 0]
+                    (newValue as? String)?.toInt() ?: 0]
 
                 true
             }
@@ -326,7 +330,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         textStyle?.setOnPreferenceChangeListener { preference, newValue ->
 
             preference.summary = resources.getStringArray(R.array.text_style_list)[
-                    (newValue as? String)?.toInt() ?: 0]
+                (newValue as? String)?.toInt() ?: 0]
 
             true
         }
@@ -367,7 +371,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         debug = findPreference("debug")
 
         fastChargeSetting?.setOnPreferenceChangeListener { _, newValue ->
-            if(newValue as? Boolean == true)
+            if (newValue as? Boolean == true)
                 MaterialAlertDialogBuilder(requireContext()).apply {
                     setTitle(R.string.information)
                     setIcon(R.drawable.ic_instruction_not_supported_24dp)
@@ -435,7 +439,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
                 tabOnApplicationLaunch?.apply {
                     isVisible = true
                     isEnabled = premium?.isVisible == false
-                    summary = if(!isEnabled) getString(R.string.premium_feature)
+                    summary = if (!isEnabled) getString(R.string.premium_feature)
                     else getTabOnApplicationLaunchSummary()
                 }
 
@@ -464,8 +468,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
                 }
                 changeDesignCapacity?.apply {
                     isVisible = true
-                    summary = getString(R.string.change_design_summary,
-                        pref.getInt(DESIGN_CAPACITY, resources.getInteger(R.integer.min_design_capacity)))
+                    summary = getString(
+                        R.string.change_design_summary,
+                        pref.getInt(
+                            DESIGN_CAPACITY,
+                            resources.getInteger(R.integer.min_design_capacity)
+                        )
+                    )
                 }
                 unitOfChargeDischargeCurrent?.apply {
                     isVisible = true
@@ -477,8 +486,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
                 }
                 changeDesignCapacity?.apply {
                     isVisible = true
-                    summary = getString(R.string.change_design_summary,
-                        pref.getInt(DESIGN_CAPACITY, resources.getInteger(R.integer.min_design_capacity)))
+                    summary = getString(
+                        R.string.change_design_summary,
+                        pref.getInt(
+                            DESIGN_CAPACITY,
+                            resources.getInteger(R.integer.min_design_capacity)
+                        )
+                    )
                 }
 
                 overlay?.isVisible = true
@@ -883,28 +897,30 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         textStyle?.summary = getTextStyleSummary()
 
         tabOnApplicationLaunch?.apply {
-            if(isVisible) {
+            if (isVisible) {
                 isEnabled = premium?.isVisible == false
-                summary = if(!isEnabled) getString(R.string.premium_feature)
+                summary = if (!isEnabled) getString(R.string.premium_feature)
                 else getTabOnApplicationLaunchSummary()
             }
         }
 
         unitOfChargeDischargeCurrent?.apply {
-            if(isVisible) summary = getUnitOfChargeDischargeCurrentSummary()
+            if (isVisible) summary = getUnitOfChargeDischargeCurrentSummary()
         }
 
         unitOfMeasurementOfCurrentCapacity?.apply {
-            if(isVisible) summary = getUnitOfMeasurementOfCurrentCapacitySummary()
+            if (isVisible) summary = getUnitOfMeasurementOfCurrentCapacitySummary()
         }
 
         voltageUnit?.apply {
-            if(isVisible) summary = getVoltageUnitSummary()
+            if (isVisible) summary = getVoltageUnitSummary()
         }
 
         changeDesignCapacity?.apply {
-            if(isVisible) summary = getString(R.string.change_design_summary,
-                pref.getInt(DESIGN_CAPACITY, resources.getInteger(R.integer.min_design_capacity)))
+            if (isVisible) summary = getString(
+                R.string.change_design_summary,
+                pref.getInt(DESIGN_CAPACITY, resources.getInteger(R.integer.min_design_capacity))
+            )
         }
 
         resetToZeroTheNumberOfCharges?.isEnabled = pref.getLong(NUMBER_OF_CHARGES, 0) > 0

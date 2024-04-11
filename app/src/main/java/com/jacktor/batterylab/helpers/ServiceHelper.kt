@@ -12,6 +12,7 @@ import android.net.NetworkRequest
 import android.os.Build
 import android.widget.Toast
 import androidx.preference.Preference
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.CheckPremiumJob
 import com.jacktor.batterylab.services.OverlayService
@@ -33,7 +34,7 @@ object ServiceHelper {
         isStartOverlayServiceFromSettings: Boolean = false
     ) {
 
-        CoroutineScope(Dispatchers.Main).launch(Dispatchers.Main) {
+        CoroutineScope(Dispatchers.Main).launch{
 
             try {
 
@@ -75,19 +76,19 @@ object ServiceHelper {
 
     fun restartService(context: Context, serviceName: Class<*>, preference: Preference? = null) {
 
-        CoroutineScope(Dispatchers.Default).launch {
+        CoroutineScope(Dispatchers.Main).launch {
+            if(serviceName == BatteryLabService::class.java)
+                MainActivity.instance?.tempScreenTime =
+                    BatteryLabService.instance?.screenTime ?: 0L
 
-            withContext(Dispatchers.Main) {
+            stopService(context, serviceName)
 
-                stopService(context, serviceName)
+            if(serviceName == BatteryLabService::class.java) delay(2.5.seconds)
 
-                if (serviceName == BatteryLabService::class.java) delay(2500L)
+            startService(context, serviceName)
 
-                startService(context, serviceName)
-
-                delay(1.seconds)
-                preference?.isEnabled = true
-            }
+            delay(1.seconds)
+            preference?.isEnabled = true
         }
     }
 

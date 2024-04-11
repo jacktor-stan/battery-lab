@@ -261,18 +261,15 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
         }
 
         try {
-            notificationBuilder?.build()?.apply {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
-                    let {
-                        BatteryLabService.instance?.startForeground(
-                            NOTIFICATION_SERVICE_ID,
-                            it, FOREGROUND_SERVICE_TYPE_SPECIAL_USE
-                        )
-                    }
-                else let {
-                    BatteryLabService.instance?.startForeground(NOTIFICATION_SERVICE_ID, it)
-                }
-            }
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                BatteryLabService.instance?.startForeground(
+                    NOTIFICATION_SERVICE_ID,
+                    notificationBuilder!!.build(), FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                )
+            else BatteryLabService.instance?.startForeground(
+                NOTIFICATION_SERVICE_ID,
+                notificationBuilder!!.build()
+            )
         } catch (e: Exception) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
                 && e is ForegroundServiceStartNotAllowedException

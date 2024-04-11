@@ -93,7 +93,7 @@ interface PremiumInterface : PurchasesUpdatedListener {
             )
             val tokenPref = pref.getString(TOKEN_PREF, null)
             isPremium = tokenPref != null && tokenPref.count() == TOKEN_COUNT
-            if(isPremium) premiumFeaturesUnlocked(premiumContext!!)
+            if (isPremium) premiumFeaturesUnlocked(premiumContext!!)
             ServiceHelper.checkPremiumJobSchedule(premiumContext!!)
         }
     }
@@ -266,9 +266,8 @@ interface PremiumInterface : PurchasesUpdatedListener {
                         billingClient?.endConnection()
                         billingClient = null
                     }
+                    if (!isPremium) removePremiumFeatures(premiumContext!!)
                 }
-
-                if (!isPremium) removePremiumFeatures(premiumContext!!)
             }
         }
     }
@@ -318,15 +317,15 @@ interface PremiumInterface : PurchasesUpdatedListener {
         mainActivity?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible = false
         mainActivity?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible = isHistoryNotEmpty
         historyFragment?.binding?.refreshEmptyHistory?.visibility =
-            if(isHistoryNotEmpty) View.GONE else View.VISIBLE
+            if (isHistoryNotEmpty) View.GONE else View.VISIBLE
         historyFragment?.binding?.emptyHistoryLayout?.visibility =
-            if(isHistoryNotEmpty) View.GONE else View.VISIBLE
+            if (isHistoryNotEmpty) View.GONE else View.VISIBLE
         historyFragment?.binding?.historyRecyclerView?.visibility =
-            if(!isHistoryNotEmpty) View.GONE else View.VISIBLE
+            if (!isHistoryNotEmpty) View.GONE else View.VISIBLE
         historyFragment?.binding?.refreshHistory?.visibility =
-            if(!isHistoryNotEmpty) View.GONE else View.VISIBLE
+            if (!isHistoryNotEmpty) View.GONE else View.VISIBLE
         HistoryFragment.instance?.binding?.emptyHistoryText?.text =
-            if(!isHistoryNotEmpty) context.resources?.getText(R.string.empty_history_text) else null
+            if (!isHistoryNotEmpty) context.resources?.getText(R.string.empty_history_text) else null
     }
 
     private suspend fun removePremiumFeatures(context: Context) {
@@ -334,12 +333,23 @@ interface PremiumInterface : PurchasesUpdatedListener {
         val pref = Prefs(context)
 
         arrayListOf(
-            SHOW_STOP_SERVICE, STOP_THE_SERVICE_WHEN_THE_CD,
-            SHOW_BATTERY_INFORMATION, BYPASS_DND, NOTIFY_OVERHEAT_OVERCOOL,
-            NOTIFY_BATTERY_IS_FULLY_CHARGED, NOTIFY_FULL_CHARGE_REMINDER,
-            NOTIFY_BATTERY_IS_FULLY_CHARGED, NOTIFY_BATTERY_IS_CHARGED, NOTIFY_BATTERY_IS_DISCHARGED, TEXT_FONT, CAPACITY_IN_WH,
-            CHARGING_DISCHARGE_CURRENT_IN_WATT, RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL,
-            TAB_ON_APPLICATION_LAUNCH, ENABLED_OVERLAY).forEach {
+            SHOW_STOP_SERVICE,
+            STOP_THE_SERVICE_WHEN_THE_CD,
+            SHOW_BATTERY_INFORMATION,
+            BYPASS_DND,
+            NOTIFY_OVERHEAT_OVERCOOL,
+            NOTIFY_BATTERY_IS_FULLY_CHARGED,
+            NOTIFY_FULL_CHARGE_REMINDER,
+            NOTIFY_BATTERY_IS_FULLY_CHARGED,
+            NOTIFY_BATTERY_IS_CHARGED,
+            NOTIFY_BATTERY_IS_DISCHARGED,
+            TEXT_FONT,
+            CAPACITY_IN_WH,
+            CHARGING_DISCHARGE_CURRENT_IN_WATT,
+            RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL,
+            TAB_ON_APPLICATION_LAUNCH,
+            ENABLED_OVERLAY
+        ).forEach {
 
             with(pref) {
                 apply {
@@ -383,7 +393,8 @@ interface PremiumInterface : PurchasesUpdatedListener {
     }
 
     fun PremiumActivity.checkForInternet(context: Context): Boolean {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val network = connectivityManager.activeNetwork ?: return false
         val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
 
