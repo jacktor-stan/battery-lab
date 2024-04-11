@@ -383,6 +383,8 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
         val batteryLevel = getBatteryLevel(applicationContext) ?: 0
 
+        MainApp.tempScreenTime = screenTime
+
         val numberOfCycles = if (batteryLevel == batteryLevelWith) pref.getFloat(
             NUMBER_OF_CYCLES, 0f
         ) + 0.01f else pref.getFloat(
