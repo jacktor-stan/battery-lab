@@ -15,6 +15,7 @@ import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.PreferencesKeys
+import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
 import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.batterylab.utilities.Premium.TOKEN_PREF
 import kotlinx.coroutines.CoroutineScope
@@ -46,7 +47,12 @@ interface BackupSettingsInterface {
 
                 MainActivity.isOnBackPressed = false
 
-                if (pref.contains(TOKEN_PREF)) pref.remove(TOKEN_PREF)
+                with(pref) {
+                    apply {
+                        if (contains(UPDATE_TEMP_SCREEN_TIME)) remove(UPDATE_TEMP_SCREEN_TIME)
+                        if (contains(TOKEN_PREF)) remove(TOKEN_PREF)
+                    }
+                }
 
                 val pickerDir = intent?.data?.let {
                     requireContext().let { it1 -> DocumentFile.fromTreeUri(it1, it) }

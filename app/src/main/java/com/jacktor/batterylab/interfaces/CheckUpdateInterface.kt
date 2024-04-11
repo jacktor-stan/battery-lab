@@ -16,6 +16,8 @@ import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.AboutFragment
+import com.jacktor.batterylab.services.BatteryLabService
+import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
 
 interface CheckUpdateInterface {
 
@@ -24,17 +26,22 @@ interface CheckUpdateInterface {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             val isUpdateAvailable = isUpdateAvailable(appUpdateInfo)
-            val updateType = if(appUpdateInfo.isImmediateUpdateAllowed) AppUpdateType.IMMEDIATE
+            val updateType = if (appUpdateInfo.isImmediateUpdateAllowed) AppUpdateType.IMMEDIATE
             else AppUpdateType.FLEXIBLE
 
-            if(isUpdateDeveloperTriggered(appUpdateInfo)) {
+            if (isUpdateDeveloperTriggered(appUpdateInfo)) {
                 intentResultStarter()
                 val appUpdateOptions =
                     AppUpdateOptions.newBuilder(updateType).setAllowAssetPackDeletion(false).build()
-                startUpdate(appUpdateManager, appUpdateInfo, updateFlowResultLauncher,
-                    appUpdateOptions)
-            }
-            else if(isUpdateAvailable) {
+                startUpdate(
+                    appUpdateManager, appUpdateInfo, updateFlowResultLauncher,
+                    appUpdateOptions
+                )
+            } else if (isUpdateAvailable) {
+                pref?.apply {
+                    if (contains(UPDATE_TEMP_SCREEN_TIME))
+                        remove(UPDATE_TEMP_SCREEN_TIME)
+                }
                 intentResultStarter()
                 val appUpdateOptions =
                     AppUpdateOptions.newBuilder(updateType).setAllowAssetPackDeletion(false).build()
@@ -49,41 +56,61 @@ interface CheckUpdateInterface {
         val appUpdateInfoTask = appUpdateManager.appUpdateInfo
         appUpdateInfoTask.addOnSuccessListener { appUpdateInfo ->
             val isUpdateAvailable = isUpdateAvailable(appUpdateInfo)
-            val updateType = if(appUpdateInfo.isImmediateUpdateAllowed) AppUpdateType.IMMEDIATE
+            val updateType = if (appUpdateInfo.isImmediateUpdateAllowed) AppUpdateType.IMMEDIATE
             else AppUpdateType.FLEXIBLE
-            if(isUpdateDeveloperTriggered(appUpdateInfo)) {
+            if (isUpdateDeveloperTriggered(appUpdateInfo)) {
                 val updateFlowResultLauncher = MainActivity.instance?.updateFlowResultLauncher
                 MainActivity.instance?.intentResultStarter()
                 val appUpdateOptions =
                     AppUpdateOptions.newBuilder(updateType).setAllowAssetPackDeletion(false).build()
-                startUpdate(appUpdateManager, appUpdateInfo, updateFlowResultLauncher!!,
-                    appUpdateOptions)
+                startUpdate(
+                    appUpdateManager, appUpdateInfo, updateFlowResultLauncher!!,
+                    appUpdateOptions
+                )
             }
-            if(isUpdateAvailable) {
+            if (isUpdateAvailable) {
+                pref?.setLong(
+                    UPDATE_TEMP_SCREEN_TIME,
+                    BatteryLabService.instance?.screenTime ?: 0L
+                )
                 MainActivity.instance?.intentResultStarter()
                 val updateFlowResultLauncher = MainActivity.instance?.updateFlowResultLauncher
                 val appUpdateOptions =
                     AppUpdateOptions.newBuilder(updateType).setAllowAssetPackDeletion(false).build()
-                startUpdate(appUpdateManager, appUpdateInfo, updateFlowResultLauncher!!,
-                    appUpdateOptions)
-            }
-            else {
+                startUpdate(
+                    appUpdateManager, appUpdateInfo, updateFlowResultLauncher!!,
+                    appUpdateOptions
+                )
+            } else {
+                pref?.apply {
+                    if (contains(UPDATE_TEMP_SCREEN_TIME))
+                        remove(UPDATE_TEMP_SCREEN_TIME)
+                }
                 MainActivity.instance?.isCheckUpdateFromGooglePlay = true
-                Toast.makeText(requireContext(), R.string.update_not_found, Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), R.string.update_not_found, Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
 
-    private fun MainActivity.updateAvailableDialog(appUpdateManager: AppUpdateManager,
-                                                   appUpdateInfo: AppUpdateInfo,
-                                                   appUpdateOptions: AppUpdateOptions) {
+    private fun MainActivity.updateAvailableDialog(
+        appUpdateManager: AppUpdateManager,
+        appUpdateInfo: AppUpdateInfo,
+        appUpdateOptions: AppUpdateOptions
+    ) {
         MaterialAlertDialogBuilder(this).apply {
             setIcon(R.drawable.ic_check_update_24dp)
             setTitle(R.string.update_available_dialog_title)
             setMessage(R.string.update_available_dialog_message)
-            setPositiveButton(R.string.update) {_, _ ->
-                startUpdate(appUpdateManager, appUpdateInfo, updateFlowResultLauncher,
-                    appUpdateOptions)
+            setPositiveButton(R.string.update) { _, _ ->
+                pref?.setLong(
+                    UPDATE_TEMP_SCREEN_TIME,
+                    BatteryLabService.instance?.screenTime ?: 0L
+                )
+                startUpdate(
+                    appUpdateManager, appUpdateInfo, updateFlowResultLauncher,
+                    appUpdateOptions
+                )
             }
             setNegativeButton(R.string.later_update) { _, _ ->
                 isCheckUpdateFromGooglePlay = true
@@ -113,9 +140,13 @@ interface CheckUpdateInterface {
         appUpdateInfo.updateAvailability() ==
                 UpdateAvailability.DEVELOPER_TRIGGERED_UPDATE_IN_PROGRESS
 
-    private fun startUpdate(appUpdateManager: AppUpdateManager, appUpdateInfo: AppUpdateInfo,
-                            updateFlowResultLauncher: ActivityResultLauncher<IntentSenderRequest>,
-                            appUpdateOptions: AppUpdateOptions) = appUpdateManager
-        .startUpdateFlowForResult(appUpdateInfo, updateFlowResultLauncher,
-            appUpdateOptions)
+    private fun startUpdate(
+        appUpdateManager: AppUpdateManager, appUpdateInfo: AppUpdateInfo,
+        updateFlowResultLauncher: ActivityResultLauncher<IntentSenderRequest>,
+        appUpdateOptions: AppUpdateOptions
+    ) = appUpdateManager
+        .startUpdateFlowForResult(
+            appUpdateInfo, updateFlowResultLauncher,
+            appUpdateOptions
+        )
 }

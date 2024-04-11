@@ -29,6 +29,7 @@ import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
 import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
+import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
 import com.jacktor.batterylab.utilities.Prefs
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
@@ -797,7 +798,9 @@ class ChargeDischargeFragment : Fragment(R.layout.charge_discharge_fragment), Se
 
                     binding.screenTime.text = getString(
                         R.string.screen_time, TimeHelper.getTime(
-                            BatteryLabService.instance?.screenTime ?: MainApp.tempScreenTime
+                            BatteryLabService.instance?.screenTime
+                                ?: if (MainApp.tempScreenTime > 0) MainApp.tempScreenTime
+                                else pref.getLong(UPDATE_TEMP_SCREEN_TIME, 0L)
                         )
                     )
                 }

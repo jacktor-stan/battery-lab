@@ -69,6 +69,7 @@ import com.jacktor.batterylab.utilities.PreferencesKeys.OVERHEAT_DEGREES
 import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
 import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY
 import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
+import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
 import com.jacktor.batterylab.utilities.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -114,11 +115,16 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
             instance = this
 
-            screenTime = MainApp.tempScreenTime
+            pref = Prefs(applicationContext)
+
+            screenTime = if (MainApp.tempScreenTime > 0L) MainApp.tempScreenTime
+            else pref.getLong(UPDATE_TEMP_SCREEN_TIME, 0L)
 
             MainApp.tempScreenTime = 0L
 
-            pref = Prefs(applicationContext)
+            pref.apply {
+                if (contains(UPDATE_TEMP_SCREEN_TIME)) remove(UPDATE_TEMP_SCREEN_TIME)
+            }
 
             batteryIntent = registerReceiver(
                 null, IntentFilter(

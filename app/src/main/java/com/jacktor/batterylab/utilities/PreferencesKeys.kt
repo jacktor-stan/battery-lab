@@ -109,4 +109,5 @@ object PreferencesKeys {
 
     //Other
     const val IS_REQUEST_RATE_THE_APP = "is_request_rate_the_app"
+    const val UPDATE_TEMP_SCREEN_TIME = "update_temp_screen_time"
 }

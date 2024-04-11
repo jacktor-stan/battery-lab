@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
     PremiumInterface, MenuInterface, ManufacturerInterface, NavigationInterface,
     CheckUpdateInterface, BatteryOptimizationsInterface {
 
-    private var pref: Prefs? = null
+    var pref: Prefs? = null
     private var isDoubleBackToExitPressedOnce = false
     private var isRestoreImportSettings = false
     private var prefArrays: HashMap<*, *>? = null
