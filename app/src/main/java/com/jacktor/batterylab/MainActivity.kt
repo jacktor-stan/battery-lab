@@ -106,6 +106,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
 
     var isCheckUpdateFromGooglePlay = true
     var isShowRequestIgnoringBatteryOptimizationsDialog = true
+    var isShowXiaomiBackgroundActivityControlDialog = false
 
     private lateinit var binding: ActivityMainBinding
     lateinit var topAppBar: CenteredTopAppBar
@@ -357,16 +358,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                 PackageManager.PERMISSION_DENIED
             )
                 requestNotificationPermission()
-
-        if (showRequestNotificationPermissionDialog == null) checkManufacturer()
-
-        if (!isIgnoringBatteryOptimizations() && isShowRequestIgnoringBatteryOptimizationsDialog
-            && showRequestIgnoringBatteryOptimizationsDialog == null
-            && showXiaomiAutostartDialog == null && showHuaweiInformation == null
-        )
-            showRequestIgnoringBatteryOptimizationsDialog()
-
-        if (showRequestNotificationPermissionDialog == null) checkManufacturer()
+            else checkBatteryOptimizations()
 
         if (pref!!.getBoolean(ENABLED_OVERLAY, resources.getBoolean(R.bool.enabled_overlay))
             && OverlayService.instance == null && !ServiceHelper.isStartedOverlayService()
@@ -464,11 +456,27 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                             arrayOf(Manifest.permission.POST_NOTIFICATIONS),
                             POST_NOTIFICATIONS_PERMISSION_REQUEST_CODE
                         )
+
                         showRequestNotificationPermissionDialog = null
+                        CoroutineScope(Dispatchers.Main).launch {
+                            delay(2.5.seconds)
+                            checkBatteryOptimizations()
+                        }
                     }
                     setCancelable(false)
                     show()
                 }
+    }
+
+    private fun checkBatteryOptimizations() {
+        if (showRequestNotificationPermissionDialog == null) checkManufacturer()
+
+        if (!isIgnoringBatteryOptimizations() && !isShowXiaomiBackgroundActivityControlDialog
+            && isShowRequestIgnoringBatteryOptimizationsDialog &&
+            showRequestIgnoringBatteryOptimizationsDialog == null &&
+            showXiaomiAutostartDialog == null && showHuaweiInformation == null
+        )
+            showRequestIgnoringBatteryOptimizationsDialog()
     }
 
     private fun importSettings(prefArrays: HashMap<*, *>?) {
