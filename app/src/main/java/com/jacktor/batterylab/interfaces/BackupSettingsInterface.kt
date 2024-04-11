@@ -132,14 +132,10 @@ interface BackupSettingsInterface {
                     ).show()
 
                     if (BatteryLabService.instance != null)
-                        requireContext().let {
-                            ServiceHelper.stopService(it, BatteryLabService::class.java)
-                        }
+                        ServiceHelper.stopService(requireContext(), BatteryLabService::class.java)
 
                     if (OverlayService.instance != null)
-                        requireContext().let {
-                            ServiceHelper.stopService(it, OverlayService::class.java)
-                        }
+                        ServiceHelper.stopService(requireContext(), OverlayService::class.java)
                 }
 
                 val pref = PreferenceManager.getDefaultSharedPreferences(requireContext())

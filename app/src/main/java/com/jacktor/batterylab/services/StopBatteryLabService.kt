@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.IBinder
 import android.widget.Toast
 import com.jacktor.batterylab.R
-import com.jacktor.batterylab.interfaces.NotificationInterface
 
 class StopBatteryLabService : Service() {
 
@@ -18,11 +17,6 @@ class StopBatteryLabService : Service() {
         batteryLabService?.isStopService = true
 
         Toast.makeText(this, R.string.stopping_service, Toast.LENGTH_LONG).show()
-
-        NotificationInterface.notificationManager?.cancel(
-            NotificationInterface
-                .NOTIFICATION_SERVICE_ID
-        )
 
         stopService(Intent(this, BatteryLabService::class.java))
 

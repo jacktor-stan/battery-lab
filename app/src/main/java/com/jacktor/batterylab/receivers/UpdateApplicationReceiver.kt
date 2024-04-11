@@ -3,6 +3,7 @@ package com.jacktor.batterylab.receivers
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.OverlayInterface
@@ -24,6 +25,8 @@ class UpdateApplicationReceiver : BroadcastReceiver() {
             Intent.ACTION_MY_PACKAGE_REPLACED -> {
 
                 val pref = Prefs(context)
+
+                MainApp.isUpdateApp = true
 
                 PremiumInterface.premiumContext = context
 

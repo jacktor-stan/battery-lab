@@ -118,9 +118,11 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
             pref = Prefs(applicationContext)
 
             screenTime = if (MainApp.tempScreenTime > 0L) MainApp.tempScreenTime
-            else pref.getLong(UPDATE_TEMP_SCREEN_TIME, 0L)
+            else if (MainApp.isUpdateApp) pref.getLong(UPDATE_TEMP_SCREEN_TIME, 0L)
+            else screenTime
 
             MainApp.tempScreenTime = 0L
+            MainApp.isUpdateApp = false
 
             pref.apply {
                 if (contains(UPDATE_TEMP_SCREEN_TIME)) remove(UPDATE_TEMP_SCREEN_TIME)
@@ -359,10 +361,13 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                         }
 
                         withContext(Dispatchers.Main) {
-                            onUpdateServiceNotification(applicationContext)
+                            try {
+                                onUpdateServiceNotification(applicationContext)
+                            } catch (_: NullPointerException) {
+                            } finally {
+                                delay(1.495.seconds)
+                            }
                         }
-
-                        delay(1.495.seconds)
                     }
                 }
             }
@@ -387,7 +392,11 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
         isBatteryDischarged = false
         isBatteryDischargedVoltage = false
 
+        MainApp.isUpdateApp = false
+
         val batteryLevel = getBatteryLevel(applicationContext) ?: 0
+
+        if (!isStopService) MainApp.tempScreenTime = screenTime
 
         MainApp.tempScreenTime = screenTime
 
@@ -511,12 +520,14 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
         seconds++
 
-        try {
-
-            withContext(Dispatchers.Main) {
-                onUpdateServiceNotification(applicationContext)
+        withContext(Dispatchers.Main) {
+            try {
+                withContext(Dispatchers.Main) {
+                    onUpdateServiceNotification(applicationContext)
+                }
+            } catch (_: RuntimeException) {
+            } catch (_: NullPointerException) {
             }
-        } catch (_: RuntimeException) {
         }
     }
 
@@ -686,8 +697,12 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
         isSaveNumberOfCharges = false
 
         withContext(Dispatchers.Main) {
-            onUpdateServiceNotification(applicationContext)
-            wakeLockRelease()
+            try {
+                onUpdateServiceNotification(applicationContext)
+            } catch (_: NullPointerException) {
+            } finally {
+                wakeLockRelease()
+            }
         }
     }
 

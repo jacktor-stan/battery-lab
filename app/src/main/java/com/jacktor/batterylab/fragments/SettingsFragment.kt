@@ -32,6 +32,7 @@ import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
 import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT
 import com.jacktor.batterylab.utilities.PreferencesKeys.DARK_MODE
 import com.jacktor.batterylab.utilities.PreferencesKeys.FAST_CHARGE_SETTING
+import com.jacktor.batterylab.utilities.PreferencesKeys.IS_SHOW_BATTERY_INFORMATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
 import com.jacktor.batterylab.utilities.PreferencesKeys.SERVICE_TIME
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_BATTERY_INFORMATION
@@ -844,12 +845,12 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         }
 
         isShowExtendedNotification?.apply {
-            isEnabled = if (premium?.isVisible == false) true
-            else pref.getBoolean(
-                SHOW_BATTERY_INFORMATION, requireContext().resources.getBoolean(
-                    R.bool.show_battery_information
-                )
+            val isShowBatteryInformationPref = pref.getBoolean(
+                IS_SHOW_BATTERY_INFORMATION,
+                requireContext().resources.getBoolean(R.bool.is_show_battery_information)
             )
+            isEnabled = if (premium?.isVisible == false && isShowBatteryInformationPref) true
+            else isShowBatteryInformationPref
         }
 
         batteryStatusInformation?.apply {

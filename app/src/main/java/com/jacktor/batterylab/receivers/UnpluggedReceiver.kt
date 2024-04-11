@@ -132,15 +132,9 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
                             STOP_THE_SERVICE_WHEN_THE_CD,
                             context.resources.getBoolean(R.bool.stop_the_service_when_the_cd)
                         )
-                    ) {
-
-                        NotificationInterface.notificationManager?.cancel(
-                            NotificationInterface
-                                .NOTIFICATION_SERVICE_ID
-                        )
+                    )
 
                         ServiceHelper.stopService(context, BatteryLabService::class.java)
-                    }
 
                     NotificationInterface.notificationManager?.cancel(
                         NotificationInterface.NOTIFICATION_FULLY_CHARGED_ID
