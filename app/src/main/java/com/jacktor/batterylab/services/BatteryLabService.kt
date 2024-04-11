@@ -44,6 +44,7 @@ import com.jacktor.batterylab.receivers.UnpluggedReceiver
 import com.jacktor.batterylab.utilities.Constants.CHECK_PREMIUM_JOB_ID
 import com.jacktor.batterylab.utilities.Constants.NOMINAL_BATTERY_VOLTAGE
 import com.jacktor.batterylab.utilities.Constants.NOTIFY_FULL_CHARGE_REMINDER_JOB_ID
+import com.jacktor.batterylab.utilities.Constants.SERVICE_WAKELOCK_TIMEOUT
 import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
 import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
 import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_TO
@@ -233,6 +234,22 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
                     if (instance == null) instance = this@BatteryLabService
 
+                    if (wakeLock == null) {
+
+                        if (powerManager == null) powerManager = getSystemService(
+                            Context
+                                .POWER_SERVICE
+                        ) as PowerManager
+
+                        wakeLock = powerManager?.newWakeLock(
+                            PowerManager.PARTIAL_WAKE_LOCK,
+                            "${packageName}:service_wakelock"
+                        )
+                    }
+
+                    if (wakeLock?.isHeld != true && !isFull && isPowerConnected)
+                        wakeLock?.acquire(SERVICE_WAKELOCK_TIMEOUT)
+
                     if ((getBatteryLevel(this@BatteryLabService) ?: 0) < batteryLevelWith)
                         batteryLevelWith = getBatteryLevel(this@BatteryLabService) ?: 0
 
@@ -338,7 +355,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                             onUpdateServiceNotification(this@BatteryLabService)
                         }
 
-                        delay(1496L)
+                        delay(1.497.seconds)
                     }
                 }
             }
@@ -438,6 +455,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
         ServiceHelper.cancelJob(this, CHECK_PREMIUM_JOB_ID)
 
         super.onDestroy()
+        wakeLockRelease()
     }
 
     private suspend fun batteryCharging() {
@@ -588,8 +606,10 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
             if (PremiumInterface.isPremium) {
                 if (residualCapacity > 0 && seconds >= 10) {
                     withContext(Dispatchers.IO) {
-                        HistoryHelper.addHistory(this@BatteryLabService, currentDate,
-                            residualCapacity)
+                        HistoryHelper.addHistory(
+                            this@BatteryLabService, currentDate,
+                            residualCapacity
+                        )
                     }
                     if (HistoryHelper.isHistoryNotEmpty(this@BatteryLabService)) {
                         val historyFragment = HistoryFragment.instance
@@ -603,14 +623,14 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                         MainActivity.instance?.topAppBar?.menu?.findItem(R.id.clear_history)
                             ?.isVisible = true
 
-                        if(HistoryHelper.getHistoryCount(this@BatteryLabService) == 1L) {
+                        if (HistoryHelper.getHistoryCount(this@BatteryLabService) == 1L) {
                             val historyDB = withContext(Dispatchers.IO) {
                                 HistoryDB(this@BatteryLabService)
                             }
                             historyFragment?.historyAdapter =
                                 HistoryAdapter(withContext(Dispatchers.IO) {
-                                        historyDB.readDB()
-                            })
+                                    historyDB.readDB()
+                                })
                             historyFragment?.historyAdapter?.itemCount?.let {
                                 historyFragment.binding?.historyRecyclerView?.setItemViewCacheSize(
                                     it
@@ -618,9 +638,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                             }
                             historyFragment?.binding?.historyRecyclerView?.adapter =
                                 historyFragment?.historyAdapter
-                        }
-
-                        else HistoryAdapter.instance?.update(this@BatteryLabService)
+                        } else HistoryAdapter.instance?.update(this@BatteryLabService)
 
                     } else {
                         HistoryFragment.instance?.binding?.historyRecyclerView?.visibility =
@@ -641,7 +659,8 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                     HistoryFragment.instance?.binding?.historyRecyclerView?.visibility = View.GONE
                     HistoryFragment.instance?.binding?.refreshHistory?.visibility = View.GONE
                     HistoryFragment.instance?.binding?.emptyHistoryLayout?.visibility = View.VISIBLE
-                    HistoryFragment.instance?.binding?.refreshEmptyHistory?.visibility = View.VISIBLE
+                    HistoryFragment.instance?.binding?.refreshEmptyHistory?.visibility =
+                        View.VISIBLE
                     HistoryFragment.instance?.binding?.emptyHistoryText?.text =
                         resources.getText(R.string.history_premium_feature)
                     MainActivity.instance?.topAppBar?.menu?.findItem(R.id.history_premium)
@@ -656,6 +675,14 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
         withContext(Dispatchers.Main) {
             onUpdateServiceNotification(this@BatteryLabService)
+            wakeLockRelease()
+        }
+    }
+
+    fun wakeLockRelease() {
+        try {
+            if (wakeLock?.isHeld == true) wakeLock?.release()
+        } catch (_: RuntimeException) {
         }
     }
 }

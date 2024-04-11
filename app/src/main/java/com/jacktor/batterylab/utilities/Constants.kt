@@ -1,6 +1,7 @@
 package com.jacktor.batterylab.utilities
 
 import kotlin.time.Duration.Companion.hours
+import kotlin.time.Duration.Companion.minutes
 
 object Constants {
 
@@ -39,4 +40,5 @@ object Constants {
     const val CHARGING_VOLTAGE_WATT = 5.0
 
     val CHECK_PREMIUM_JOB_SERVICE_PERIODIC = 12.hours.inWholeMilliseconds
+    val SERVICE_WAKELOCK_TIMEOUT = 1.minutes.inWholeMilliseconds
 }
