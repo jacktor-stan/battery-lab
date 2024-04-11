@@ -59,13 +59,6 @@
             app:singleLineTitle="false" />
 
         <Preference
-            android:key="open_notification_category_settings_service"
-            android:summary="@string/notification_priority"
-            android:title="@string/open_notification_category_settings_service"
-            app:icon="@drawable/ic_open_notification_category_settings_24dp"
-            app:singleLineTitle="false" />
-
-        <Preference
             android:key="battery_status_information"
             android:title="@string/battery_status_information"
             app:icon="@drawable/ic_notification_charge_discharge_24dp"
@@ -100,6 +93,15 @@
             app:defaultValue="@bool/dark_mode"
             app:icon="@drawable/ic_dark_mode_24dp"
             app:singleLineTitle="false" />
+
+        <ListPreference
+            android:title="@string/text_size"
+            app:singleLineTitle="false"
+            app:icon="@drawable/ic_text_size_24dp"
+            app:dialogIcon="@drawable/ic_text_size_24dp"
+            android:entries="@array/text_size_list"
+            android:entryValues="@array/text_size_values"
+            android:key="text_size"/>
 
         <ListPreference
             android:entries="@array/fonts_list"

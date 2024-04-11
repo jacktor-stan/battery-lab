@@ -274,7 +274,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) darkMode?.isEnabled =
             !pref.getBoolean(AUTO_DARK_MODE, resources.getBoolean(R.bool.auto_dark_mode))
 
-        //textSize?.summary = getOnTextSizeSummary()
+        textSize?.summary = getOnTextSizeSummary()
 
         textFont?.apply {
             isEnabled = premium?.isVisible == false
@@ -308,13 +308,13 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
             true
         }
 
-        /*textSize?.setOnPreferenceChangeListener { preference, newValue ->
+        textSize?.setOnPreferenceChangeListener { preference, newValue ->
 
             preference.summary = resources.getStringArray(R.array.text_size_list)[
-                    (newValue as? String)?.toInt() ?: 2]
+                (newValue as? String)?.toInt() ?: 2]
 
             true
-        }*/
+        }
 
         textStyle?.setOnPreferenceChangeListener { preference, newValue ->
 
@@ -897,7 +897,7 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) darkMode?.isEnabled =
             !pref.getBoolean(AUTO_DARK_MODE, resources.getBoolean(R.bool.auto_dark_mode))
 
-        //textSize?.summary = getOnTextSizeSummary()
+        textSize?.summary = getOnTextSizeSummary()
 
         textFont?.apply {
             isEnabled = premium?.isVisible == false

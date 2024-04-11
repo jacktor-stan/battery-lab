@@ -23,7 +23,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/google_sans"
             android:text="@string/kernel_0"
-            android:textSize="15sp"
+            android:textSize="14sp"
             tools:ignore="RelativeOverlap" />
 
         <TextView
@@ -35,7 +35,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/google_sans"
             android:text="@string/stored_value"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/kernel_status"
@@ -46,7 +46,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/google_sans"
             android:text="@string/kernel_status"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/available"
@@ -57,7 +57,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/google_sans"
             android:text="@string/kernel_available"
-            android:textSize="15sp" />
+            android:textSize="14sp" />
 
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/enable_script"

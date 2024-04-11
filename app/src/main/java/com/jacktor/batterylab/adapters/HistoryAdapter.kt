@@ -68,21 +68,24 @@ class HistoryAdapter(private var historyList: MutableList<History>) :
             holderHistory.itemView.context, binding.historyDate,
             pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
             pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2")
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
         )
 
         TextAppearanceHelper.setTextAppearance(
             holderHistory.itemView.context,
             binding.historyResidualCapacity, pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
             pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2")
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
         )
 
         TextAppearanceHelper.setTextAppearance(
             holderHistory.itemView.context,
             binding.historyBatteryWear, pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
             pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2")
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
         )
     }
 

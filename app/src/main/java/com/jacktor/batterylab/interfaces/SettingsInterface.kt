@@ -1,8 +1,5 @@
 package com.jacktor.batterylab.interfaces
 
-//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
-//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_SIZE
-//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
 import android.content.Context
 import android.content.DialogInterface
 import android.content.SharedPreferences
@@ -22,6 +19,7 @@ import com.jacktor.batterylab.fragments.SettingsFragment
 import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
 import com.jacktor.batterylab.utilities.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
+import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_SIZE
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
 import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_CHARGE_DISCHARGE_CURRENT
 import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
@@ -29,7 +27,7 @@ import com.jacktor.batterylab.utilities.PreferencesKeys.VOLTAGE_UNIT
 
 interface SettingsInterface {
 
-    /*fun SettingsFragment.getOnTextSizeSummary(): String? {
+    fun SettingsFragment.getOnTextSizeSummary(): String? {
 
         val pref = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
@@ -40,7 +38,7 @@ interface SettingsInterface {
 
         return resources.getStringArray(R.array.text_size_list)[
                 (pref.getString(TEXT_SIZE, "2") ?: "2").toInt()]
-    }*/
+    }
 
     fun SettingsFragment.getTextFontSummary(): String? {
 

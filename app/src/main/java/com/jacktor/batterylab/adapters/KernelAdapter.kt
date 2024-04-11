@@ -66,13 +66,29 @@ class KernelAdapter(
             context, holder.cardView.findViewById(R.id.value),
             pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
             pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            null
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
+        )
+        TextAppearanceHelper.setTextAppearance(
+            context, holder.cardView.findViewById(R.id.stored_value),
+            pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
+            pref.getString(PreferencesKeys.TEXT_FONT, "6"),
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
+        )
+        TextAppearanceHelper.setTextAppearance(
+            context, holder.cardView.findViewById(R.id.kernel_status),
+            pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
+            pref.getString(PreferencesKeys.TEXT_FONT, "6"),
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
         )
         TextAppearanceHelper.setTextAppearance(
             context, holder.cardView.findViewById(R.id.available),
             pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
             pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            null
+            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+            false
         )
 
         holder.textViewKernelName.text = dataList[position].list

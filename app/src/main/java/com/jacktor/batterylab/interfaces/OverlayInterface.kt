@@ -398,7 +398,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -435,7 +436,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -474,7 +476,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -514,7 +517,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -558,7 +562,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -597,7 +602,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -635,7 +641,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -675,7 +682,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -716,7 +724,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -753,7 +762,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -808,7 +818,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -843,7 +854,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -879,7 +891,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -916,7 +929,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -953,7 +967,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -986,7 +1001,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1059,7 +1075,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1091,7 +1108,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1189,7 +1207,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1287,7 +1306,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1383,7 +1403,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1450,7 +1471,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1496,7 +1518,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1545,7 +1568,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1594,7 +1618,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1643,7 +1668,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
@@ -1683,7 +1709,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))
                 text = context.getString(
@@ -1723,7 +1750,8 @@ interface OverlayInterface : BatteryInfoInterface {
                     context, this,
                     pref.getString(OVERLAY_TEXT_STYLE, "0"),
                     pref.getString(OVERLAY_FONT, "6"),
-                    pref.getString(OVERLAY_SIZE, "2")
+                    pref.getString(OVERLAY_SIZE, "2"),
+                    false
                 )
 
                 setTextColor(pref.getInt(OVERLAY_TEXT_COLOR, Color.WHITE))

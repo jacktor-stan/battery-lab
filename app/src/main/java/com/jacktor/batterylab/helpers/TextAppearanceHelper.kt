@@ -13,10 +13,10 @@ object TextAppearanceHelper : PremiumInterface {
 
     fun setTextAppearance(
         context: Context, textView: AppCompatTextView, textStylePref: String?,
-        textFontPref: String?, textSizePref: String?
+        textFontPref: String?, textSizePref: String?, subTitle: Boolean
     ) {
 
-        if (textSizePref != null) setTextSize(context, textView, textSizePref)
+        if (textSizePref != null) setTextSize(context, textView, textSizePref, subTitle)
 
         val isPremium = PremiumInterface.isPremium
 
@@ -131,34 +131,68 @@ object TextAppearanceHelper : PremiumInterface {
         }
     }
 
-    private fun setTextSize(context: Context, textView: AppCompatTextView, textSizePref: String?) {
+    private fun setTextSize(
+        context: Context,
+        textView: AppCompatTextView,
+        textSizePref: String?,
+        subTitle: Boolean
+    ) {
 
-        when (textSizePref?.toInt()) {
+        if (!subTitle) {
+            when (textSizePref?.toInt()) {
 
-            0 -> textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                context.resources.getDimension(R.dimen.very_small_text_size)
-            )
+                0 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    context.resources.getDimension(R.dimen.very_small_text_size)
+                )
 
-            1 -> textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                context.resources.getDimension(R.dimen.small_text_size)
-            )
+                1 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    context.resources.getDimension(R.dimen.small_text_size)
+                )
 
-            2 -> textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                context.resources.getDimension(R.dimen.medium_text_size)
-            )
+                2 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    context.resources.getDimension(R.dimen.medium_text_size)
+                )
 
-            3 -> textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                context.resources.getDimension(R.dimen.large_text_size)
-            )
+                3 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    context.resources.getDimension(R.dimen.large_text_size)
+                )
 
-            4 -> textView.setTextSize(
-                TypedValue.COMPLEX_UNIT_PX,
-                context.resources.getDimension(R.dimen.very_large_text_size)
-            )
+                4 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    context.resources.getDimension(R.dimen.very_large_text_size)
+                )
+            }
+        } else {
+            when (textSizePref?.toInt()) {
+                0 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    6F
+                )
+
+                1 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    8F
+                )
+
+                2 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    12F
+                )
+
+                3 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_SP,
+                   16F
+                )
+
+                4 -> textView.setTextSize(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    22F
+                )
+            }
         }
     }
 }
