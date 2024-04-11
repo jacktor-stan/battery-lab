@@ -47,6 +47,7 @@ import com.jacktor.batterylab.utilities.Constants.STOP_SERVICE_REQUEST_CODE
 import com.jacktor.batterylab.utilities.PreferencesKeys
 import com.jacktor.batterylab.utilities.PreferencesKeys.BYPASS_DND
 import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
+import com.jacktor.batterylab.utilities.PreferencesKeys.IS_SHOW_BATTERY_INFORMATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.SERVICE_TIME
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_BATTERY_INFORMATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_EXPANDED_NOTIFICATION
@@ -82,6 +83,8 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
     fun onCreateServiceNotification(context: Context) {
 
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
+
+        if (isNotificationExists(context, NOTIFICATION_SERVICE_ID)) return
 
         channelId = onCreateNotificationChannel(context, SERVICE_CHANNEL_ID)
 
@@ -207,8 +210,10 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                         )
                     }%"
                 )
-            } else remoteViewsServiceContent.setTextViewText(R.id.notification_content_text,
-                context.getString(R.string.service_is_running))
+            } else remoteViewsServiceContent.setTextViewText(
+                R.id.notification_content_text,
+                context.getString(R.string.service_is_running)
+            )
 
             setCustomContentView(remoteViewsServiceContent)
 
@@ -257,24 +262,29 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
 
         try {
             notificationBuilder?.build()?.apply {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
                     let {
-                        BatteryLabService.instance?.startForeground(NOTIFICATION_SERVICE_ID,
-                            it, FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
+                        BatteryLabService.instance?.startForeground(
+                            NOTIFICATION_SERVICE_ID,
+                            it, FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                        )
                     }
                 else let {
                     BatteryLabService.instance?.startForeground(NOTIFICATION_SERVICE_ID, it)
                 }
             }
-        }
-        catch (e: Exception) {
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-                && e is ForegroundServiceStartNotAllowedException) return
+        } catch (e: Exception) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                && e is ForegroundServiceStartNotAllowedException
+            ) return
         }
     }
 
     @SuppressLint("RestrictedApi")
     fun onUpdateServiceNotification(context: Context) {
+        if (!isNotificationExists(context, NOTIFICATION_SERVICE_ID))
+            onCreateServiceNotification(context)
+
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
 
         notificationManager = context.getSystemService(NOTIFICATION_SERVICE)
@@ -325,10 +335,10 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
             )
 
             val isShowBatteryInformation = pref.getBoolean(
-                SHOW_BATTERY_INFORMATION, context.resources.getBoolean(
-                    R.bool.show_battery_information
-                )
+                IS_SHOW_BATTERY_INFORMATION,
+                context.resources.getBoolean(R.bool.is_show_battery_information)
             )
+
             val isShowExpandedNotification = pref.getBoolean(
                 SHOW_EXPANDED_NOTIFICATION, context.resources.getBoolean(
                     R.bool.show_expanded_notification
@@ -361,8 +371,10 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                         )
                     }%"
                 )
-            } else remoteViewsServiceContent.setTextViewText(R.id.notification_content_text,
-                context.getString(R.string.service_is_running))
+            } else remoteViewsServiceContent.setTextViewText(
+                R.id.notification_content_text,
+                context.getString(R.string.service_is_running)
+            )
 
             setCustomContentView(remoteViewsServiceContent)
 
@@ -1768,10 +1780,10 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
         val notificationManager =
             context.getSystemService(NOTIFICATION_SERVICE) as? NotificationManager
         val notifications = notificationManager?.activeNotifications
-        if (notifications != null) {
+        var isNotificationExists = false
+        if (notifications != null)
             for (notification in notifications)
-                return notification.id == notificationID
-        }
-        return false
+                isNotificationExists = notification.id == notificationID
+        return isNotificationExists
     }
 }

@@ -8,6 +8,7 @@
     <bool name="stop_the_service_when_the_cd">false</bool>
     <bool name="show_battery_information">true</bool>
     <bool name="show_expanded_notification">true</bool>
+    <bool name="is_show_battery_information">true</bool>
     <bool name="auto_dark_mode">true</bool>
     <bool name="dark_mode">false</bool>
     <bool name="capacity_in_wh">false</bool>

@@ -8,6 +8,7 @@ object PreferencesKeys {
     const val STOP_THE_SERVICE_WHEN_THE_CD = "stop_the_service_when_the_cd"
     const val SHOW_BATTERY_INFORMATION = "show_battery_information"
     const val SHOW_EXPANDED_NOTIFICATION = "show_expanded_notification"
+    const val IS_SHOW_BATTERY_INFORMATION = "is_show_battery_information"
 
     // Battery Status Information
     const val BYPASS_DND = "bypass_dnd_mode"
