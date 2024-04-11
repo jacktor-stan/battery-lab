@@ -180,7 +180,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                     R.bool.show_expanded_notification
                 )
             )
-            if (isShowBatteryInformation && isShowExpandedNotification) {
+            if (isShowBatteryInformation) {
                 remoteViewsServiceContent.setTextViewText(
                     R.id.notification_content_text,
                     if (getCurrentCapacity(context) > 0.0) {
@@ -207,12 +207,8 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                         )
                     }%"
                 )
-            } else if (!isShowBatteryInformation && (isPremium)) {
-                remoteViewsServiceContent.setTextViewText(
-                    R.id.notification_content_text,
-                    context.getString(R.string.service_is_running)
-                )
-            }
+            } else remoteViewsServiceContent.setTextViewText(R.id.notification_content_text,
+                context.getString(R.string.service_is_running))
 
             setCustomContentView(remoteViewsServiceContent)
 
@@ -338,7 +334,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                     R.bool.show_expanded_notification
                 )
             )
-            if (isShowBatteryInformation && isShowExpandedNotification) {
+            if (isShowBatteryInformation) {
                 remoteViewsServiceContent.setTextViewText(
                     R.id.notification_content_text,
                     if (getCurrentCapacity(context) > 0.0) {
@@ -365,12 +361,8 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                         )
                     }%"
                 )
-            } else if (!isShowBatteryInformation && (isPremium)) {
-                remoteViewsServiceContent.setTextViewText(
-                    R.id.notification_content_text,
-                    context.getString(R.string.service_is_running)
-                )
-            }
+            } else remoteViewsServiceContent.setTextViewText(R.id.notification_content_text,
+                context.getString(R.string.service_is_running))
 
             setCustomContentView(remoteViewsServiceContent)
 
