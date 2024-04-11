@@ -6,6 +6,9 @@ import android.app.job.JobScheduler
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.net.NetworkCapabilities.NET_CAPABILITY_INTERNET
+import android.net.NetworkCapabilities.NET_CAPABILITY_VALIDATED
+import android.net.NetworkRequest
 import android.os.Build
 import android.widget.Toast
 import androidx.preference.Preference
@@ -88,13 +91,24 @@ object ServiceHelper {
         }
     }
 
-    fun jobSchedule(context: Context, jobName: Class<*>, jobId: Int, periodic: Long) {
+    fun jobSchedule(
+        context: Context, jobName: Class<*>, jobId: Int, periodic: Long,
+        isRequiredNetwork: Boolean = false
+    ) {
 
         val jobScheduler = context.getSystemService(Context.JOB_SCHEDULER_SERVICE) as? JobScheduler
 
         val serviceComponent = ComponentName(context, jobName)
 
         val jobInfo = JobInfo.Builder(jobId, serviceComponent).apply {
+            if (isRequiredNetwork) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P)
+                    setRequiredNetwork(NetworkRequest.Builder().apply {
+                        addCapability(NET_CAPABILITY_INTERNET)
+                        addCapability(NET_CAPABILITY_VALIDATED)
+                    }.build())
+                else setRequiredNetworkType(JobInfo.NETWORK_TYPE_ANY)
+            }
 
             setPeriodic(periodic)
 
@@ -105,8 +119,11 @@ object ServiceHelper {
 
     fun checkPremiumJobSchedule(context: Context) =
         jobSchedule(
-            context, CheckPremiumJob::class.java, Constants.CHECK_PREMIUM_JOB_ID,
-            Constants.CHECK_PREMIUM_JOB_SERVICE_PERIODIC
+            context,
+            CheckPremiumJob::class.java,
+            Constants.CHECK_PREMIUM_JOB_ID,
+            Constants.CHECK_PREMIUM_JOB_SERVICE_PERIODIC,
+            true
         )
 
     private fun isJobSchedule(context: Context, jobId: Int): Boolean {
