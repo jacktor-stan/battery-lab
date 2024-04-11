@@ -24,24 +24,23 @@ import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.isPremium
 import com.jacktor.batterylab.interfaces.SettingsInterface
 import com.jacktor.batterylab.services.BatteryLabService
-import com.jacktor.batterylab.utilities.Constants.SERVICE_CHANNEL_ID
 import com.jacktor.batterylab.utilities.PreferencesKeys
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
 import com.jacktor.batterylab.utilities.PreferencesKeys.AUTO_DARK_MODE
 import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
 import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT
 import com.jacktor.batterylab.utilities.PreferencesKeys.DARK_MODE
+import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
 import com.jacktor.batterylab.utilities.PreferencesKeys.FAST_CHARGE_SETTING
 import com.jacktor.batterylab.utilities.PreferencesKeys.IS_SHOW_BATTERY_INFORMATION
+import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
+import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_FULL_CHARGES
 import com.jacktor.batterylab.utilities.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
 import com.jacktor.batterylab.utilities.PreferencesKeys.SERVICE_TIME
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_BATTERY_INFORMATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_EXPANDED_NOTIFICATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_STOP_SERVICE
 import com.jacktor.batterylab.utilities.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_FULL_CHARGES
 import com.jacktor.batterylab.utilities.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_SIZE
@@ -71,7 +70,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
     private var isStopTheServiceWhenTheCD: SwitchPreferenceCompat? = null
     private var isShowBatteryInformation: SwitchPreferenceCompat? = null
     private var isShowExtendedNotification: SwitchPreferenceCompat? = null
-    private var openNotificationCategorySettingsService: Preference? = null
     private var batteryStatusInformation: Preference? = null
     private var powerConnection: Preference? = null
 
@@ -136,9 +134,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         isShowBatteryInformation = findPreference(SHOW_BATTERY_INFORMATION)
 
         isShowExtendedNotification = findPreference(SHOW_EXPANDED_NOTIFICATION)
-
-        openNotificationCategorySettingsService =
-            findPreference("open_notification_category_settings_service")
 
         powerConnection = findPreference("connected_disconnected_sound")
 
@@ -210,13 +205,6 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
         }
 
         batteryStatusInformation = findPreference("battery_status_information")
-
-        openNotificationCategorySettingsService?.setOnPreferenceClickListener {
-
-            onOpenNotificationCategorySettings(SERVICE_CHANNEL_ID)
-
-            true
-        }
 
         batteryStatusInformation?.apply {
 

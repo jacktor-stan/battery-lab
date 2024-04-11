@@ -1,12 +1,11 @@
 package com.jacktor.batterylab.interfaces
 
-import android.app.NotificationManager
+//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
+//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_SIZE
+//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import android.content.SharedPreferences
-import android.os.Build
-import android.provider.Settings
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
@@ -24,34 +23,11 @@ import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
 import com.jacktor.batterylab.utilities.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
 import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
-//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
-//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_SIZE
-//import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
 import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_CHARGE_DISCHARGE_CURRENT
 import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
 import com.jacktor.batterylab.utilities.PreferencesKeys.VOLTAGE_UNIT
 
 interface SettingsInterface {
-
-    fun SettingsFragment.onOpenNotificationCategorySettings(notificationId: String) {
-
-        val notificationManager =
-            requireContext().getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = notificationManager
-                .getNotificationChannel(notificationId)
-
-            val intent = Intent(Settings.ACTION_CHANNEL_NOTIFICATION_SETTINGS).apply {
-
-                putExtra(Settings.EXTRA_CHANNEL_ID, notificationChannel.id)
-
-                putExtra(Settings.EXTRA_APP_PACKAGE, requireContext().packageName)
-            }
-
-            requireContext().startActivity(intent)
-        }
-    }
 
     /*fun SettingsFragment.getOnTextSizeSummary(): String? {
 

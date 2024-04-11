@@ -68,7 +68,6 @@
     <string name="last_charge_time">Waktu Pengisian Terakhir: %1$s (%2$s - %3$s)</string>
     <string name="service">Layanan</string>
     <string name="charging_time">Waktu Pengisian Daya: %1$s</string>
-    <string name="open_notification_category_settings_service">Buka setelan kategori notifikasi \"Layanan\"</string>
     <string name="service_and_notification">Layanan &amp; Notifikasi</string>
     <string name="misc">Lain-lain</string>
     <string name="service_time">Waktu Layanan</string>

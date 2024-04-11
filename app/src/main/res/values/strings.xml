@@ -82,7 +82,6 @@
     <string name="last_charge_time">Last Charge Time: %1$s (%2$s - %3$s)</string>
     <string name="service">Service</string>
     <string name="charging_time">Charging Time: %1$s</string>
-    <string name="open_notification_category_settings_service">Open notification category settings \"Service\"</string>
     <string name="service_and_notification">Service &amp; Notification</string>
     <string name="misc">Misc</string>
     <string name="service_time">Service Time</string>
