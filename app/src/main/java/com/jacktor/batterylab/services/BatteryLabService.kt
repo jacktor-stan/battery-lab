@@ -697,8 +697,4 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
         } catch (_: RuntimeException) {
         }
     }
-
-    fun stopService() {
-        stopSelf()
-    }
 }
