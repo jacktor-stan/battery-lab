@@ -1113,7 +1113,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
         remoteViews: RemoteViews
     ) {
 
-        val batteryLabServiceContext = context as? BatteryLabService
+        val batteryLabServiceContext = BatteryLabService.instance
 
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
 
@@ -1255,7 +1255,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
 
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val batteryLabServiceContext = context as? BatteryLabService
+        val batteryLabServiceContext = BatteryLabService.instance
 
         val isCapacityInWh = pref.getBoolean(
             CAPACITY_IN_WH, context.resources.getBoolean(
@@ -1390,7 +1390,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
 
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val batteryLabServiceContext = context as? BatteryLabService
+        val batteryLabServiceContext = BatteryLabService.instance
 
         val isCapacityInWh = pref.getBoolean(
             CAPACITY_IN_WH, context.resources.getBoolean(
@@ -1649,7 +1649,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
 
         val pref = PreferenceManager.getDefaultSharedPreferences(context)
 
-        val batteryLabServiceContext = context as? BatteryLabService
+        val batteryLabServiceContext = BatteryLabService.instance
 
         val isChargingDischargeCurrentInWatt = pref.getBoolean(
             PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT,
