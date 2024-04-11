@@ -108,8 +108,6 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
     var isShowRequestIgnoringBatteryOptimizationsDialog = true
     var isShowXiaomiBackgroundActivityControlDialog = false
 
-    var tempScreenTime = 0L
-
     private lateinit var binding: ActivityMainBinding
     lateinit var topAppBar: CenteredTopAppBar
     lateinit var navigation: BottomNavigationView

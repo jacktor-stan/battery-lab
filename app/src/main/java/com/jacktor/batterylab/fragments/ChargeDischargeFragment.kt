@@ -12,6 +12,7 @@ import androidx.appcompat.widget.AppCompatTextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ChargeDischargeFragmentBinding
@@ -796,7 +797,7 @@ class ChargeDischargeFragment : Fragment(R.layout.charge_discharge_fragment), Se
 
                     binding.screenTime.text = getString(
                         R.string.screen_time, TimeHelper.getTime(
-                            BatteryLabService.instance?.screenTime ?: 0L
+                            BatteryLabService.instance?.screenTime ?: MainApp.tempScreenTime
                         )
                     )
                 }

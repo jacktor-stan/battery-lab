@@ -13,6 +13,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
 import com.jacktor.batterylab.R
@@ -113,9 +114,9 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
             instance = this
 
-            screenTime = MainActivity.instance?.tempScreenTime ?: 0L
+            screenTime = MainApp.tempScreenTime
 
-            MainActivity.instance?.tempScreenTime = 0L
+            MainApp.tempScreenTime = 0L
 
             pref = Prefs(applicationContext)
 
