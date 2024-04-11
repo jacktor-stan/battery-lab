@@ -45,6 +45,12 @@
             app:singleLineTitle="false"
             app:icon="@drawable/ic_github_24dp"
             android:key="github"/>
+    <Preference
+        app:title="@string/github_battery_capacity"
+        app:summary="@string/license"
+        app:singleLineTitle="false"
+        app:icon="@drawable/ic_github_24dp"
+        android:key="github_battery_capacity"/>
 
     <Preference
             app:title="@string/become_a_beta_tester"

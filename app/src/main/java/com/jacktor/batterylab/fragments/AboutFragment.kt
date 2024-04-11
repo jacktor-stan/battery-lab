@@ -25,6 +25,7 @@ import com.jacktor.batterylab.interfaces.CheckUpdateInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.RecyclerTeamInterface
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK
+import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK_BATTERY_CAPCITY
 import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.batterylab.views.TeamModel
 import org.json.JSONObject
@@ -40,6 +41,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
     private var build: Preference? = null
     private var buildDate: Preference? = null
     private var github: Preference? = null
+    private var githubBC: Preference? = null
     private var betaTester: Preference? = null
     private var team: Preference? = null
 
@@ -63,6 +65,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
         checkUpdate = findPreference("check_update")
 
         github = findPreference("github")
+        githubBC = findPreference("github_battery_capacity")
 
         betaTester = findPreference("become_a_beta_tester")
 
@@ -144,6 +147,22 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
             try {
 
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_LINK)))
+            } catch (e: ActivityNotFoundException) {
+
+                Toast.makeText(
+                    requireContext(), e.message ?: e.toString(),
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+
+            true
+        }
+
+        githubBC?.setOnPreferenceClickListener {
+
+            try {
+
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(GITHUB_LINK_BATTERY_CAPCITY)))
             } catch (e: ActivityNotFoundException) {
 
                 Toast.makeText(

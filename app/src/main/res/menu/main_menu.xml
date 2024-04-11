@@ -36,11 +36,6 @@
                     android:title="@string/faq"
                     android:icon="@drawable/ic_faq_question_24dp"
                     app:showAsAction="never"/>
-            <item
-                android:id="@+id/capacity_info_app"
-                android:title="@string/capacity_info"
-                android:icon="@drawable/ic_apps_24"
-                app:showAsAction="never"/>
         </menu>
 
     </item>

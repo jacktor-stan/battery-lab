@@ -9,6 +9,7 @@ object Constants {
     const val GOOGLE_PLAY_APP_LINK =
         "https://play.google.com/store/apps/details?id=com.jacktor.batterylab"
     const val GITHUB_LINK = "https://github.com/jacktor-stan/battery-lab"
+    const val GITHUB_LINK_BATTERY_CAPCITY = "https://github.com/Ph03niX-X/CapacityInfo"
     const val TELEGRAM_DEVELOPER_LINK = "https://t.me/deniliandi"
     const val GOOGLE_PLAY_PACKAGE_NAME = "com.android.vending"
     const val SERVICE_CHANNEL_ID = "service_channel"

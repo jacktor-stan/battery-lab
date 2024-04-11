@@ -216,26 +216,6 @@ interface MenuInterface {
                     startActivity(intent)
                     true
                 }
-
-                topAppBar.menu.findItem(R.id.capacity_info_app).setOnMenuItemClickListener {
-                    val capacityInfoPackageName = "com.ph03nix_x.capacityinfo"
-                    try {
-                        startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("market://details?id=$capacityInfoPackageName")
-                            )
-                        )
-                    } catch (anfe: ActivityNotFoundException) {
-                        startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse("https://play.google.com/store/apps/details?id=$capacityInfoPackageName")
-                            )
-                        )
-                    }
-                    true
-                }
             }
         }
     }
