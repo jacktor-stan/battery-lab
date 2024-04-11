@@ -121,8 +121,6 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                 )
             )
 
-            val numberOfCharges = pref.getLong(NUMBER_OF_CHARGES, 0)
-
             when (batteryIntent?.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1)) {
 
                 BatteryManager.BATTERY_PLUGGED_AC, BatteryManager.BATTERY_PLUGGED_USB,
@@ -141,8 +139,6 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                         BatteryManager.BATTERY_STATUS_UNKNOWN
                     ) ?: BatteryManager
                         .BATTERY_STATUS_UNKNOWN
-
-                    pref.setLong(NUMBER_OF_CHARGES, numberOfCharges + 1)
 
                     if (MainActivity.instance?.fragment != null) {
 
@@ -591,11 +587,14 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
         pref.apply {
 
+            val numberOfCharges = getLong(NUMBER_OF_CHARGES, 0)
+            if (seconds > 1) setLong(NUMBER_OF_CHARGES, numberOfCharges + 1)
+
             setInt(LAST_CHARGE_TIME, seconds)
             setInt(RESIDUAL_CAPACITY, residualCapacity)
             setInt(BATTERY_LEVEL_WITH, batteryLevelWith)
             setInt(BATTERY_LEVEL_TO, batteryLevel)
-            setLong(NUMBER_OF_FULL_CHARGES, pref.getLong(NUMBER_OF_FULL_CHARGES, 0) + 1)
+            setLong(NUMBER_OF_FULL_CHARGES, getLong(NUMBER_OF_FULL_CHARGES, 0) + 1)
             setFloat(CAPACITY_ADDED, capacityAdded.toFloat())
             setInt(PERCENT_ADDED, percentAdded)
 

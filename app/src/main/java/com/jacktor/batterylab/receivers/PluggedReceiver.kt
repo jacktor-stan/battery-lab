@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import androidx.core.content.ContextCompat
-import androidx.preference.PreferenceManager
 import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
@@ -19,7 +18,6 @@ import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.tempCurr
 import com.jacktor.batterylab.interfaces.NotificationInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.services.BatteryLabService
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
 
 class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterface {
 
@@ -39,10 +37,6 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
 
                     MainActivity.instance?.isCheckUpdateFromGooglePlay = !isCheckedUpdateFromGooglePlay
 
-                    val pref = PreferenceManager.getDefaultSharedPreferences(context)
-
-                    val numberOfCharges = pref.getLong(NUMBER_OF_CHARGES, 0)
-
                     batteryIntent = context.registerReceiver(
                         null, IntentFilter(
                             Intent
@@ -55,7 +49,6 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
                         BatteryManager.BATTERY_STATUS_UNKNOWN
                     ) ?: BatteryManager.BATTERY_STATUS_UNKNOWN
 
-                    pref.edit().putLong(NUMBER_OF_CHARGES, numberOfCharges + 1).apply()
 
                     BatteryLabService.instance?.batteryLevelWith = BatteryLabService.instance
                         ?.getBatteryLevel(context) ?: 0
