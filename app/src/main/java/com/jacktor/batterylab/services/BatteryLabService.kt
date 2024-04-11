@@ -7,6 +7,7 @@ import android.content.IntentFilter
 import android.hardware.display.DisplayManager
 import android.os.BatteryManager
 import android.os.IBinder
+import android.os.PowerManager
 import android.view.Display
 import android.view.View
 import android.widget.Toast
@@ -81,6 +82,8 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
     private lateinit var pref: Prefs
     private var screenTimeJob: Job? = null
     private var jobService: Job? = null
+    private var powerManager: PowerManager? = null
+    private var wakeLock: PowerManager.WakeLock? = null
     private var isScreenTimeJob = false
     private var isJob = false
     private var currentCapacity = 0

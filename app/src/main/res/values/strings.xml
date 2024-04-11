@@ -460,5 +460,5 @@
     <string name="become_a_beta_tester">Become a beta tester</string>
     <string name="become_a_beta_tester_summary">Be the first to receive updates</string>
     <string name="capacity_info" translatable="false">Capacity Info</string>
-    <string name="github_battery_capacity">Github (Battery Capacity)</string>
+    <string name="github_battery_capacity" translatable="false">Github (Battery Capacity)</string>
 </resources>

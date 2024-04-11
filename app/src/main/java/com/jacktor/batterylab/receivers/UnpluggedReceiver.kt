@@ -138,6 +138,7 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
                 ServiceHelper.cancelJob(context, Constants.NOTIFY_FULL_CHARGE_REMINDER_JOB_ID)
 
                 BatteryLabService.instance?.isPluggedOrUnplugged = false
+                BatteryLabService.instance?.wakeLockRelease()
             }
         }
     }

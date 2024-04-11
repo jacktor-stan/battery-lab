@@ -1,12 +1,10 @@
 package com.jacktor.batterylab.interfaces.views
 
 
-import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.view.LayoutInflater
 import android.widget.Toast
