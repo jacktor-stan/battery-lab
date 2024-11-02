@@ -169,7 +169,7 @@ class HistoryFragment : Fragment(R.layout.history_fragment), MenuInterface {
                     show()
                 }
 
-                CoroutineScope(Dispatchers.Main).launch(Dispatchers.Main) {
+                CoroutineScope(Dispatchers.Main).launch {
 
                     delay(3.seconds)
                     if (isRemoving) {
