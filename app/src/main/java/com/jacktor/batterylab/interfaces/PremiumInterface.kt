@@ -102,6 +102,7 @@ interface PremiumInterface : PurchasesUpdatedListener {
 
         if (premiumContext == null) premiumContext = BatteryLabService.instance
 
+        @Suppress("DEPRECATION")
         billingClient = BillingClient.newBuilder(premiumContext!!)
             .setListener(purchasesUpdatedListener()).enablePendingPurchases().build()
 

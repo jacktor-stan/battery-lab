@@ -824,292 +824,77 @@ class ChargeDischargeFragment : Fragment(R.layout.charge_discharge_fragment), Se
     }
 
     private fun updateTextAppearance() {
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.fastCharge,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.designCapacity,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.numberOfCharges,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.numberOfFullCharges,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.numberOfCycles,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.numberOfCyclesAndroid,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryTechnology,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
+        with(binding) {
+            val textViewArrayList = arrayListOf(
+                batteryLevel,
+                chargingTime,
+                chargingTimeRemaining,
+                remainingBatteryTime,
+                screenTime,
+                currentCapacityChargeDischarge,
+                capacityAddedChargeDischarge,
+                status,
+                sourceOfPower,
+                chargeCurrent,
+                maxChargeDischargeCurrent,
+                averageChargeDischargeCurrent,
+                minChargeDischargeCurrent,
+                chargingCurrentLimit,
+                temperature,
+                maximumTemperature,
+                averageTemperature,
+                minimumTemperature,
+                voltage,
+                lastChargeTime,
+                fastCharge,
+                designCapacity,
+                numberOfCharges,
+                numberOfFullCharges,
+                numberOfCycles,
+                numberOfCyclesAndroid,
+                batteryTechnology,
+                batteryHealthAndroid,
+                batteryHealth,
+                residualCapacity,
+                batteryLevelTitle,
+                batteryWear,
+                batteryHealthTitle,
+                batteryStatusTitle,
+                pluggedTypeTitle,
+                capacityTitle,
+                temperatureTitle,
+                powerMonitorTitle
+            )
 
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryHealthAndroid,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryHealth,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.residualCapacity,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryWear,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.batteryLevel,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.chargingTime,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.chargingTimeRemaining,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.remainingBatteryTime,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.screenTime,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.currentCapacityChargeDischarge,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.capacityAddedChargeDischarge,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.status,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.sourceOfPower,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.chargeCurrent,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.maxChargeDischargeCurrent,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.averageChargeDischargeCurrent,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.minChargeDischargeCurrent,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.chargingCurrentLimit,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.temperature,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.maximumTemperature,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.averageTemperature,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.minimumTemperature,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            true
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.voltage,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(),
-            binding.lastChargeTime,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryLevelTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryHealthTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.batteryStatusTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.pluggedTypeTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.capacityTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.temperatureTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            requireContext(), binding.powerMonitorTitle,
-            pref.getString(TEXT_STYLE, "0"),
-            pref.getString(TEXT_FONT, "6"),
-            pref.getString(TEXT_SIZE, "2"),
-            false
-        )
+            val subTitleTrueList = setOf(
+                fastCharge,
+                batteryTechnology,
+                batteryHealth,
+                residualCapacity,
+                batteryWear,
+                currentCapacityChargeDischarge,
+                capacityAddedChargeDischarge,
+                chargeCurrent,
+                maxChargeDischargeCurrent,
+                averageChargeDischargeCurrent,
+                minChargeDischargeCurrent,
+                chargingCurrentLimit,
+                maximumTemperature,
+                averageTemperature,
+                minimumTemperature
+            )
+
+            textViewArrayList.forEach { textView ->
+                val isSubTitle = textView in subTitleTrueList
+                TextAppearanceHelper.setTextAppearance(
+                    requireContext(),
+                    textView,
+                    pref.getString(TEXT_STYLE, "0"),
+                    pref.getString(TEXT_FONT, "6"),
+                    pref.getString(TEXT_SIZE, "2"),
+                    subTitle = isSubTitle
+                )
+            }
+        }
     }
 }

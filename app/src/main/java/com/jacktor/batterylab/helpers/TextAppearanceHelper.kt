@@ -12,6 +12,19 @@ import com.jacktor.batterylab.interfaces.PremiumInterface
 object TextAppearanceHelper : PremiumInterface {
 
     fun setTextAppearance(
+        context: Context, textViewArrayList: ArrayList<AppCompatTextView>,
+        textStylePref: String?,
+        textFontPref: String?, textSizePref: String?
+    ) {
+        val isPremium = PremiumInterface.isPremium
+        textViewArrayList.forEach {
+            setTextSize(context, it, textSizePref, false)
+            val fontFamily = setTextFont(it.context, if (isPremium) textFontPref else "6")
+            it.typeface = setTextStyle(it, textStylePref, fontFamily)
+        }
+    }
+
+    fun setTextAppearance(
         context: Context, textView: AppCompatTextView, textStylePref: String?,
         textFontPref: String?, textSizePref: String?, subTitle: Boolean
     ) {
@@ -185,7 +198,7 @@ object TextAppearanceHelper : PremiumInterface {
 
                 3 -> textView.setTextSize(
                     TypedValue.COMPLEX_UNIT_SP,
-                   16F
+                    16F
                 )
 
                 4 -> textView.setTextSize(

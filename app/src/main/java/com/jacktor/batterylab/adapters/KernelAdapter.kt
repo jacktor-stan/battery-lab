@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.materialswitch.MaterialSwitch
@@ -16,101 +17,72 @@ import com.jacktor.batterylab.utilities.PreferencesKeys
 import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.batterylab.views.KernelModel
 
-
 class KernelAdapter(
-    data: ArrayList<KernelModel>,
-    context: Context,
-    private var recyclerKernelClickListener: RecyclerKernelClickListener,
-    private var recyclerKernelCheckedChangeListener: RecyclerKernelCheckedChangeListener
-) :
-    RecyclerView.Adapter<KernelAdapter.ViewHolder>() {
-    private var dataList: ArrayList<KernelModel> = ArrayList()
-    private val context: Context
-
-    init {
-        dataList = data
-        this.context = context
-    }
+    private val dataList: ArrayList<KernelModel>,
+    private val context: Context,
+    private val recyclerKernelClickListener: RecyclerKernelClickListener,
+    private val recyclerKernelCheckedChangeListener: RecyclerKernelCheckedChangeListener
+) : RecyclerView.Adapter<KernelAdapter.ViewHolder>() {
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var textViewKernelName: TextView
-        var textViewAvailable: TextView
-        var textViewStored: TextView
-        var textViewStatus: TextView
-        var cardView: MaterialCardView
-        var enableScript: MaterialSwitch
-
-        init {
-            textViewKernelName = itemView.findViewById(R.id.value)
-            textViewStored = itemView.findViewById(R.id.stored_value)
-            textViewStatus = itemView.findViewById(R.id.kernel_status)
-            textViewAvailable = itemView.findViewById(R.id.available)
-            cardView = itemView.findViewById(R.id.cardView)
-            enableScript = itemView.findViewById(R.id.enable_script)
-        }
+        val textViewKernelName: TextView = itemView.findViewById(R.id.value)
+        val textViewAvailable: TextView = itemView.findViewById(R.id.available)
+        val textViewStored: TextView = itemView.findViewById(R.id.stored_value)
+        val textViewStatus: TextView = itemView.findViewById(R.id.kernel_status)
+        val cardView: MaterialCardView = itemView.findViewById(R.id.cardView)
+        val enableScript: MaterialSwitch = itemView.findViewById(R.id.enable_script)
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): ViewHolder {
-        val view: View = LayoutInflater.from(parent.context)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.card_view_design_kernel, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val currentKernel = dataList[position]
         val pref = Prefs(context)
 
-        TextAppearanceHelper.setTextAppearance(
-            context, holder.cardView.findViewById(R.id.value),
-            pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
-            pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            context, holder.cardView.findViewById(R.id.stored_value),
-            pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
-            pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            context, holder.cardView.findViewById(R.id.kernel_status),
-            pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
-            pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
-            false
-        )
-        TextAppearanceHelper.setTextAppearance(
-            context, holder.cardView.findViewById(R.id.available),
-            pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
-            pref.getString(PreferencesKeys.TEXT_FONT, "6"),
-            pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
-            false
-        )
-
-        holder.textViewKernelName.text = dataList[position].list
-        holder.textViewStored.text = dataList[position].stored
-        holder.textViewStatus.text = dataList[position].kernelStatus
-        holder.textViewAvailable.text = dataList[position].available
-        holder.cardView.cardElevation = dataList[position].cardElevation
-        holder.enableScript.isChecked = dataList[position].isChecked
-
-        holder.itemView.setOnClickListener {
-            recyclerKernelClickListener.onItemClick(dataList[position], position)
-        }
-
-        holder.enableScript.setOnClickListener {
-            recyclerKernelCheckedChangeListener.onItemChecked(
-                holder.enableScript.isChecked,
-                dataList[position], position
+        // Helper untuk mengatur tampilan teks
+        fun setUpTextAppearance(view: TextView) {
+            TextAppearanceHelper.setTextAppearance(
+                context,
+                view as AppCompatTextView,
+                pref.getString(PreferencesKeys.TEXT_STYLE, "0"),
+                pref.getString(PreferencesKeys.TEXT_FONT, "6"),
+                pref.getString(PreferencesKeys.TEXT_SIZE, "2"),
+                false
             )
         }
+
+        with(holder) {
+            // Atur tampilan teks
+            setUpTextAppearance(textViewKernelName)
+            setUpTextAppearance(textViewStored)
+            setUpTextAppearance(textViewStatus)
+            setUpTextAppearance(textViewAvailable)
+
+            // Atur nilai dari data
+            textViewKernelName.text = currentKernel.list
+            textViewStored.text = currentKernel.stored
+            textViewStatus.text = currentKernel.kernelStatus
+            textViewAvailable.text = currentKernel.available
+            cardView.cardElevation = currentKernel.cardElevation
+            enableScript.isChecked = currentKernel.isChecked
+
+            // Event listener
+            itemView.setOnClickListener {
+                recyclerKernelClickListener.onItemClick(currentKernel, position)
+            }
+            enableScript.setOnClickListener {
+                recyclerKernelCheckedChangeListener.onItemChecked(
+                    enableScript.isChecked,
+                    currentKernel,
+                    position
+                )
+            }
+        }
     }
 
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount(): Int = dataList.size
 }

@@ -17,8 +17,8 @@ import com.jacktor.batterylab.interfaces.RecyclerKernelCheckedChangeListener
 import com.jacktor.batterylab.interfaces.RecyclerKernelClickListener
 import com.jacktor.batterylab.interfaces.views.MenuInterface
 import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.RootUtils
 import com.jacktor.batterylab.views.KernelModel
-import com.jacktor.rootchecker.RootChecker
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,12 +37,18 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), MenuInterface, Kernel
     private var data = ArrayList<KernelModel>()
     private var adapter: KernelAdapter? = null
     private var pref: Prefs? = null
-    private var rootChecker: RootChecker? = null
 
     companion object {
         var instance: KernelFragment? = null
     }
 
+    private fun isRootAccessAvailable(): Boolean {
+        return RootUtils.hasRootAccess(requireContext())
+    }
+
+    private fun requestRootAccess(): Boolean {
+        return RootUtils.reqRootAccess()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -59,9 +65,8 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), MenuInterface, Kernel
         super.onViewCreated(view, savedInstanceState)
 
         pref = Prefs(requireContext())
-        rootChecker = RootChecker(requireContext())
 
-        if (rootChecker!!.isRooted && Shell.cmd("su").exec().isSuccess) {
+        if (isRootAccessAvailable() && requestRootAccess()) {
             shellDialog(
                 requireContext(), getString(R.string.experiment),
                 "root:~# ls -p /sys/class/power_supply/battery | grep -v /\n\n"
@@ -126,7 +131,7 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), MenuInterface, Kernel
         var output: ArrayList<String>
 
         //Periksa akses root
-        if (rootChecker!!.isRooted && Shell.cmd("su").exec().isSuccess) {
+        if (isRootAccessAvailable() && requestRootAccess()) {
 
             //Ambil list kernel
             binding.refreshKernel.visibility = View.VISIBLE
@@ -176,8 +181,8 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), MenuInterface, Kernel
 
             binding.refreshNoroot.isRefreshing = false
 
-            if (rootChecker!!.isRooted) {
-                if (!Shell.cmd("su").exec().isSuccess) {
+            if (isRootAccessAvailable()) {
+                if (requestRootAccess()) {
                     binding.rootMsg.text = requireContext().getString(R.string.root_access_info_1)
                 }
             } else {
