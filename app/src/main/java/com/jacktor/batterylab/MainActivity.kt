@@ -37,7 +37,7 @@ import com.jacktor.batterylab.fragments.ChargeDischargeFragment
 import com.jacktor.batterylab.fragments.DebugFragment
 import com.jacktor.batterylab.fragments.FeedbackFragment
 import com.jacktor.batterylab.fragments.HistoryFragment
-import com.jacktor.batterylab.fragments.KernelFragment
+import com.jacktor.batterylab.fragments.ToolsFragment
 import com.jacktor.batterylab.fragments.OverlayFragment
 import com.jacktor.batterylab.fragments.PowerConnectionSettingsFragment
 import com.jacktor.batterylab.fragments.SettingsFragment
@@ -191,7 +191,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                 isLoadKernel || (pref!!.getString(TAB_ON_APPLICATION_LAUNCH, "0") == "2" &&
                         prefArrays == null && !isLoadChargeDischarge && !isLoadHistory &&
                         !isLoadSettings && !isLoadDebug) ->
-                    KernelFragment()
+                    ToolsFragment()
 
                 !isLoadChargeDischarge && !isLoadKernel &&
                         !isLoadHistory && !isLoadSettings && !isLoadDebug && prefArrays != null ->
@@ -213,7 +213,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                 else R.string.discharge
             )
 
-            is KernelFragment -> getString(R.string.experiment)
+            is ToolsFragment -> getString(R.string.tools)
             is HistoryFragment -> getString(R.string.history)
             is SettingsFragment -> getString(R.string.settings)
             is DebugFragment -> getString(R.string.debug)
@@ -222,7 +222,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
 
         topAppBar.navigationIcon = null
 
-        if (fragment !is SettingsFragment) inflateMenu()
+        if (fragment !is SettingsFragment) inflateMenu(-1)
 
         topAppBar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
@@ -302,7 +302,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
             )
 
             is HistoryFragment -> getString(R.string.history)
-            is KernelFragment -> getString(R.string.experiment)
+            is ToolsFragment -> getString(R.string.tools)
             is SettingsFragment -> getString(R.string.settings)
             is BatteryStatusInformationFragment -> getString(R.string.battery_status_information)
             is PowerConnectionSettingsFragment -> getString(R.string.power_connection)
@@ -541,7 +541,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
         if (isOnBackPressed) {
             if (topAppBar.title != getString(R.string.settings) && !isRestoreImportSettings && ((fragment != null
                         && fragment !is SettingsFragment && fragment !is ChargeDischargeFragment
-                        && fragment !is KernelFragment && fragment !is HistoryFragment &&
+                        && fragment !is ToolsFragment && fragment !is HistoryFragment &&
                         fragment !is DebugFragment && fragment !is BackupSettingsFragment) || ((
                         fragment is BackupSettingsFragment || fragment is DebugFragment) &&
                         supportFragmentManager.backStackEntryCount > 0))

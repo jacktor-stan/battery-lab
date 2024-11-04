@@ -462,4 +462,6 @@
     <string name="github_battery_capacity" translatable="false">Github (Battery Capacity)</string>
     <string name="ignoring_battery_optimizations_dialog_message">For the app to work properly, you must allow the app to run in the background</string>
     <string name="text_size">Text Size</string>
+    <string name="calibration">Calibration</string>
+    <string name="tools">Tools</string>
 </resources>

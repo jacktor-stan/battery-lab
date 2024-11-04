@@ -408,4 +408,6 @@
     <string name="become_a_beta_tester_summary">Jadilah yang pertama menerima pembaruan</string>
     <string name="ignoring_battery_optimizations_dialog_message">Agar aplikasi berfungsi dengan baik, Anda harus mengizinkan aplikasi berjalan di latar belakang</string>
     <string name="text_size">Ukuran Teks</string>
+    <string name="calibration">Kalibrasi</string>
+    <string name="tools">Tools</string>
 </resources>

@@ -15,7 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ChangeKernelValueDialogBinding
 import com.jacktor.batterylab.databinding.ShellDialogBinding
-import com.jacktor.batterylab.fragments.KernelFragment
+import com.jacktor.batterylab.fragments.tab.KernelFragment
 import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
 import com.jacktor.batterylab.utilities.Prefs
 import com.topjohnwu.superuser.Shell

@@ -15,8 +15,8 @@
         app:showAsAction="ifRoom"/>
 
     <item
-        android:id="@+id/kernel_navigation"
-        android:title="@string/experiment"
+        android:id="@+id/tools_navigation"
+        android:title="@string/tools"
         android:icon="@drawable/ic_settings_kernel_24"
         app:showAsAction="always"/>
 

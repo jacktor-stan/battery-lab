@@ -1,4 +1,4 @@
-package com.jacktor.batterylab.fragments
+package com.jacktor.batterylab.fragments.tab
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -15,7 +15,6 @@ import com.jacktor.batterylab.databinding.KernelFragmentBinding
 import com.jacktor.batterylab.interfaces.KernelInterface
 import com.jacktor.batterylab.interfaces.RecyclerKernelCheckedChangeListener
 import com.jacktor.batterylab.interfaces.RecyclerKernelClickListener
-import com.jacktor.batterylab.interfaces.views.MenuInterface
 import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.batterylab.utilities.RootUtils
 import com.jacktor.batterylab.views.KernelModel
@@ -27,7 +26,7 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
 
-class KernelFragment : Fragment(R.layout.kernel_fragment), MenuInterface, KernelInterface,
+class KernelFragment : Fragment(R.layout.kernel_fragment), KernelInterface,
     RecyclerKernelClickListener, RecyclerKernelCheckedChangeListener {
 
     private lateinit var binding: KernelFragmentBinding
