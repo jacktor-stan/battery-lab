@@ -38,6 +38,7 @@ class ToolsFragment : Fragment(R.layout.tools_fragment), MenuInterface {
         // Setup ViewPager2 dan TabLayout
         val viewPagerAdapter = ViewPagerAdapter(requireActivity())
         binding.viewPager.adapter = viewPagerAdapter
+        binding.viewPager.isUserInputEnabled = false
 
         // Hubungkan TabLayout dengan ViewPager2
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
