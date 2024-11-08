@@ -18,7 +18,7 @@ import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.batterylab.views.KernelModel
 
 class KernelAdapter(
-    private val dataList: ArrayList<KernelModel>,
+    private val dataList: MutableList<KernelModel>,
     private val context: Context,
     private val recyclerKernelClickListener: RecyclerKernelClickListener,
     private val recyclerKernelCheckedChangeListener: RecyclerKernelCheckedChangeListener

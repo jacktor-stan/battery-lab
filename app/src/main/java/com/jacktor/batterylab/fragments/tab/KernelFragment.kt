@@ -21,181 +21,104 @@ import com.jacktor.batterylab.views.KernelModel
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.seconds
-
+import kotlinx.coroutines.withContext
 
 class KernelFragment : Fragment(R.layout.kernel_fragment), KernelInterface,
     RecyclerKernelClickListener, RecyclerKernelCheckedChangeListener {
 
     private lateinit var binding: KernelFragmentBinding
-
-    //private var job: Job? = null
-    //private var isJob = false
-    private var data = ArrayList<KernelModel>()
+    private val data = mutableListOf<KernelModel>()
     private var adapter: KernelAdapter? = null
     private var pref: Prefs? = null
+    private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     companion object {
         var instance: KernelFragment? = null
-    }
-
-    private fun isRootAccessAvailable(): Boolean {
-        return RootUtils.hasRootAccess(requireContext())
-    }
-
-    private fun requestRootAccess(): Boolean {
-        return RootUtils.reqRootAccess()
+            private set
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         binding = KernelFragmentBinding.inflate(inflater, container, false)
-
-        return binding.root.rootView
+        return binding.root
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
-
+        instance = this
         pref = Prefs(requireContext())
+
+        setupRecyclerView()
+        setupRefreshListeners()
 
         if (isRootAccessAvailable() && requestRootAccess()) {
             shellDialog(
-                requireContext(), getString(R.string.experiment),
+                requireContext(),
+                getString(R.string.experiment),
                 "root:~# ls -p /sys/class/power_supply/battery | grep -v /\n\n"
                         + getString(R.string.get_kernel_information)
             )
+
             Handler(Looper.getMainLooper()).postDelayed(
                 {
-                    kernelInformation()
+                    coroutineScope.launch {
+                        kernelInformation()
+                    }
 
                 }, 1000
             )
+        } else {
+            displayNoRootAccessUI()
+        }
+    }
 
-            adapter = KernelAdapter(
-                data,
-                requireContext(),
-                this as RecyclerKernelClickListener,
-                this as RecyclerKernelCheckedChangeListener
-            )
+    private fun setupRecyclerView() {
+        adapter = KernelAdapter(data, requireContext(), this, this)
+        binding.recyclerview.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(context)
+            adapter = this@KernelFragment.adapter
+        }
+    }
 
-            binding.recyclerview.setHasFixedSize(true)
-            binding.recyclerview.layoutManager = LinearLayoutManager(
-                requireContext(), LinearLayoutManager.VERTICAL, false
-            )
-            binding.recyclerview.adapter = adapter
-        } else kernelInformation()
-
-
+    private fun setupRefreshListeners() {
         binding.refreshKernel.setOnRefreshListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(2.seconds)
+            coroutineScope.launch {
                 kernelInformation()
+                binding.refreshKernel.isRefreshing = false
             }
         }
 
         binding.refreshNoroot.setOnRefreshListener {
-            CoroutineScope(Dispatchers.Main).launch {
-                delay(1.seconds)
+            coroutineScope.launch {
                 kernelInformation()
+                binding.refreshNoroot.isRefreshing = false
             }
         }
     }
 
-
-    /*private fun kernelInformationJob() {
-
-        if (pref?.getBoolean("realtime_kernel", resources.getBoolean(R.bool.realtime_kernel))!!) {
-            if (job == null) job = CoroutineScope(Dispatchers.Default).launch {
-                while (isJob) {
-
-                    withContext(Dispatchers.Main) {
-
-                        kernelInformation()
-                        delay(1500L)
-                    }
-                }
-            }
-        }
-    }*/
+    private fun displayNoRootAccessUI() {
+        binding.refreshKernel.visibility = View.GONE
+        binding.refreshNoroot.visibility = View.VISIBLE
+    }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun kernelInformation() {
-        var output: ArrayList<String>
+    suspend fun kernelInformation() {
+        val hasRoot = isRootAccessAvailable() && requestRootAccess()
 
-        //Periksa akses root
-        if (isRootAccessAvailable() && requestRootAccess()) {
-
-            //Ambil list kernel
+        if (hasRoot) {
             binding.refreshKernel.visibility = View.VISIBLE
             binding.refreshNoroot.visibility = View.GONE
 
-            binding.refreshKernel.isRefreshing = false
-
-            output = ArrayList()
-            val result = Shell.cmd("ls -p /sys/class/power_supply/battery | grep -v /").exec()
-            if (result.out.size != 0) {
-                output = result.out as ArrayList<String>
+            val output = withContext(Dispatchers.IO) {
+                Shell.cmd("ls -p /sys/class/power_supply/battery | grep -v /").exec().out
             }
 
-            val arrayList: ArrayList<String> = output
-            data.clear()
-            for (i in arrayList.indices) {
-                data.add(
-                    KernelModel(
-                        arrayList[i] + ": " + getKernelData(arrayList[i]),
-                        getString(
-                            R.string.stored_value,
-                            getKernelValueFromFile(requireContext(), arrayList[i])
-                                ?: getString(R.string.none)
-                        ),
-                        getString(
-                            R.string.kernel_status, if (getKernelValueFromFile(
-                                    requireContext(), arrayList[i]
-                                ) != null
-                            ) getString(R.string.enabled) else getString(R.string.disabled)
-                        ),
-                        getString(
-                            R.string.kernel_available,
-                            if (getKernelData(arrayList[i]) != "-") getString(R.string.yes) else getString(
-                                R.string.no
-                            )
-                        ),
-                        if (getKernelData(arrayList[i]) != "-") 0f else 5f,
-                        getKernelValueFromFile(requireContext(), arrayList[i]) != null
-                    )
-                )
-            }
-
-            adapter?.notifyDataSetChanged()
-        } else {
-            binding.refreshKernel.visibility = View.GONE
-            binding.refreshNoroot.visibility = View.VISIBLE
-
-            binding.refreshNoroot.isRefreshing = false
-
-            if (isRootAccessAvailable()) {
-                if (requestRootAccess()) {
-                    binding.rootMsg.text = requireContext().getString(R.string.root_access_info_1)
-                }
-            } else {
-                binding.rootMsg.text = requireContext().getString(R.string.root_access_info_0)
-            }
-        }
-    }
-
-
-    fun updateKernelInformation(position: Int, filename: String) {
-
-        Handler(Looper.getMainLooper()).postDelayed(
-            {
-                data[position] = KernelModel(
+            val updatedData = output.map { filename ->
+                KernelModel(
                     "$filename: ${getKernelData(filename)}",
                     getString(
                         R.string.stored_value,
@@ -217,57 +140,67 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), KernelInterface,
                     if (getKernelData(filename) != "-") 0f else 5f,
                     getKernelValueFromFile(requireContext(), filename) != null
                 )
+            }
 
-                adapter?.notifyItemChanged(position)
-            }, 500
-        )
+            // Update hanya jika ada perubahan
+            if (data != updatedData) {
+                data.clear()
+                data.addAll(updatedData)
+                adapter?.notifyDataSetChanged()
+            }
+        } else {
+            displayNoRootAccessUI()
+        }
     }
 
+    fun updateKernelInformation(position: Int, filename: String) {
+        coroutineScope.launch {
+            val updatedModel = KernelModel(
+                "$filename: ${getKernelData(filename)}",
+                getString(
+                    R.string.stored_value,
+                    getKernelValueFromFile(requireContext(), filename)
+                        ?: getString(R.string.none)
+                ),
+                getString(
+                    R.string.kernel_status, if (getKernelValueFromFile(
+                            requireContext(), filename
+                        ) != null
+                    ) getString(R.string.enabled) else getString(R.string.disabled)
+                ),
+                getString(
+                    R.string.kernel_available,
+                    if (getKernelData(filename) != "-") getString(R.string.yes) else getString(
+                        R.string.no
+                    )
+                ),
+                if (getKernelData(filename) != "-") 0f else 5f,
+                getKernelValueFromFile(requireContext(), filename) != null
+            )
+            data[position] = updatedModel
+            adapter?.notifyItemChanged(position)
+        }
+    }
 
     override fun onItemClick(data: KernelModel, position: Int) {
         val filename = data.list.substringBefore(": ")
         val kernelValue = data.list.substringAfter(": ")
-
         changeKernelValue(kernelValue, filename, position, requireContext())
     }
 
-
     override fun onItemChecked(isChecked: Boolean, data: KernelModel, position: Int) {
         val filename = data.list.substringBefore(": ")
-
         if (!isChecked) deleteKernelCmd(requireContext(), filename)
-
         updateKernelInformation(position, filename)
     }
 
-
-    override fun onResume() {
-
-        super.onResume()
-
-        if (instance == null) instance = this
-
-        //isJob = true
-        //kernelInformationJob()
-    }
-
-
-    /*override fun onStop() {
-
-        super.onStop()
-
-        isJob = false
-        job?.cancel()
-        job = null
-    }*/
-
     override fun onDestroy() {
-
+        coroutineScope.cancel()
         instance = null
-        //isJob = false
-        //job?.cancel()
-        //job = null
-
         super.onDestroy()
     }
+
+    private fun isRootAccessAvailable() = RootUtils.hasRootAccess(requireContext())
+    private fun requestRootAccess() = RootUtils.reqRootAccess()
+
 }

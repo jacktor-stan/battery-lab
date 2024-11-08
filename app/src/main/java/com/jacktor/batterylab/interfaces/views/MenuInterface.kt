@@ -27,6 +27,9 @@ import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
 import com.jacktor.batterylab.utilities.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
 import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.rootchecker.RootChecker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 interface MenuInterface {
@@ -125,7 +128,7 @@ interface MenuInterface {
                                     binding.enableScript.isEnabled = false
                                 }
 
-                                //Reset script button
+                                // Reset script button
                                 binding.resetScript.setOnClickListener {
                                     MaterialAlertDialogBuilder(this@inflateMenu).apply {
                                         setIcon(
@@ -140,12 +143,18 @@ interface MenuInterface {
                                         setNegativeButton(R.string.yes_continue) { dialogBtn, _ ->
                                             resetScript(this@inflateMenu)
                                             binding.script.setText(getKernelFromFile(this@inflateMenu))
-                                            KernelFragment.instance?.kernelInformation()
+
+                                            // Pastikan kernelInformation dijalankan dalam coroutine
+                                            CoroutineScope(Dispatchers.Main).launch {
+                                                KernelFragment.instance?.kernelInformation()
+                                            }
+
                                             dialogBtn.cancel()
                                         }
                                         show()
                                     }
                                 }
+
 
                                 //Switch autostart script
                                 binding.enableScript.isChecked = Prefs(this@inflateMenu).getBoolean(
