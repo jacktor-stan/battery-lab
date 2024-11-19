@@ -18,11 +18,10 @@ Battery Lab is a development of:
 
 ---
 
----
 ## Features
 * ✅ Successfully
 * ❎ Failed implementation
-* [ ] WIP or Planning implementation
+* ➡️ WIP or Planning implementation
 
 | Feature                                 | Status |
 |-----------------------------------------|--------|
@@ -30,11 +29,11 @@ Battery Lab is a development of:
 | Power Connection Settings               | ✅     |
 | BNotifier Integration                   | ✅     |
 | Capacity Info Integration               | ✅     |
-| Calibration Method Include              | ❎     |
+| Battery Calibration                     | ➡️     |
 | Charge/Discharge Monitoring             | ✅     |
 | Battery History                         | ✅     |
-| Kernel Experiment                       | ❎     |
-| Power Connection                        | ❎     |
+| Kernel Experiment                       | ✅     |
+| Power Connection                        | ✅     |
 | Backup and Restore Settings             | ✅     |
 | Debug Mode                              | ✅     |
 | Overlay Service                         | ✅     |
