@@ -16,6 +16,30 @@ Battery Lab is a development of:
 - <a href="https://github.com/jacktor-stan/BNotifier">BNotifier</a>
 - <a href="https://github.com/Ph03niX-X/CapacityInfo">Capacity Info</a>
 
+## Features
+* ✅ Succesfully
+* ❎ Failled
+* [ ] WIP or planning
+| Feature                                 | Status |
+|-----------------------------------------|--------|
+| Battery Status Information              | ✅     |
+| Power Connection Settings               | ✅     |
+| BNotifier Integration                   | ✅     |
+| Capacity Info Integration               | ✅     |
+| Calibration Method Include              | ✅     |
+| Charge/Discharge Monitoring             | ✅     |
+| Battery History                         | ✅     |
+| Kernel Experiment                       | ❌     |
+| Power Connection                        | ❌     |
+| Backup and Restore Settings             | ✅     |
+| Debug Mode                              | ✅     |
+| Overlay Service                         | ✅     |
+| Notification for Battery Optimizations  | ✅     |
+| Firebase Analytics Integration          | ✅     |
+| Theme Selection                         | ✅     |
+| Auto Start on App Open                  | ✅     |
+| Update Checker                          | ✅     |
+
 ---
 
 ---
