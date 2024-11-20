@@ -7,6 +7,14 @@
 <img src="https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png"
 alt="Get it on Google Play" width="323" height="125" border="10"/></a></p>
 
+## Introduction
+  A Battery Notification Application
+
+## Screenshots
+<img src=""/>
+
+## Available
+  
 ---
 <p align="center">
 <b>About:</b>
@@ -23,29 +31,31 @@ Battery Lab is a development of:
 * ❎ Failed implementation
 * ➡️ WIP or Planning implementation
 
-| Feature                                 | Status |
-|-----------------------------------------|--------|
-| Battery Status Information              | ✅     |
-| Power Connection Settings               | ✅     |
-| BNotifier Integration                   | ✅     |
-| Capacity Info Integration               | ✅     |
-| Battery Calibration                     | ➡️     |
-| Charge/Discharge Monitoring             | ✅     |
-| Battery History                         | ✅     |
-| Kernel Experiment                       | ✅     |
-| Power Connection                        | ✅     |
-| Backup and Restore Settings             | ✅     |
-| Debug Mode                              | ✅     |
-| Overlay Service                         | ✅     |
-| Notification for Battery Optimizations  | ✅     |
-| Firebase Analytics Integration          | ✅     |
-| Theme Selection                         | ✅     |
-| Auto Start on App Open                  | ✅     |
-| Update Checker                          | ✅     |
-| Root Checker 																											| ✅ 				|
-| Tweaks battery stats 																			| ✅ 				|
-| Manipulation level battery 													| ✅ 				|
+| Status | Feature                                 | 
+|--------|-----------------------------------------|
+|   ✅   | Battery Status Information              |
+|   ✅   | Power Connection Settings               |
+|   ✅   | BNotifier Integration                   |
+|   ✅   | Capacity Info Integration               |
+|   ➡️   | Battery Calibration                     |
+|   ✅   | Charge/Discharge Monitoring             |
+|   ✅   | Battery History                         |
+|   ✅   | Kernel Experiment                       |
+|   ✅   | Power Connection                        |
+|   ✅   | Backup and Restore Settings             |
+|   ✅   | Debug Mode                              |
+|   ✅   | Overlay Service                         |
+|   ✅   | Notification for Battery Optimizations  |
+|   ✅   | Firebase Analytics Integration          |
+|   ✅   | Theme Selection                         |
+|   ✅   | Auto Start on App Open                  |
+|   ✅   | Update Checker                          |
+|   ✅   | Root Checker 																											|
+|   ✅   | Tweaks battery stats 																			|
+|   ✅   | Manipulation level battery 													|
 ---
+
+## Information
 
 Battery Lab rarely updates because we are busy IRL.
 
