@@ -2,13 +2,17 @@
 ## Introduction
 
    A Battery Monitoring Application for Android device
+
 ---
 ## Screenshots
+
 <div style="center" style="display:flex;">
  
 </div>
+
 ---
 ## Information
+
 <p align="center">
 <b>About:</b>
 </p>
@@ -20,8 +24,8 @@ Battery Lab is a Fork of:
 For the project as a whole, it's not free. You are <b>FORBIDDEN</b> from distributing your compiled apk <b>without permission</b> (including those that have been modified, for example changing the name of the "Battery Lab" application to something else) to any store (Google Play Store, F-Droid, Amazon Appstore, etc.).
 
 ---
-
 ## Implementation of features
+
 <div align="center">
 
 | Status | Feature                                  |
@@ -43,15 +47,16 @@ For the project as a whole, it's not free. You are <b>FORBIDDEN</b> from distrib
 |   ✅   | Theme Selection                          |
 |   ✅   | Auto Start on App Open                   |
 |   ✅   | Update Checker                           |
-|   ✅   | Root Checker 																											 |
-|   ✅   | Tweaks battery stats 																			 |
-|   ✅   | Manipulation level battery 													 |
+|   ✅   | Root Checker 									 |
+|   ✅   | Tweaks battery stats 							 |
+|   ✅   | Manipulation level battery 					 |
 
-* ✅ Successfully Implemented * ❎ Failed To Implement * ➡️ Currently Implementing * 💡 Planning Implementation *
+ ✅ Successfully Implemented * ❎ Failed To Implement * ➡️ Currently Implementing * 💡 Planning Implementation 
 </div>
 
 ---
 ## Available
+
 <p align="center">
  <b>Download from Google Play:</b>
 </p>
@@ -62,6 +67,7 @@ For the project as a whole, it's not free. You are <b>FORBIDDEN</b> from distrib
 
 ---
 ## Contacts
+
 Battery Lab rarely updates because we are busy IRL.
 Currently the kernel/experiment feature is still in beta and may not work on some devices.
 Please contact us by email at support@jacktor.com if you have any questions.
