@@ -775,7 +775,7 @@ class BatteryStatusInformationFragment : PreferenceFragmentCompat() {
             R.raw.charging_current
         )
 
-        CoroutineScope(Dispatchers.Default).launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
 
             try {
 

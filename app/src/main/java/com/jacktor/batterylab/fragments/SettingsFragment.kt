@@ -52,7 +52,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.seconds
 
 class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOptionsInterface,
@@ -169,13 +168,9 @@ class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOpt
                     Toast.makeText(requireContext(), e.toString(), Toast.LENGTH_LONG).show()
                 }
 
-                CoroutineScope(Dispatchers.Default).launch {
-
-                    withContext(Dispatchers.Main) {
-
-                        delay(3.5.seconds)
-                        isShowExtendedNotification?.isEnabled = (value as? Boolean) == true
-                    }
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(3.5.seconds)
+                    isShowExtendedNotification?.isEnabled = (value as? Boolean) == true
                 }
 
                 true

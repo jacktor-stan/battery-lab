@@ -16,7 +16,8 @@ import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ShowScriptDialogBinding
 import com.jacktor.batterylab.fragments.ChargeDischargeFragment
 import com.jacktor.batterylab.fragments.HistoryFragment
-import com.jacktor.batterylab.fragments.KernelFragment
+import com.jacktor.batterylab.fragments.ToolsFragment
+import com.jacktor.batterylab.fragments.tab.KernelFragment
 import com.jacktor.batterylab.helpers.HistoryHelper
 import com.jacktor.batterylab.interfaces.KernelInterface.Companion.executeShellFile
 import com.jacktor.batterylab.interfaces.KernelInterface.Companion.getKernelFromFile
@@ -25,12 +26,15 @@ import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
 import com.jacktor.batterylab.utilities.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
 import com.jacktor.batterylab.utilities.Prefs
-import com.jacktor.rootchecker.RootChecker
+import com.jacktor.batterylab.utilities.RootChecker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 interface MenuInterface {
 
-    fun MainActivity.inflateMenu() {
+    fun MainActivity.inflateMenu(position: Int) {
 
         when (fragment) {
             is HistoryFragment -> {
@@ -63,158 +67,169 @@ interface MenuInterface {
                 }
             }
 
-            is KernelFragment -> {
+            is ToolsFragment -> {
+                when (position) {
+                    0 -> {
+                        clearMenu()
+                        defaultMenu()
+                    }
 
-                topAppBar.inflateMenu(R.menu.kernel_menu)
+                    1 -> {
+                        clearMenu()
+                        topAppBar.inflateMenu(R.menu.kernel_menu)
 
-                topAppBar.menu.findItem(R.id.show_command).apply {
-                    setOnMenuItemClickListener {
-                        val binding = ShowScriptDialogBinding.inflate(
-                            LayoutInflater.from(this@inflateMenu), null, false
-                        )
-
-                        val dialog = MaterialAlertDialogBuilder(this@inflateMenu)
-                        val clipboard =
-                            this@inflateMenu.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
-
-                        binding.script.setText(getKernelFromFile(this@inflateMenu))
-                        binding.resetScript.text =
-                            this@inflateMenu.getString(R.string.reset_script).uppercase()
-
-                        //Dialog
-                        dialog.setView(binding.root.rootView)
-                        dialog.apply {
-                            setIcon(
-                                AppCompatResources.getDrawable(
-                                    this@inflateMenu, R.drawable.ic_script_24dp
+                        topAppBar.menu.findItem(R.id.show_command).apply {
+                            setOnMenuItemClickListener {
+                                val binding = ShowScriptDialogBinding.inflate(
+                                    LayoutInflater.from(this@inflateMenu), null, false
                                 )
-                            )
-                            setTitle(getString(R.string.bash_script).uppercase())
-                            setCancelable(false)
-                            setNegativeButton(getString(R.string.copy_txt).uppercase()) { dialogBtn, _ ->
-                                clipboard!!.setPrimaryClip(
-                                    ClipData.newPlainText(
-                                        SCRIPT_FILE_NAME, binding.script.text
+
+                                val dialog = MaterialAlertDialogBuilder(this@inflateMenu)
+                                val clipboard =
+                                    this@inflateMenu.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager?
+
+                                binding.script.setText(getKernelFromFile(this@inflateMenu))
+                                binding.resetScript.text =
+                                    this@inflateMenu.getString(R.string.reset_script).uppercase()
+
+                                //Dialog
+                                dialog.setView(binding.root.rootView)
+                                dialog.apply {
+                                    setIcon(
+                                        AppCompatResources.getDrawable(
+                                            this@inflateMenu, R.drawable.ic_script_24dp
+                                        )
                                     )
-                                )
-                                dialogBtn.cancel()
-                            }
-                            setPositiveButton(getString(R.string.close).uppercase()) { dialogBtn, _ ->
-                                dialogBtn.cancel()
-                            }
-                            setNeutralButton(getString(R.string.execute).uppercase()) { dialogBtn, _ ->
-                                if (RootChecker(this@inflateMenu).isRooted) executeShellFile(this@inflateMenu)
-                                dialogBtn.cancel()
-                            }
-                            show()
-                        }
-
-                        //Check root
-                        if (!RootChecker(this@inflateMenu).isRooted) {
-                            binding.resetScript.isEnabled = false
-                            binding.enableScript.isEnabled = false
-                        }
-
-                        //Reset script button
-                        binding.resetScript.setOnClickListener {
-                            MaterialAlertDialogBuilder(this@inflateMenu).apply {
-                                setIcon(
-                                    AppCompatResources.getDrawable(
-                                        this@inflateMenu, R.drawable.ic_reset_all_settings_24dp
-                                    )
-                                )
-                                setTitle(getString(R.string.reset_script))
-                                setMessage(getString(R.string.reset_script_dialog))
-                                setPositiveButton(R.string.cancel) { d, _ -> d.dismiss() }
-                                setNegativeButton(R.string.yes_continue) { dialogBtn, _ ->
-                                    resetScript(this@inflateMenu)
-                                    binding.script.setText(getKernelFromFile(this@inflateMenu))
-                                    KernelFragment.instance?.kernelInformation()
-                                    dialogBtn.cancel()
+                                    setTitle(getString(R.string.bash_script).uppercase())
+                                    setCancelable(false)
+                                    setNegativeButton(getString(R.string.copy_txt).uppercase()) { dialogBtn, _ ->
+                                        clipboard!!.setPrimaryClip(
+                                            ClipData.newPlainText(
+                                                SCRIPT_FILE_NAME, binding.script.text
+                                            )
+                                        )
+                                        dialogBtn.cancel()
+                                    }
+                                    setPositiveButton(getString(R.string.close).uppercase()) { dialogBtn, _ ->
+                                        dialogBtn.cancel()
+                                    }
+                                    setNeutralButton(getString(R.string.execute).uppercase()) { dialogBtn, _ ->
+                                        if (RootChecker().isDeviceRooted()) executeShellFile(
+                                            this@inflateMenu
+                                        )
+                                        dialogBtn.cancel()
+                                    }
+                                    show()
                                 }
-                                show()
+
+                                //Check root
+                                if (!RootChecker().isDeviceRooted()) {
+                                    binding.resetScript.isEnabled = false
+                                    binding.enableScript.isEnabled = false
+                                }
+
+                                // Reset script button
+                                binding.resetScript.setOnClickListener {
+                                    MaterialAlertDialogBuilder(this@inflateMenu).apply {
+                                        setIcon(
+                                            AppCompatResources.getDrawable(
+                                                this@inflateMenu,
+                                                R.drawable.ic_reset_all_settings_24dp
+                                            )
+                                        )
+                                        setTitle(getString(R.string.reset_script))
+                                        setMessage(getString(R.string.reset_script_dialog))
+                                        setPositiveButton(R.string.cancel) { d, _ -> d.dismiss() }
+                                        setNegativeButton(R.string.yes_continue) { dialogBtn, _ ->
+                                            resetScript(this@inflateMenu)
+                                            binding.script.setText(getKernelFromFile(this@inflateMenu))
+
+                                            // Pastikan kernelInformation dijalankan dalam coroutine
+                                            CoroutineScope(Dispatchers.Main).launch {
+                                                KernelFragment.instance?.kernelInformation()
+                                            }
+
+                                            dialogBtn.cancel()
+                                        }
+                                        show()
+                                    }
+                                }
+
+
+                                //Switch autostart script
+                                binding.enableScript.isChecked = Prefs(this@inflateMenu).getBoolean(
+                                    EXECUTE_SCRIPT_ON_BOOT, resources.getBoolean(
+                                        R.bool
+                                            .execute_script_on_boot
+                                    )
+                                )
+
+                                binding.enableScript.setOnCheckedChangeListener { _, isChecked ->
+                                    Prefs(this@inflateMenu).setBoolean(
+                                        EXECUTE_SCRIPT_ON_BOOT,
+                                        isChecked
+                                    )
+
+                                    if (isChecked) {
+                                        Toast.makeText(
+                                            this@inflateMenu,
+                                            getString(R.string.enable_execute_script_on_boot),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    } else {
+                                        Toast.makeText(
+                                            this@inflateMenu,
+                                            getString(R.string.disable_execute_script_on_boot),
+                                            Toast.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                }
+                                true
                             }
                         }
-
-                        //Switch autostart script
-                        binding.enableScript.isChecked = Prefs(this@inflateMenu).getBoolean(
-                            EXECUTE_SCRIPT_ON_BOOT, resources.getBoolean(
-                                R.bool
-                                    .execute_script_on_boot
-                            )
-                        )
-
-                        binding.enableScript.setOnCheckedChangeListener { _, isChecked ->
-                            Prefs(this@inflateMenu).setBoolean(EXECUTE_SCRIPT_ON_BOOT, isChecked)
-
-                            if (isChecked) {
-                                Toast.makeText(
-                                    this@inflateMenu,
-                                    getString(R.string.enable_execute_script_on_boot),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                Toast.makeText(
-                                    this@inflateMenu,
-                                    getString(R.string.disable_execute_script_on_boot),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-                        }
-                        true
                     }
                 }
             }
 
-            else -> {
+            else -> defaultMenu()
+        }
+    }
 
-                topAppBar.inflateMenu(R.menu.main_menu)
+    fun MainActivity.defaultMenu() {
+        topAppBar.inflateMenu(R.menu.main_menu)
 
-                topAppBar.menu.findItem(R.id.instruction).isVisible = getCurrentCapacity(
-                    this
-                ) > 0.0 && (fragment is ChargeDischargeFragment || fragment is KernelFragment)
-
-                topAppBar.menu.findItem(R.id.instruction).setOnMenuItemClickListener {
-
-                    showInstruction()
-
-                    true
-                }
-
-                topAppBar.menu.findItem(R.id.faq).setOnMenuItemClickListener {
-
-                    showFaq()
-
-                    true
-                }
-
-                topAppBar.menu.findItem(R.id.tips).setOnMenuItemClickListener {
-
-                    MaterialAlertDialogBuilder(this).apply {
-
-                        setIcon(R.drawable.ic_tips_for_extending_battery_life_24dp)
-                        setTitle(getString(R.string.tips_dialog_title))
-                        setMessage(
-                            getString(R.string.tip1) + getString(R.string.tip2) + getString(R.string.tip3) + getString(
-                                R.string.tip4
-                            )
-                        )
-                        setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
-                        show()
-                    }
-
-                    true
-                }
-
-
-                topAppBar.menu.findItem(R.id.premium)
-
-                topAppBar.menu.findItem(R.id.premium).setOnMenuItemClickListener {
-                    val intent = Intent(applicationContext, PremiumActivity::class.java)
-                    startActivity(intent)
-                    true
-                }
+        topAppBar.menu.findItem(R.id.instruction).apply {
+            isVisible = getCurrentCapacity(this@defaultMenu) > 0.0 &&
+                    (fragment is ChargeDischargeFragment || fragment is KernelFragment)
+            setOnMenuItemClickListener {
+                showInstruction()
+                true
             }
+        }
+
+        topAppBar.menu.findItem(R.id.faq).setOnMenuItemClickListener {
+            showFaq()
+            true
+        }
+
+        topAppBar.menu.findItem(R.id.tips).setOnMenuItemClickListener {
+            MaterialAlertDialogBuilder(this@defaultMenu).apply {
+                setIcon(R.drawable.ic_tips_for_extending_battery_life_24dp)
+                setTitle(getString(R.string.tips_dialog_title))
+                setMessage(
+                    getString(R.string.tip1) + getString(R.string.tip2) +
+                            getString(R.string.tip3) + getString(R.string.tip4)
+                )
+                setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+                show()
+            }
+            true
+        }
+
+        topAppBar.menu.findItem(R.id.premium).setOnMenuItemClickListener {
+            val intent = Intent(applicationContext, PremiumActivity::class.java)
+            startActivity(intent)
+            true
         }
     }
 

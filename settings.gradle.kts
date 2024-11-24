@@ -5,17 +5,20 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    @Suppress("UnstableApiUsage")
     repositories {
         google()
         mavenCentral()
 
         maven {
-            url 'https://jitpack.io'
+            url = uri("https://jitpack.io")
         }
     }
 }
 
 rootProject.name = "Battery Lab"
-include ':app'
+include(":app")

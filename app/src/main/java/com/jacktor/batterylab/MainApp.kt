@@ -114,11 +114,13 @@ class MainApp : Application(), PremiumInterface {
 
         if (newTheme != currentTheme) {
 
-            MainActivity.tempFragment = MainActivity.instance?.fragment
+            MainActivity.apply {
+                tempFragment = instance?.fragment
 
-            MainActivity.isRecreate = true
+                isRecreate = true
 
-            MainActivity.instance?.recreate()
+                instance?.recreate()
+            }
         }
     }
 

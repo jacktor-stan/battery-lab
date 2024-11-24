@@ -15,235 +15,112 @@ import com.google.android.material.textfield.TextInputEditText
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ChangeKernelValueDialogBinding
 import com.jacktor.batterylab.databinding.ShellDialogBinding
-import com.jacktor.batterylab.fragments.KernelFragment
+import com.jacktor.batterylab.fragments.tab.KernelFragment
 import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
 import com.jacktor.batterylab.utilities.Prefs
 import com.topjohnwu.superuser.Shell
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileInputStream
 import java.io.IOException
 
-
 interface KernelInterface {
-    fun getKernelData(filename: String): String {
-        var getKernelDataResult = "-"
 
-        val result = Shell.cmd("cat /sys/class/power_supply/battery/$filename").exec()
-        if (result.out.size != 0) {
-            getKernelDataResult = result.out[0]
-        }
-        return getKernelDataResult
-    }
-
+    fun getKernelData(filename: String): String =
+        Shell.cmd("cat /sys/class/power_supply/battery/$filename").exec().out.firstOrNull() ?: "-"
 
     fun changeKernelValue(
         value: String, filename: String, index: Int, context: Context, designCapacity: Prefs? = null
     ) {
+        val binding =
+            ChangeKernelValueDialogBinding.inflate(LayoutInflater.from(context), null, false)
+                .apply {
+                    changeKernelValue.setText(value)
+                }
 
-        //val pref = Prefs(context)
-
-        val dialog = MaterialAlertDialogBuilder(context)
-
-        val binding = ChangeKernelValueDialogBinding.inflate(
-            LayoutInflater.from(context), null, false
-        )
-
-        dialog.setView(binding.root.rootView)
-
-        binding.changeKernelValue.setText(value)
-
-        dialog.setPositiveButton(context.getString(R.string.change)) { _, _ ->
-
-            editKernelData(binding.changeKernelValue.text.toString(), filename, index, context)
-            saveCommand(filename, binding.changeKernelValue.text.toString(), context)
-            //Toast.makeText(context, filename ,Toast.LENGTH_SHORT).show()
-
-        }
-
-        dialog.setNegativeButton(R.string.cancel) { d, _ -> d.dismiss() }
-
-        val dialogCreate = dialog.create()
-
-        changeDesignCapacityDialogCreateShowListener(
-            context, dialogCreate, binding.changeKernelValue
-        )
-
-        dialogCreate.show()
+        MaterialAlertDialogBuilder(context)
+            .setView(binding.root)
+            .setPositiveButton(context.getString(R.string.change)) { _, _ ->
+                editKernelData(binding.changeKernelValue.text.toString(), filename, index, context)
+                saveCommand(filename, binding.changeKernelValue.text.toString(), context)
+            }
+            .setNegativeButton(R.string.cancel) { dialog, _ -> dialog.dismiss() }
+            .create().apply {
+                setDialogShowListener(this, binding.changeKernelValue)
+                show()
+            }
     }
 
-    private fun changeDesignCapacityDialogCreateShowListener(
-        context: Context, dialogCreate: AlertDialog, changeDesignCapacity: TextInputEditText
-    ) {
-
-        dialogCreate.setOnShowListener {
-
-            dialogCreate.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
-
-            changeDesignCapacity.addTextChangedListener(object : TextWatcher {
-
+    private fun setDialogShowListener(dialog: AlertDialog, inputField: TextInputEditText) {
+        dialog.setOnShowListener {
+            dialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = false
+            inputField.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {}
-
                 override fun beforeTextChanged(
-                    s: CharSequence, start: Int, count: Int, after: Int
+                    s: CharSequence,
+                    start: Int,
+                    count: Int,
+                    after: Int
                 ) {
                 }
 
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-
-                    dialogCreate.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = try {
-                        s.isNotEmpty()
-                    } catch (e: NumberFormatException) {
-                        Toast.makeText(
-                            context, e.message ?: e.toString(), Toast.LENGTH_LONG
-                        ).show()
-                        false
-                    }
+                    dialog.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = s.isNotEmpty()
                 }
             })
         }
     }
 
-
     fun editKernelData(kernelValue: String, filename: String, index: Int, context: Context) {
-
-        val shellCommands = arrayOf(
+        val commands = listOf(
             "chmod 0666 /sys/class/power_supply/battery/$filename",
-            "echo $kernelValue > sys/class/power_supply/battery/$filename",
+            "echo $kernelValue > /sys/class/power_supply/battery/$filename",
             "chmod 0444 /sys/class/power_supply/battery/$filename"
         )
-
-        /*MaterialAlertDialogBuilder(context).apply {
-            setIcon(
-                AppCompatResources.getDrawable(
-                    context, R.drawable.ic_terminal_24dp
-                )
-            )
-            setTitle(context.getString(R.string.jacktor_shell))
-            setMessage(context.getString(R.string.starting_command_execution_wait))
-            setCancelable(false)
-        }.create().apply {
-            Handler(Looper.getMainLooper()).postDelayed(
-                {
-                    dismiss()
-                }, 3000
-            )
-            show()
-        }*/
-
-        Shell.cmd(shellCommands.joinToString(separator = " && ")).exec()
+        Shell.cmd(commands.joinToString(" && ")).exec()
         KernelFragment.instance?.updateKernelInformation(index, filename)
-        //KernelFragment.instance?.kernelInformation()
     }
 
     private fun saveCommand(filename: String, value: String, context: Context) {
+        val file = File(context.filesDir, SCRIPT_FILE_NAME)
+        val currentContent = file.readTextOrEmpty()
 
-        val file = File(context.filesDir.path, SCRIPT_FILE_NAME)
-        var content = ""
+        val command = "echo $value > /sys/class/power_supply/battery/$filename"
+        val commands = """
+            chmod 0666 /sys/class/power_supply/battery/$filename
+            $command
+            chmod 0444 /sys/class/power_supply/battery/$filename
+        """.trimIndent()
 
-        try {
-            val inputStream = FileInputStream(file)
-            val size: Int = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            content = String(buffer)
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        val arrayCommands = arrayOf(
-            "chmod 0666 /sys/class/power_supply/battery/$filename",
-            "echo $value > sys/class/power_supply/battery/$filename",
-            "chmod 0444 /sys/class/power_supply/battery/$filename"
-        )
-
-        // create a new file
-        if (file.createNewFile() && !file.exists()) {
-            Companion.shellDialog(context, context.getString(R.string.create_and_saving_scripts))
-            file.writeText("#!/bin/bash\n\n" + arrayCommands.joinToString(separator = " && "))
-        } else {
-
-            // Dapatkan nilai dari file command.sh
-            val findBefore =
-                content.indexOf("/sys/class/power_supply/battery/$filename && echo").let {
-                    if (it == -1) null else content.substring(it + 32)
-                        .replace("$filename && echo ", "").split("/")[0]
-                        .replace(" > sys", "")
-                }
-
-            // Cek jika duplikat jangan tulis lagi (ganti nilai saja)
-            if (content.contains("> sys/class/power_supply/battery/$filename")) {
-                //Companion.shellDialog(context, context.getString(R.string.changing_script_value))
-                file.writeText(
-                    content.replace(
-                        "$findBefore > sys/class/power_supply/battery/$filename",
-                        "$value > sys/class/power_supply/battery/$filename"
-                    )
+        when {
+            !file.exists() -> file.writeText("#!/bin/bash\n\n$commands")
+            currentContent.contains(command) -> {
+                val updatedContent = currentContent.replace(
+                    Regex("echo .* > /sys/class/power_supply/battery/$filename"),
+                    command
                 )
-            } else {
-                //Companion.shellDialog(context, context.getString(R.string.saving_script))
-                file.appendText("\n\n" + arrayCommands.joinToString(separator = " && "))
+                file.writeText(updatedContent)
             }
+
+            else -> file.appendText("\n\n$commands")
         }
     }
 
     fun getKernelValueFromFile(context: Context, filename: String): String? {
-
-        val file = File(context.filesDir.path, SCRIPT_FILE_NAME)
-        var content = ""
-
-        try {
-            val inputStream = FileInputStream(file)
-            val size: Int = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            content = String(buffer)
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-
-        // Dapatkan nilai dari file command.sh
-        val findValue = content.indexOf("/sys/class/power_supply/battery/$filename && echo").let {
-            if (it == -1) null else content.substring(it + 32).replace("$filename && echo ", "")
-                .split("/")[0].replace(" > sys", "")
-        }
-
-        return findValue
+        val content = File(context.filesDir, SCRIPT_FILE_NAME).readTextOrEmpty()
+        val regex = Regex("""echo\s+(\d+)\s+>""")
+        return regex.find(content.substringAfter(filename))?.groupValues?.get(1)
     }
 
     fun deleteKernelCmd(context: Context, filename: String) {
-        val file = File(context.filesDir.path, SCRIPT_FILE_NAME)
-        var content = ""
-
-        try {
-            val inputStream = FileInputStream(file)
-            val size: Int = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.read(buffer)
-            content = String(buffer)
-
-        } catch (e: IOException) {
-            e.printStackTrace()
+        val file = File(context.filesDir, SCRIPT_FILE_NAME)
+        if (file.exists()) {
+            val updatedContent = file.readTextOrEmpty().lines()
+                .filterNot { it.contains("/sys/class/power_supply/battery/$filename") }
+                .joinToString("\n").trimEnd()
+            file.writeText(updatedContent)
         }
-
-        // Dapatkan nilai dari file command.sh
-        val findValue = content.indexOf("/sys/class/power_supply/battery/$filename && echo").let {
-            if (it == -1) null else content.substring(it + 32).replace("$filename && echo ", "")
-                .split("/")[0].replace(" > sys", "")
-        }
-
-        val arrayCommands = arrayOf(
-            "chmod 0666 /sys/class/power_supply/battery/$filename",
-            "echo $findValue > sys/class/power_supply/battery/$filename",
-            "chmod 0444 /sys/class/power_supply/battery/$filename"
-        )
-
-        file.writeText(
-            content.replace(
-                "\n\n" + arrayCommands.joinToString(separator = " && "), ""
-            )
-        )
     }
 
     fun shellDialog(
@@ -252,153 +129,76 @@ interface KernelInterface {
         message: String? = null,
         type: Int = 1
     ) {
-        val binding = ShellDialogBinding.inflate(
-            LayoutInflater.from(context), null, false
-        )
-        val dialog = MaterialAlertDialogBuilder(context)
-
-        dialog.setView(binding.root.rootView)
-        dialog.apply {
-            setIcon(
-                AppCompatResources.getDrawable(
-                    context, R.drawable.ic_terminal_24dp
-                )
-            )
-            setTitle(title?.uppercase() ?: "jacktor Shell")
-
-            if (type == 1) {
-                binding.script.setText(message ?: ">_")
-                setCancelable(false)
-            } else {
-                binding.script.setText(message)
-                setCancelable(true)
-                setPositiveButton(R.string.ok) { d, _ -> d.dismiss() }
-            }
-
-        }.create().apply {
-            if (type == 1) {
-                Handler(Looper.getMainLooper()).postDelayed(
-                    {
-                        dismiss()
-                    }, 3000
-                )
-            }
-            show()
+        val binding = ShellDialogBinding.inflate(LayoutInflater.from(context), null, false).apply {
+            script.setText(message ?: ">_")
         }
+
+        MaterialAlertDialogBuilder(context)
+            .setView(binding.root)
+            .setIcon(AppCompatResources.getDrawable(context, R.drawable.ic_terminal_24dp))
+            .setTitle(title?.uppercase() ?: "Jacktor Shell")
+            .setCancelable(type != 1)
+            .apply { if (type != 1) setPositiveButton(R.string.ok) { dialog, _ -> dialog.dismiss() } }
+            .create().apply {
+                if (type == 1) Handler(Looper.getMainLooper()).postDelayed({ dismiss() }, 3000)
+                show()
+            }
     }
 
-
     companion object {
-        fun getKernelFromFile(context: Context): String {
-
-            val file = File(context.filesDir.path, SCRIPT_FILE_NAME)
-            var content = ""
-
-            try {
-                val inputStream = FileInputStream(file)
-                val size: Int = inputStream.available()
-                val buffer = ByteArray(size)
-                inputStream.read(buffer)
-                content = String(buffer)
-
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-            return content
-        }
+        fun getKernelFromFile(context: Context): String =
+            File(context.filesDir, SCRIPT_FILE_NAME).readTextOrEmpty()
 
         fun executeShellFile(context: Context) {
-            Shell.cmd("su && sh ${context.filesDir.path}/$SCRIPT_FILE_NAME").exec().apply {
+            val scriptPath = "${context.filesDir}/$SCRIPT_FILE_NAME"
+            Shell.cmd("su && sh $scriptPath").exec().apply {
                 if (isSuccess) {
                     shellDialog(
-                        context, context.getString(R.string.experiment),
-                        "su && sh $SCRIPT_FILE_NAME\n\n" + context.getString(R.string.executes_and_update_info)
+                        context,
+                        context.getString(R.string.experiment),
+                        "su && sh $SCRIPT_FILE_NAME\n\n${context.getString(R.string.executes_and_update_info)}"
                     )
-
-                    Handler(Looper.getMainLooper()).postDelayed(
-                        {
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        CoroutineScope(Dispatchers.Main).launch {
                             KernelFragment.instance?.kernelInformation()
-                        }, 1000
+                        }
+                    }, 1000)
+                } else {
+                    shellDialog(
+                        context,
+                        context.getString(R.string.experiment),
+                        context.getString(R.string.execute_failed),
+                        0
                     )
-                } else shellDialog(
-                    context,
-                    context.getString(R.string.experiment),
-                    context.getString(R.string.execute_failed),
-                    0
-                )
+                }
             }
         }
 
-        fun shellDialog(
+        private fun shellDialog(
             context: Context,
             title: String? = null,
             message: String? = null,
             type: Int = 1
         ) {
-            val binding = ShellDialogBinding.inflate(
-                LayoutInflater.from(context), null, false
-            )
-            val dialog = MaterialAlertDialogBuilder(context)
-
-            dialog.setView(binding.root.rootView)
-            dialog.apply {
-                setIcon(
-                    AppCompatResources.getDrawable(
-                        context, R.drawable.ic_terminal_24dp
-                    )
-                )
-                setTitle(title?.uppercase() ?: "Jacktor Shell")
-
-                if (type == 1) {
-                    binding.script.setText(message ?: ">_")
-                    setCancelable(false)
-                } else {
-                    binding.script.setText(message)
-                    setCancelable(true)
-                    setPositiveButton(R.string.ok) { d, _ -> d.dismiss() }
-                }
-
-            }.create().apply {
-                if (type == 1) {
-                    Handler(Looper.getMainLooper()).postDelayed(
-                        {
-                            dismiss()
-                        }, 3000
-                    )
-                }
-                show()
-            }
+            shellDialog(context, title, message, type)
         }
 
         fun resetScript(context: Context) {
-            val scriptFileName = SCRIPT_FILE_NAME
-            val file = File(context.filesDir.path, scriptFileName)
-
-            if (file.exists()) {
+            val file = File(context.filesDir, SCRIPT_FILE_NAME)
+            val messageRes = if (file.exists() || file.createNewFile()) {
                 file.writeText("#!/bin/bash")
-                Toast.makeText(
-                    context,
-                    context.getString(R.string.script_has_been_reset),
-                    Toast.LENGTH_SHORT
-                ).show()
+                R.string.script_has_been_reset
             } else {
-                if (file.createNewFile()) {
-                    file.writeText("#!/bin/bash")
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.script_has_been_reset),
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        context,
-                        context.getString(R.string.command_file_is_not_available),
-                        Toast.LENGTH_SHORT
-                    )
-                        .show()
-                }
+                R.string.command_file_is_not_available
             }
+            Toast.makeText(context, context.getString(messageRes), Toast.LENGTH_SHORT).show()
         }
     }
+}
+
+// Extension function for reading text from a file safely
+private fun File.readTextOrEmpty(): String = try {
+    this.readText()
+} catch (e: IOException) {
+    ""
 }

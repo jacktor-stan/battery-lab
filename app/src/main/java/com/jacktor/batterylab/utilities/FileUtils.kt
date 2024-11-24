@@ -36,7 +36,7 @@ internal object FileUtils {
                     }
                     // If the file is not available, we have to get the name of the SD Card, have a look at SDUtils
                     val availableExternalStorages: Array<String> =
-                        SDUtil.getStorageDirectories(context)
+                        SDUtils.getStorageDirectories(context)
                     var root = ""
                     for (s in availableExternalStorages) {
                         root = if (split[1].startsWith("/")) {

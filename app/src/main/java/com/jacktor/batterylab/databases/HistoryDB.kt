@@ -16,7 +16,8 @@ class HistoryDB(var context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
 
     override fun onCreate(db: SQLiteDatabase?) {
 
-        val createTable = "CREATE TABLE $DB_TITLE ($ID INTEGER PRIMARY KEY DEFAULT 1, $DATE TEXT, $RESIDUAL_CAPACITY INTEGER)"
+        val createTable =
+            "CREATE TABLE $DB_TITLE ($ID INTEGER PRIMARY KEY DEFAULT 1, $DATE TEXT, $RESIDUAL_CAPACITY INTEGER)"
         db?.execSQL(createTable)
     }
 
@@ -41,10 +42,12 @@ class HistoryDB(var context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         if (cursor.moveToFirst()) {
             do {
                 val history = History()
-                history.id = cursor.getString(cursor.getColumnIndexOrThrow(ID)).toInt()
-                history.date = cursor.getString(cursor.getColumnIndexOrThrow(DATE))
-                history.residualCapacity =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(RESIDUAL_CAPACITY))
+                history.apply {
+                    id = cursor.getString(cursor.getColumnIndexOrThrow(ID)).toInt()
+                    date = cursor.getString(cursor.getColumnIndexOrThrow(DATE))
+                    residualCapacity =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(RESIDUAL_CAPACITY))
+                }
                 historyList.add(history)
             } while (cursor.moveToNext())
         }
@@ -56,14 +59,18 @@ class HistoryDB(var context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
     fun clear() {
 
         val db = writableDatabase
-        db.delete(DB_TITLE, null, null)
-        db.close()
+        db.apply {
+            delete(DB_TITLE, null, null)
+            close()
+        }
     }
 
     fun removeFirstRow() {
         val db = writableDatabase
-        val cursor = db.query(DB_TITLE, null, null, null, null,
-            null, null)
+        val cursor = db.query(
+            DB_TITLE, null, null, null, null,
+            null, null
+        )
 
         if (cursor.moveToFirst()) {
             val rowId: String = cursor.getString(cursor.getColumnIndexOrThrow(ID))
@@ -100,9 +107,10 @@ class HistoryDB(var context: Context) : SQLiteOpenHelper(context, DB_NAME, null,
         var currentId = -1
 
         if (cursor.moveToFirst()) {
-           do {
-                if(cursor.getInt(cursor.getColumnIndexOrThrow(RESIDUAL_CAPACITY)) ==
-                    residualCapacity) {
+            do {
+                if (cursor.getInt(cursor.getColumnIndexOrThrow(RESIDUAL_CAPACITY)) ==
+                    residualCapacity
+                ) {
                     currentId = cursor.getInt(cursor.getColumnIndexOrThrow(ID))
                     break
                 }

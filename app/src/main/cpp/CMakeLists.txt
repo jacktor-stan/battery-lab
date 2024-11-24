@@ -1,11 +1,20 @@
 cmake_minimum_required(VERSION 3.4.1)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fstack-protector-all")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fstack-protector-all")
+project(BatteryLab)
 
-add_library(toolChecker SHARED
-        toolChecker.cpp)
+set(CMAKE_CXX_STANDARD 17)  # Gunakan C++17
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-target_link_libraries(toolChecker
-        android
+add_library(
+        native-jacktor
+        SHARED
+        root-checker.cpp)
+
+find_library(
+        log-jacktor
         log)
+
+target_link_libraries(
+        native-jacktor
+        ${log-jacktor})

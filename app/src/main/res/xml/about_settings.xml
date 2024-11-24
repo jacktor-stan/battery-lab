@@ -1,62 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<PreferenceScreen
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto">
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <Preference
-            app:title="@string/developer"
-            app:summary="Jacktor"
-            app:singleLineTitle="false"
-            app:icon="@drawable/ic_developer_24dp"
-            android:key="developer"/>
-
-    <Preference
-            app:title="@string/version"
-            app:singleLineTitle="false"
-            app:icon="@drawable/ic_version"
-            android:key="version"/>
-
-    <Preference
-            app:title="@string/build"
-            app:singleLineTitle="false"
-            app:icon="@drawable/ic_build_24dp"
-            android:key="build"/>
-
-    <Preference
-            app:title="@string/build_date"
-            app:singleLineTitle="false"
-            app:icon="@drawable/ic_build_date_24dp"
-            android:key="build_date"/>
-    <Preference
-        app:title="@string/check_update"
+        android:key="developer"
+        app:icon="@drawable/ic_developer_24dp"
         app:singleLineTitle="false"
+        app:summary="Jacktor"
+        app:title="@string/developer" />
+
+    <Preference
+        android:key="version"
+        app:icon="@drawable/ic_version"
+        app:singleLineTitle="false"
+        app:title="@string/version" />
+
+    <Preference
+        android:key="build"
+        app:icon="@drawable/ic_build_24dp"
+        app:singleLineTitle="false"
+        app:title="@string/build" />
+
+    <Preference
+        android:key="build_date"
+        app:icon="@drawable/ic_build_date_24dp"
+        app:singleLineTitle="false"
+        app:title="@string/build_date" />
+    <Preference
+        android:key="check_update"
         app:icon="@drawable/ic_check_update_24dp"
-        android:key="check_update"/>
-    <!--<Preference
-        app:title="Team"
         app:singleLineTitle="false"
+        app:title="@string/check_update" />
+    <Preference
+        android:key="team"
         app:icon="@drawable/ic_group_work_24dp"
-        android:key="team"/>-->
-
-    <Preference
-            app:title="@string/github"
-            app:summary="@string/license"
-            app:singleLineTitle="false"
-            app:icon="@drawable/ic_github_24dp"
-            android:key="github"/>
-    <Preference
-        app:title="@string/github_battery_capacity"
-        app:summary="@string/license"
         app:singleLineTitle="false"
-        app:icon="@drawable/ic_github_24dp"
-        android:key="github_battery_capacity"/>
+        app:title="Team" />
 
     <Preference
-            app:title="@string/become_a_beta_tester"
-            app:summary="@string/become_a_beta_tester_summary"
-            app:singleLineTitle="false"
-            app:icon="@drawable/ic_beta_24dp"
-            app:key="become_a_beta_tester"/>
+        android:key="github"
+        app:icon="@drawable/ic_github_24dp"
+        app:singleLineTitle="false"
+        app:summary="@string/license"
+        app:title="@string/github" />
+    <Preference
+        android:key="github_battery_capacity"
+        app:icon="@drawable/ic_github_24dp"
+        app:singleLineTitle="false"
+        app:summary="@string/license"
+        app:title="@string/github_battery_capacity" />
+
+    <Preference
+        app:icon="@drawable/ic_beta_24dp"
+        app:key="become_a_beta_tester"
+        app:singleLineTitle="false"
+        app:summary="@string/become_a_beta_tester_summary"
+        app:title="@string/become_a_beta_tester" />
 
 </PreferenceScreen>
