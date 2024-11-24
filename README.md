@@ -1,5 +1,6 @@
 
 ## Introduction
+
    A Battery Monitoring Application for Android device
 ---
 ## Screenshots
