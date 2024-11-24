@@ -4,7 +4,7 @@ import android.content.Context
 import android.os.Environment
 import java.io.File
 
-object SDUtil {
+object SDUtils {
 
     private val secondaryStorages: String? = System.getenv("SECONDARY_STORAGE")
     private val emulatedStorageTarget: String? = System.getenv("EMULATED_STORAGE_TARGET")
