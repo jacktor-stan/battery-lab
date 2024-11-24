@@ -26,7 +26,7 @@ import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
 import com.jacktor.batterylab.utilities.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
 import com.jacktor.batterylab.utilities.Prefs
-import com.jacktor.rootchecker.RootChecker
+import com.jacktor.batterylab.utilities.RootChecker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -114,7 +114,7 @@ interface MenuInterface {
                                         dialogBtn.cancel()
                                     }
                                     setNeutralButton(getString(R.string.execute).uppercase()) { dialogBtn, _ ->
-                                        if (RootChecker(this@inflateMenu).isRooted) executeShellFile(
+                                        if (RootChecker().isDeviceRooted()) executeShellFile(
                                             this@inflateMenu
                                         )
                                         dialogBtn.cancel()
@@ -123,7 +123,7 @@ interface MenuInterface {
                                 }
 
                                 //Check root
-                                if (!RootChecker(this@inflateMenu).isRooted) {
+                                if (!RootChecker().isDeviceRooted()) {
                                     binding.resetScript.isEnabled = false
                                     binding.enableScript.isEnabled = false
                                 }

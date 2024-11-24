@@ -200,7 +200,7 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), KernelInterface,
         super.onDestroy()
     }
 
-    private fun isRootAccessAvailable() = RootUtils.hasRootAccess(requireContext())
+    private fun isRootAccessAvailable() = RootUtils.hasRootAccess()
     private fun requestRootAccess() = RootUtils.reqRootAccess()
 
 }
