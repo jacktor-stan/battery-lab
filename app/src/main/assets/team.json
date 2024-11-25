@@ -1,18 +1,32 @@
 {
-	"data": [
-		{
-			"id": "1",
-			"username": "jacktor",
-			"name": "Deni Liandi",
-			"imgURL": "file:///android_asset/Images/jacktor.png",
-			"projectStatus": "1"
-		},
-		{
-			"id": "2",
-			"username": "nanang_cyrliv",
-			"name": "Nanang Cyrliv",
-			"imgURL": "file:///android_asset/Images/nanangcyrliv.png",
-			"projectStatus": "0"
-		}
-	]
+  "data": [
+    {
+      "id": "1",
+      "username": "jacktor",
+      "name": "Deni Liandi",
+      "imgURL": "file:///android_asset/Images/jacktor.png",
+      "projectStatus": "1"
+    },
+    {
+      "id": "2",
+      "username": "nanang_cyrliv",
+      "name": "Nanang Cyrliv",
+      "imgURL": "file:///android_asset/Images/nanangcyrliv.png",
+      "projectStatus": "0"
+    },
+    {
+      "id": "3",
+      "username": "gryzzlaycutzy121",
+      "name": "Afrizal",
+      "imgURL": "file:///android_asset/Images/gryzzlay.png",
+      "projectStatus": "0"
+    },
+    {
+      "id": "4",
+      "username": "archanaberry101",
+      "name": "Archana Berry",
+      "imgURL": "file:///android_asset/Images/archanaberry.png",
+      "projectStatus": "0"
+    }
+  ]
 }
