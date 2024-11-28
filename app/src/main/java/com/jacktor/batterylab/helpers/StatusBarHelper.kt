@@ -4,110 +4,34 @@ import com.jacktor.batterylab.R
 
 object StatusBarHelper {
     fun stat(level: Int?): Int {
-        val stat = when (level) {
-            0 -> R.mipmap.zero
-            1 -> R.mipmap.one
-            2 -> R.mipmap.two
-            3 -> R.mipmap.three
-            4 -> R.mipmap.four
-            5 -> R.mipmap.five
-            6 -> R.mipmap.six
-            7 -> R.mipmap.seven
-            8 -> R.mipmap.eight
-            9 -> R.mipmap.nine
-            10 -> R.mipmap.one_zero
-            11 -> R.mipmap.one_one
-            12 -> R.mipmap.one_two
-            13 -> R.mipmap.one_three
-            14 -> R.mipmap.one_four
-            15 -> R.mipmap.one_five
-            16 -> R.mipmap.one_six
-            17 -> R.mipmap.one_seven
-            18 -> R.mipmap.one_eight
-            19 -> R.mipmap.one_nine
-            20 -> R.mipmap.two_zero
-            21 -> R.mipmap.two_one
-            22 -> R.mipmap.two_two
-            23 -> R.mipmap.two_three
-            24 -> R.mipmap.two_four
-            25 -> R.mipmap.two_five
-            26 -> R.mipmap.two_six
-            27 -> R.mipmap.two_seven
-            28 -> R.mipmap.two_eight
-            29 -> R.mipmap.two_nine
-            30 -> R.mipmap.three_zero
-            31 -> R.mipmap.three_one
-            32 -> R.mipmap.three_two
-            33 -> R.mipmap.three_three
-            34 -> R.mipmap.three_four
-            35 -> R.mipmap.three_five
-            36 -> R.mipmap.three_six
-            37 -> R.mipmap.three_seven
-            38 -> R.mipmap.three_eight
-            39 -> R.mipmap.three_nine
-            40 -> R.mipmap.four_zero
-            41 -> R.mipmap.four_one
-            42 -> R.mipmap.four_two
-            43 -> R.mipmap.four_three
-            44 -> R.mipmap.four_four
-            45 -> R.mipmap.four_five
-            46 -> R.mipmap.four_six
-            47 -> R.mipmap.four_seven
-            48 -> R.mipmap.four_eight
-            49 -> R.mipmap.four_nine
-            50 -> R.mipmap.five_zero
-            51 -> R.mipmap.five_one
-            52 -> R.mipmap.five_two
-            53 -> R.mipmap.five_three
-            54 -> R.mipmap.five_four
-            55 -> R.mipmap.five_five
-            56 -> R.mipmap.five_six
-            57 -> R.mipmap.five_seven
-            58 -> R.mipmap.five_eight
-            59 -> R.mipmap.five_nine
-            60 -> R.mipmap.six_zero
-            61 -> R.mipmap.six_one
-            62 -> R.mipmap.six_two
-            63 -> R.mipmap.six_three
-            64 -> R.mipmap.six_four
-            65 -> R.mipmap.six_five
-            66 -> R.mipmap.six_six
-            67 -> R.mipmap.six_seven
-            68 -> R.mipmap.six_eight
-            69 -> R.mipmap.six_nine
-            70 -> R.mipmap.seven_zero
-            71 -> R.mipmap.seven_one
-            72 -> R.mipmap.seven_two
-            73 -> R.mipmap.seven_three
-            74 -> R.mipmap.seven_four
-            75 -> R.mipmap.seven_five
-            76 -> R.mipmap.seven_six
-            77 -> R.mipmap.seven_seven
-            78 -> R.mipmap.seven_eight
-            79 -> R.mipmap.seven_nine
-            80 -> R.mipmap.eight_zero
-            81 -> R.mipmap.eight_one
-            82 -> R.mipmap.eight_two
-            83 -> R.mipmap.eight_three
-            84 -> R.mipmap.eight_four
-            85 -> R.mipmap.eight_five
-            86 -> R.mipmap.eight_six
-            87 -> R.mipmap.eight_seven
-            88 -> R.mipmap.eight_eight
-            89 -> R.mipmap.eight_nine
-            90 -> R.mipmap.nine_zero
-            91 -> R.mipmap.nine_one
-            92 -> R.mipmap.nine_two
-            93 -> R.mipmap.nine_three
-            94 -> R.mipmap.nine_four
-            95 -> R.mipmap.nine_five
-            96 -> R.mipmap.nine_six
-            97 -> R.mipmap.nine_seven
-            98 -> R.mipmap.nine_eight
-            99 -> R.mipmap.nine_nine
-            100 -> R.mipmap.hundred
-            else -> R.drawable.ic_battery_stat_24
+        return when {
+            level == null || level < 0 || level > 100 -> R.drawable.ic_battery_stat_24
+            else -> {
+                val resourceName = if (level == 100) {
+                    "hundred"
+                } else {
+                    "${toWord(level / 10)}_${toWord(level % 10)}"
+                }
+                val resId = R.mipmap::class.java.getDeclaredField(resourceName).getInt(null)
+                resId
+            }
         }
-        return stat
+    }
+
+    // Fungsi untuk mengubah angka ke dalam teks
+    private fun toWord(digit: Int): String {
+        return when (digit) {
+            0 -> "zero"
+            1 -> "one"
+            2 -> "two"
+            3 -> "three"
+            4 -> "four"
+            5 -> "five"
+            6 -> "six"
+            7 -> "seven"
+            8 -> "eight"
+            9 -> "nine"
+            else -> throw IllegalArgumentException("Invalid digit: $digit")
+        }
     }
 }

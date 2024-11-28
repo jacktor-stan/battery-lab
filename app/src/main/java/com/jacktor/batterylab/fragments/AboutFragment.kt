@@ -222,7 +222,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
 
                 teamModel.setNames(dataObj.getString("name"))
                 teamModel.setUsernames(dataObj.getString("username"))
-                teamModel.setStatus(dataObj.getString("projectStatus"))
+                teamModel.setStatus(dataObj.getBoolean("inProject"))
                 teamModel.setimgURLs(dataObj.getString("imgURL"))
 
                 teamModelArrayList.add(teamModel)

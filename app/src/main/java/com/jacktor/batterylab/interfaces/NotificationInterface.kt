@@ -32,7 +32,6 @@ import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.isPremium
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.CloseNotificationBatteryStatusInformationService
 import com.jacktor.batterylab.services.DisableNotificationBatteryStatusInformationService
-import com.jacktor.batterylab.receivers.PowerConnectionReceiver
 import com.jacktor.batterylab.services.StopBatteryLabService
 import com.jacktor.batterylab.utilities.Constants.CHARGED_CHANNEL_ID
 import com.jacktor.batterylab.utilities.Constants.CLOSE_NOTIFICATION_BATTERY_STATUS_INFORMATION_REQUEST_CODE
@@ -48,13 +47,13 @@ import com.jacktor.batterylab.utilities.PreferencesKeys
 import com.jacktor.batterylab.utilities.PreferencesKeys.BYPASS_DND
 import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
 import com.jacktor.batterylab.utilities.PreferencesKeys.IS_SHOW_BATTERY_INFORMATION
+import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.PreferencesKeys.OVERCOOL_DEGREES
+import com.jacktor.batterylab.utilities.PreferencesKeys.OVERHEAT_DEGREES
 import com.jacktor.batterylab.utilities.PreferencesKeys.SERVICE_TIME
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_BATTERY_INFORMATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_EXPANDED_NOTIFICATION
 import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_STOP_SERVICE
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERCOOL_DEGREES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERHEAT_DEGREES
 import java.text.DecimalFormat
 
 @SuppressLint("StaticFieldLeak")
@@ -106,31 +105,6 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                 Intent.ACTION_BATTERY_CHANGED
             )
         )
-
-        //Register receiver (ConnectedDisconnectedSound)
-        val powerConnectionReceiver = PowerConnectionReceiver()
-
-        ContextCompat.registerReceiver(
-            context,
-            powerConnectionReceiver,
-            IntentFilter(Intent.ACTION_POWER_CONNECTED),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-
-        ContextCompat.registerReceiver(
-            context,
-            powerConnectionReceiver,
-            IntentFilter(Intent.ACTION_POWER_DISCONNECTED),
-            ContextCompat.RECEIVER_NOT_EXPORTED
-        )
-
-        /*IntentFilter(Intent.ACTION_POWER_CONNECTED).also {
-            context.registerReceiver(powerConnectionReceiver, it)
-        }
-
-        IntentFilter(Intent.ACTION_POWER_DISCONNECTED).also {
-            context.registerReceiver(powerConnectionReceiver, it)
-        }*/
 
         val status = batteryIntent?.getIntExtra(
             BatteryManager.EXTRA_STATUS,
@@ -263,7 +237,8 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
                 notificationBuilder?.build()?.let {
-                    BatteryLabService.instance?.startForeground(NOTIFICATION_SERVICE_ID,
+                    BatteryLabService.instance?.startForeground(
+                        NOTIFICATION_SERVICE_ID,
                         it, FOREGROUND_SERVICE_TYPE_SPECIAL_USE
                     )
                 }
@@ -287,7 +262,8 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
         notificationManager = context.getSystemService(NOTIFICATION_SERVICE)
                 as NotificationManager
 
-        batteryIntent = context.registerReceiver(null, IntentFilter(
+        batteryIntent = context.registerReceiver(
+            null, IntentFilter(
                 Intent.ACTION_BATTERY_CHANGED
             )
         )

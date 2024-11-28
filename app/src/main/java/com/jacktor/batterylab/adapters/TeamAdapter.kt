@@ -1,4 +1,5 @@
 package com.jacktor.batterylab.adapters
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
@@ -41,9 +42,9 @@ class TeamAdapter(
 
         holder.username.text =
             holder.username.context.getString(R.string.username, data.getUsernames())
-        val projectStatus = data.getStatus()
+        val inProject = data.getStatus()
 
-        if (projectStatus == "1") {
+        if (inProject!!) {
             holder.status.text = holder.status.context.getString(R.string.in_project)
         } else {
             holder.status.text = ""

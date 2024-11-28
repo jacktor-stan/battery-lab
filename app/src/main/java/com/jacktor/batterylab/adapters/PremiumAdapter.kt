@@ -48,12 +48,10 @@ class PremiumAdapter(
     }
 
     inner class BuyPremiumViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var txtPremiumTitle: TextView
-        var txtPremiumPrice: TextView
+        var txtPremiumTitle: TextView = itemView.findViewById(R.id.product_name)
+        var txtPremiumPrice: TextView = itemView.findViewById(R.id.product_price)
 
         init {
-            txtPremiumTitle = itemView.findViewById(R.id.product_name)
-            txtPremiumPrice = itemView.findViewById(R.id.product_price)
             itemView.setOnClickListener {
                 recyclerPremiumInterface.onItemClick(bindingAdapterPosition)
             }

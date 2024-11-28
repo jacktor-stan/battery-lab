@@ -12,148 +12,116 @@ import android.os.Handler
 import android.os.Looper
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.os.VibratorManager
 import android.widget.Toast
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.utilities.Prefs
 
-
 class PowerConnectionReceiver : BroadcastReceiver() {
-    private var prefs: Prefs? = null
+    private lateinit var prefs: Prefs
 
     override fun onReceive(context: Context, intent: Intent) {
         init(context)
 
-        //prefsConfig!!.setInt("last_state_change_battery_level", getBatteryLevel(context))
-        //prefsConfig!!.setLong("last_state_change_time", Date().time)
+        if (!prefs.getBoolean("power_connection_service", false)) return
 
-        //Log.d("SET LAST TIME:", Date().time.toString())
+        when (intent.action) {
+            Intent.ACTION_POWER_CONNECTED -> handlePowerChange(
+                context, isConnected = true
+            )
 
-        //Sound delay pref
-        val sdPref: String? = prefs!!.getString("sound_delay", "550")
-        val sd = sdPref!!.toInt()
-        val dur = prefs!!.getString("custom_vibrate_duration", "450")
+            Intent.ACTION_POWER_DISCONNECTED -> handlePowerChange(
+                context, isConnected = false
+            )
+        }
+    }
 
-        if (prefs!!.getBoolean("power_connection_service", false)) {
-            if (intent.action == "android.intent.action.ACTION_POWER_CONNECTED") {
-                val vibrationMode = prefs!!.getString("vibrate_mode", "disconnected")
+    private fun handlePowerChange(context: Context, isConnected: Boolean) {
+        val vibrationMode = prefs.getString("vibrate_mode", "disconnected")
+        val duration = prefs.getString("custom_vibrate_duration", "450")!!.toLong()
+        val delay = prefs.getString("sound_delay", "550")!!.toLong()
 
-                if (prefs!!.getBoolean("enable_vibration", true)) {
-                    if (vibrationMode == "connected" || vibrationMode == "both") {
-                        val v = dur!!.toLong() //Parse string ke int
+        if (prefs.getBoolean("enable_vibration", true)) {
+            handleVibration(context, duration, isConnected, vibrationMode)
+        }
 
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            val vibratorManager =
-                                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                                val vibrator = vibratorManager.defaultVibrator
+        Handler(Looper.getMainLooper()).postDelayed({
+            if (isConnected) {
+                playPowerConnectedSound(context)
+            } else {
+                playPowerDisconnectedSound(context)
+            }
+        }, delay)
 
-                                vibrator.vibrate(
-                                 VibrationEffect.createOneShot(v, VibrationEffect.DEFAULT_AMPLITUDE))
-                        } else {
-                            @Suppress("DEPRECATION")
-                            val vibrator = context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                vibrator.vibrate(
-                                    VibrationEffect.createOneShot(v, VibrationEffect.DEFAULT_AMPLITUDE))
-                            } else {
-                                @Suppress("DEPRECATION")
-                                vibrator.vibrate(v)
-                            }
-                        }
+        if (prefs.getBoolean("enable_toast", false)) {
+            showToast(context, isConnected)
+        }
+    }
 
-
-                    }
-                }
-                Handler(Looper.getMainLooper()).postDelayed(
-                    {
-                        rPowerConnected(context, prefs!!) //Putar suara
-                    },
-                    sd.toLong()
+    private fun handleVibration(
+        context: Context, duration: Long, isConnected: Boolean, vibrationMode: String?
+    ) {
+        if ((isConnected && vibrationMode in listOf("connected", "both")) ||
+            (!isConnected && vibrationMode in listOf("disconnected", "both"))
+        ) {
+            val vibrator = getVibrator(context)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(
+                    VibrationEffect.createOneShot(duration, VibrationEffect.DEFAULT_AMPLITUDE)
                 )
-                if (prefs!!.getBoolean("enable_toast", false)) {
-                    Toast.makeText(
-                        context.applicationContext,
-                        R.string.toast_power_connected,
-                        Toast.LENGTH_LONG
-                    ).show() //Tampilkan toast
-                }
-            } else if (intent.action == "android.intent.action.ACTION_POWER_DISCONNECTED") {
-                val vibrationMode = prefs!!.getString("vibrate_mode", "disconnected")
-                if (prefs!!.getBoolean("enable_vibration", true)) {
-                    if (vibrationMode == "disconnected" || vibrationMode == "both") {
-                        val v = dur!!.toLong() //Parse string ke int
-
-                        val vib = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                            val vibratorManager =
-                                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
-                            vibratorManager.defaultVibrator
-                        } else {
-                            // backward compatibility for Android API < 31,
-                            @Suppress("DEPRECATION")
-                            context.getSystemService(VIBRATOR_SERVICE) as Vibrator
-                        }
-
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            vib.vibrate(
-                                VibrationEffect.createOneShot(v, VibrationEffect.DEFAULT_AMPLITUDE))
-                        } else {
-                            // backward compatibility for Android API < 26
-                            @Suppress("DEPRECATION")
-                            vib.vibrate(v)
-                        }
-
-
-                    }
-                }
-
-                Handler(Looper.getMainLooper()).postDelayed(
-                    {
-                        rPowerDisconnected(context, prefs!!) //Putar suara
-                    },
-                    sd.toLong()
-                )
-                //550
-                if (prefs!!.getBoolean("enable_toast", false)) {
-                    Toast.makeText(
-                        context.applicationContext,
-                        R.string.toast_power_disconnected,
-                        Toast.LENGTH_LONG
-                    ).show() //Tampilkan toast
-                }
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(duration)
             }
         }
     }
 
-    //Terhubung
-    private fun rPowerConnected(context: Context, prefs: Prefs) {
-        val ac: Boolean
-        val bat = context.applicationContext.registerReceiver(
-            null,
-            IntentFilter("android.intent.action.BATTERY_CHANGED")
-        )
-            ac = bat!!.getIntExtra("plugged", 1) == 1
-        addSound(
-            context,
-            prefs,
-            if (ac) "ac_connected_sound" else "usb_connected_sound"
-        )
+    private fun getVibrator(context: Context): Vibrator {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val vibratorManager =
+                context.getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as android.os.VibratorManager
+            vibratorManager.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            context.getSystemService(VIBRATOR_SERVICE) as Vibrator
+        }
     }
 
-    private fun rPowerDisconnected(context: Context, prefs: Prefs) {
-        addSound(context, prefs, "disconnected_sound")
+    private fun playPowerConnectedSound(context: Context) {
+        val isAcConnected = isAcConnected(context)
+        val prefKey = if (isAcConnected) "ac_connected_sound" else "usb_connected_sound"
+        playSound(context, prefKey)
     }
 
-    private fun addSound(context: Context, prefs: Prefs, prefKey: String) {
-        val url = prefs.getString(prefKey, "")
-        if (url != "") {
-            val filePath = prefs.getString(prefKey, "")
+    private fun playPowerDisconnectedSound(context: Context) {
+        playSound(context, "disconnected_sound")
+    }
+
+    private fun playSound(context: Context, prefKey: String) {
+        val filePath = prefs.getString(prefKey, "") ?: return
+        if (filePath.isNotEmpty()) {
             try {
-                val r = RingtoneManager.getRingtone(context, Uri.parse(filePath))
-                r.play()
+                val ringtone = RingtoneManager.getRingtone(context, Uri.parse(filePath))
+                ringtone.play()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
+    }
+
+    private fun isAcConnected(context: Context): Boolean {
+        val batteryStatus = context.registerReceiver(
+            null, IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+        )
+        return batteryStatus?.getIntExtra("plugged", -1) == 1
+    }
+
+    private fun showToast(context: Context, isConnected: Boolean) {
+        val messageResId = if (isConnected) {
+            R.string.toast_power_connected
+        } else {
+            R.string.toast_power_disconnected
+        }
+        Toast.makeText(context.applicationContext, messageResId, Toast.LENGTH_LONG).show()
     }
 
     private fun init(context: Context) {

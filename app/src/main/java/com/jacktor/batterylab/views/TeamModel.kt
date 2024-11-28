@@ -3,7 +3,7 @@ package com.jacktor.batterylab.views
 class TeamModel {
     var name: String? = null
     var username: String? = null
-    private var projectStatus: String? = null
+    private var inProject: Boolean? = null
     private var imgURL: String? = null
 
     fun getNames(): String {
@@ -22,12 +22,12 @@ class TeamModel {
         this.username = username
     }
 
-    fun getStatus(): String {
-        return projectStatus.toString()
+    fun getStatus(): Boolean? {
+        return inProject
     }
 
-    fun setStatus(projectStatus: String) {
-        this.projectStatus = projectStatus
+    fun setStatus(inProject: Boolean) {
+        this.inProject = inProject
     }
 
     fun getimgURLs(): String {
