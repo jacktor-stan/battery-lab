@@ -44,20 +44,12 @@
         <item name="chipChoiceStyle">@style/ChipChoice</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 
-        <!-- Workaround for AndroidX PreferenceScreen since it doesn't use MaterialAlertDialogs -->
-        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <!-- Workaround for AndroidX PreferenceScreen since it uses colorAccent as categories text color -->
+        <!-- AndroidX PreferenceScreen (MD3) -->
         <item name="colorAccent">?attr/colorPrimary</item>
-        <!-- Override the default divider used in PreferenceScreen -->
-        <item name="preferenceFragmentCompatStyle">@style/App.PreferenceFragment.Material</item>
-        <!-- Override the default switch preference style to use the MD3 switch -->
         <item name="switchPreferenceCompatStyle">
-            @style/App.Preference.SwitchPreferenceCompat.Material3
+            @style/SwitchPreferenceCompat
         </item>
-        <!-- Override the default divider used by DividerItemDecoration -->
-        <item name="android:listDivider">@drawable/preference_list_divider_m3</item>
     </style>
-
 
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="colorPrimary">?attr/colorSurface</item>
@@ -123,13 +115,9 @@
     </style>
 
     <!-- Override the default switch preference style to use the MD3 switch -->
-    <style name="App.Preference.SwitchPreferenceCompat.Material3" parent="Preference.SwitchPreferenceCompat.Material">
+    <style name="SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
         <item name="android:widgetLayout">@layout/preference_widget_material_switch</item>
     </style>
 
-    <!-- Override the default divider used in PreferenceScreen -->
-    <style name="App.PreferenceFragment.Material" parent="PreferenceFragment.Material">
-        <item name="android:divider">@drawable/preference_list_divider_m3</item>
-    </style>
 
 </resources>

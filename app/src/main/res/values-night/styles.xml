@@ -40,18 +40,11 @@
         <item name="textAllCaps">false</item>
         <item name="chipChoiceStyle">@style/ChipChoice</item>
 
-        <!-- Workaround for AndroidX PreferenceScreen since it doesn't use MaterialAlertDialogs -->
-        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
-        <!-- Workaround for AndroidX PreferenceScreen since it uses colorAccent as categories text color -->
+        <!-- AndroidX PreferenceScreen (MD3) -->
         <item name="colorAccent">?attr/colorPrimary</item>
-        <!-- Override the default divider used in PreferenceScreen -->
-        <item name="preferenceFragmentCompatStyle">@style/App.PreferenceFragment.Material</item>
-        <!-- Override the default switch preference style to use the MD3 switch -->
         <item name="switchPreferenceCompatStyle">
-            @style/App.Preference.SwitchPreferenceCompat.Material3
+            @style/SwitchPreferenceCompat
         </item>
-        <!-- Override the default divider used by DividerItemDecoration -->
-        <item name="android:listDivider">@drawable/preference_list_divider_m3</item>
     </style>
 
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
@@ -64,8 +57,9 @@
         <item name="materialAlertDialogTitlePanelStyle">@style/TitlePanelStyleCenter</item>
         <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyleCenter</item>
     </style>
-    <style name="TitlePanelStyleCenter" parent="MaterialAlertDialog.Material3.Title.Panel.CenterStacked">
-    </style>
+
+    <style name="TitlePanelStyleCenter" parent="MaterialAlertDialog.Material3.Title.Panel.CenterStacked" />
+
     <style name="TitleTextStyleCenter" parent="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>

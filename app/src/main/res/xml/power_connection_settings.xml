@@ -11,10 +11,10 @@
         app:singleLineTitle="false" />
 
     <PreferenceCategory
-        app:allowDividerAbove="false"
-        app:allowDividerBelow="false"
-        app:icon="@drawable/ic_sound_24dp"
-        android:title="@string/category_sound">
+        android:title="@string/category_sound"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        app:icon="@drawable/ic_sound_24dp">
         <Preference
             android:key="ac_connected_sound"
             android:title="@string/pref_power_connected_ac_sound_title"
@@ -32,8 +32,8 @@
             android:inputType="number"
             android:key="sound_delay"
             android:title="@string/pref_sound_delay_title"
-            app:useSimpleSummaryProvider="true"
-            app:singleLineTitle="false" />
+            app:singleLineTitle="false"
+            app:useSimpleSummaryProvider="true" />
         <Preference
             android:key="reset_sound"
             android:title="@string/reset_sound"
@@ -42,53 +42,53 @@
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:allowDividerAbove="false"
-        app:allowDividerBelow="false"
-        app:icon="@drawable/ic_vibration_24"
-        android:title="@string/category_vibration">
+        android:title="@string/category_vibration"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        app:icon="@drawable/ic_vibration_24">
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="enable_vibration"
             android:summary="@string/pref_enable_vibration_smry"
             android:title="@string/pref_enable_vibration_title"
-            app:singleLineTitle="false"/>
+            app:singleLineTitle="false" />
         <ListPreference
             android:defaultValue="450"
             android:entries="@array/vibrate_key"
             android:entryValues="@array/vibrate_value"
             android:key="vibrate_duration"
             android:title="@string/pref_vibration_duration_title"
-            app:useSimpleSummaryProvider="true"
-            app:singleLineTitle="false"/>
+            app:singleLineTitle="false"
+            app:useSimpleSummaryProvider="true" />
         <EditTextPreference
             android:defaultValue="450"
             android:inputType="number"
             android:key="custom_vibrate_duration"
             android:title="@string/pref_custom_vibration_duration_title"
-            app:useSimpleSummaryProvider="true"
-            app:singleLineTitle="false"/>
+            app:singleLineTitle="false"
+            app:useSimpleSummaryProvider="true" />
         <ListPreference
             android:defaultValue="connected"
             android:entries="@array/vibrate_mode_key"
             android:entryValues="@array/vibrate_mode_value"
             android:key="vibrate_mode"
             android:title="@string/pref_vibration_mode_title"
-            app:useSimpleSummaryProvider="true"
-            app:singleLineTitle="false"/>
+            app:singleLineTitle="false"
+            app:useSimpleSummaryProvider="true" />
     </PreferenceCategory>
 
     <PreferenceCategory
-        app:allowDividerAbove="false"
-        app:allowDividerBelow="false"
-        app:icon="@drawable/ic_developer_24dp"
-        android:title="@string/category_advanced">
+        android:title="@string/category_advanced"
+        app:allowDividerAbove="true"
+        app:allowDividerBelow="true"
+        app:icon="@drawable/ic_developer_24dp">
 
         <SwitchPreferenceCompat
             android:defaultValue="false"
             android:key="enable_toast"
             android:summary="@string/pref_show_toast_smry"
             android:title="@string/pref_show_toast_title"
-            app:singleLineTitle="false"/>
+            app:singleLineTitle="false" />
 
     </PreferenceCategory>
 

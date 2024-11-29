@@ -84,6 +84,7 @@ import kotlin.time.Duration.Companion.seconds
 
 class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface {
 
+    private lateinit var powerConnectionReceiver: PowerConnectionReceiver
     private lateinit var pref: Prefs
     private var screenTimeJob: Job? = null
     private var jobService: Job? = null
@@ -358,7 +359,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
     }
 
     override fun onDestroy() {
-
+        unregisterReceiver(powerConnectionReceiver)
         instance = null
         isScreenTimeJob = false
         isJob = false
