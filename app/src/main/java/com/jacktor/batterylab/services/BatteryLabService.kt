@@ -1,7 +1,6 @@
 package com.jacktor.batterylab.services
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.display.DisplayManager
@@ -221,7 +220,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                 if ((status == BatteryManager.BATTERY_STATUS_DISCHARGING || status == BatteryManager.BATTERY_STATUS_NOT_CHARGING) && !isPowerConnected) {
 
                     val displayManager =
-                        getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+                        getSystemService(DISPLAY_SERVICE) as? DisplayManager
 
                     if (displayManager != null) display@ for (display in displayManager.displays) if (display.state == Display.STATE_ON) {
                         screenTime++
@@ -244,7 +243,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                 if (wakeLock == null) {
 
                     if (powerManager == null) powerManager = getSystemService(
-                        Context.POWER_SERVICE
+                        POWER_SERVICE
                     ) as PowerManager
 
                     wakeLock = powerManager?.newWakeLock(
@@ -465,7 +464,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
             secondsFullCharge++
         }
 
-        val displayManager = getSystemService(Context.DISPLAY_SERVICE) as? DisplayManager
+        val displayManager = getSystemService(DISPLAY_SERVICE) as? DisplayManager
 
         if (pref.getBoolean(
                 NOTIFY_BATTERY_IS_CHARGED, resources.getBoolean(
@@ -620,7 +619,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                                 )
                             }
                             historyFragment?.binding?.historyRecyclerView?.adapter =
-                                historyFragment?.historyAdapter
+                                historyFragment.historyAdapter
                         } else HistoryAdapter.instance?.update(applicationContext)
 
                     } else {
