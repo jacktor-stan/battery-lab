@@ -10,8 +10,8 @@ import com.jacktor.batterylab.interfaces.OverlayInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.OverlayService
-import com.jacktor.batterylab.utilities.PreferencesKeys.AUTO_START_UPDATE_APP
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_START_UPDATE_APP
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -9,7 +9,7 @@ import androidx.preference.PreferenceManager
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.utilities.Constants.DISABLED_DEBUG_OPTIONS_HOST
 import com.jacktor.batterylab.utilities.Constants.ENABLED_DEBUG_OPTIONS_HOST
-import com.jacktor.batterylab.utilities.PreferencesKeys.ENABLED_DEBUG_OPTIONS
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLED_DEBUG_OPTIONS
 
 class DebugOptionsReceiver : BroadcastReceiver() {
 

@@ -1,4 +1,4 @@
-package com.jacktor.batterylab
+package com.jacktor.batterylab.activity
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -25,12 +25,14 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.collect.ImmutableList
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.jacktor.batterylab.MainApp
+import com.jacktor.batterylab.R
 import com.jacktor.batterylab.adapters.PremiumAdapter
 import com.jacktor.batterylab.databinding.ActivityPremiumBinding
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.isPremium
 import com.jacktor.batterylab.interfaces.RecyclerPremiumInterface
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.utilities.Premium.PREMIUM_ID
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -173,6 +175,7 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
     }
 
     private fun restorePurchases() {
+        @Suppress("DEPRECATION")
         PremiumInterface.billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
             .setListener { _: BillingResult?, _: List<Purchase?>? -> }.build()
         val finalBillingClient: BillingClient = PremiumInterface.billingClient as BillingClient
@@ -239,7 +242,7 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
             )
         } else {
             showSnackbar(binding.restoreFab, getString(R.string.wait), Snackbar.LENGTH_LONG)
-            if (MainApp.isGooglePlay(this)) {
+            if (MainApp.Companion.isGooglePlay(this)) {
                 if (PremiumInterface.billingClient?.isReady == true) {
                     launchPurchaseFlow(PremiumInterface.mProductDetailsList!![pos])
                 } else {

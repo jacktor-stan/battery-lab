@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.jacktor.batterylab.R
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.adapters.HistoryAdapter
 import com.jacktor.batterylab.databases.HistoryDB
 import com.jacktor.batterylab.databinding.HistoryFragmentBinding

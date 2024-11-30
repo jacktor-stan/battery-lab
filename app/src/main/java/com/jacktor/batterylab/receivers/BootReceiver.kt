@@ -11,8 +11,8 @@ import com.jacktor.batterylab.interfaces.OverlayInterface
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.Constants
-import com.jacktor.batterylab.utilities.PreferencesKeys.AUTO_START_BOOT
-import com.jacktor.batterylab.utilities.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_START_BOOT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
 import com.topjohnwu.superuser.Shell
 
 class BootReceiver : BroadcastReceiver() {

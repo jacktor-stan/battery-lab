@@ -16,9 +16,9 @@ import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.DebugOptionsInterface
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.OverlayService
-import com.jacktor.batterylab.utilities.PreferencesKeys
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.FORCIBLY_SHOW_RATE_THE_APP
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DESIGN_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FORCIBLY_SHOW_RATE_THE_APP
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -106,7 +106,7 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
                     Toast.makeText(requireContext(), getString(R.string.success),
                         Toast.LENGTH_LONG).show()
                 }
-                catch (e: KotlinNullPointerException) {
+                catch (_: KotlinNullPointerException) {
                     Toast.makeText(requireContext(), getString(R.string.error),
                         Toast.LENGTH_LONG).show()
                 }

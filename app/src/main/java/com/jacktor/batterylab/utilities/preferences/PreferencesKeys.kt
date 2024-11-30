@@ -1,8 +1,9 @@
-package com.jacktor.batterylab.utilities
+package com.jacktor.batterylab.utilities.preferences
 
 object PreferencesKeys {
 
     // Service & Notification
+    const val POWER_CONNECTION_SERVICE = "power_connection_service"
     const val SHOW_STOP_SERVICE = "show_stop_service"
     const val SERVICE_TIME = "service_time"
     const val STOP_THE_SERVICE_WHEN_THE_CD = "stop_the_service_when_the_cd"
@@ -107,7 +108,17 @@ object PreferencesKeys {
     const val NUMBER_OF_CYCLES = "number_of_cycles"
     const val NUMBER_OF_FULL_CHARGES = "number_of_full_charges"
 
-    //Other
+    // Power Connection Preferences
+    const val AC_CONNECTED_SOUND = "ac_connected_sound"
+    const val USB_CONNECTED_SOUND = "usb_connected_sound"
+    const val DISCONNECTED_SOUND = "disconnected_sound"
+    const val ENABLE_VIBRATION = "enable_vibration"
+    const val ENABLE_TOAST = "enable_toast"
+    const val VIBRATE_MODE = "vibrate_mode"
+    const val CUSTOM_VIBRATE_DURATION = "custom_vibrate_duration"
+    const val SOUND_DELAY = "sound_delay"
+
+    // Other
     const val IS_REQUEST_RATE_THE_APP = "is_request_rate_the_app"
     const val UPDATE_TEMP_SCREEN_TIME = "update_temp_screen_time"
 }

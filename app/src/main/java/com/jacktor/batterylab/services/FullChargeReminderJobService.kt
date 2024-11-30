@@ -8,8 +8,8 @@ import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.NotificationInterface
 import com.jacktor.batterylab.utilities.Constants
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_FULL_CHARGE_REMINDER
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_FULL_CHARGE_REMINDER
 
 
 class FullChargeReminderJobService : JobService(), NotificationInterface {

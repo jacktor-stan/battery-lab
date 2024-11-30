@@ -23,8 +23,8 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchaseHistoryParams
 import com.android.billingclient.api.queryPurchaseHistory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.MainActivity
-import com.jacktor.batterylab.PremiumActivity
+import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.activity.PremiumActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.HistoryFragment
 import com.jacktor.batterylab.helpers.HistoryHelper
@@ -33,22 +33,22 @@ import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.CheckPremiumJob
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.Constants
-import com.jacktor.batterylab.utilities.PreferencesKeys.BYPASS_DND
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
-import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT
-import com.jacktor.batterylab.utilities.PreferencesKeys.ENABLED_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_FULL_CHARGE_REMINDER
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_OVERHEAT_OVERCOOL
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
-import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_BATTERY_INFORMATION
-import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_STOP_SERVICE
-import com.jacktor.batterylab.utilities.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
-import com.jacktor.batterylab.utilities.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
-import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BYPASS_DND
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_IN_WH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLED_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_FULL_CHARGE_REMINDER
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_OVERHEAT_OVERCOOL
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SHOW_BATTERY_INFORMATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SHOW_STOP_SERVICE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TEXT_FONT
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.utilities.Premium.PREMIUM_ID
 import com.jacktor.batterylab.utilities.Premium.TOKEN_COUNT
 import com.jacktor.batterylab.utilities.Premium.TOKEN_PREF
@@ -200,7 +200,7 @@ interface PremiumInterface : PurchasesUpdatedListener {
         }
     }
 
-    private fun showNotInstalledGooglePlayDialog(context: Context) {
+    /*private fun showNotInstalledGooglePlayDialog(context: Context) {
         MaterialAlertDialogBuilder(context).apply {
             setIcon(R.drawable.ic_instruction_not_supported_24dp)
             setTitle(R.string.error)
@@ -208,7 +208,7 @@ interface PremiumInterface : PurchasesUpdatedListener {
             setPositiveButton(android.R.string.ok) { d, _ -> d.dismiss() }
             show()
         }
-    }
+    }*/
 
     fun launchPurchaseFlow(productDetails: ProductDetails?) {
 

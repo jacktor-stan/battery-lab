@@ -15,41 +15,41 @@ import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.Constants.NUMBER_OF_CYCLES_PATH
-import com.jacktor.batterylab.utilities.PreferencesKeys.AVERAGE_CHARGE_DISCHARGE_CURRENT_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.AVERAGE_TEMPERATURE_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_HEALTH_ANDROID_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_WEAR_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGE_DISCHARGE_CURRENT_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_CURRENT_LIMIT_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_TIME_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.CURRENT_CAPACITY_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.ENABLED_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.MAX_CHARGE_DISCHARGE_CURRENT_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.MIN_CHARGE_DISCHARGE_CURRENT_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.CHARGING_TIME_REMAINING_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.FAST_CHARGE_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.MAXIMUM_TEMPERATURE_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.MINIMUM_TEMPERATURE_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES_ANDROID_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_FULL_CHARGES_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.ONLY_VALUES_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.REMAINING_BATTERY_TIME_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.SOURCE_OF_POWER
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.SCREEN_TIME_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.STATUS_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.TEMPERATURE_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.VOLTAGE_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_FONT
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_LOCATION
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_SIZE
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_OPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_TEXT_STYLE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AVERAGE_CHARGE_DISCHARGE_CURRENT_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AVERAGE_TEMPERATURE_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_HEALTH_ANDROID_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_WEAR_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CHARGE_DISCHARGE_CURRENT_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CHARGING_CURRENT_LIMIT_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CHARGING_TIME_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CURRENT_CAPACITY_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLED_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.MAX_CHARGE_DISCHARGE_CURRENT_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.MIN_CHARGE_DISCHARGE_CURRENT_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CHARGING_TIME_REMAINING_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FAST_CHARGE_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.MAXIMUM_TEMPERATURE_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.MINIMUM_TEMPERATURE_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES_ANDROID_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_FULL_CHARGES_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ONLY_VALUES_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.REMAINING_BATTERY_TIME_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SOURCE_OF_POWER
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SCREEN_TIME_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.STATUS_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TEMPERATURE_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.VOLTAGE_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_FONT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_LOCATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_SIZE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_OPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_TEXT_STYLE
 import com.topjohnwu.superuser.Shell
 import java.io.File
 import java.text.DecimalFormat
@@ -131,10 +131,11 @@ class OverlayFragment : PreferenceFragmentCompat(), BatteryInfoInterface {
 
                 true -> {
 
+                    @Suppress("KotlinConstantConditions")
                     if (OverlayService.instance == null
                         && OverlayInterface.isEnabledOverlay(
                             requireContext(),
-                            newValue as? Boolean == true
+                            newValue == true
                         )
                     )
                         ServiceHelper.startService(
@@ -634,9 +635,9 @@ class OverlayFragment : PreferenceFragmentCompat(), BatteryInfoInterface {
 
     private fun enableAllOverlay(isEnable: Boolean?) {
 
-        onlyValuesOverlay?.isEnabled = isEnable ?: onlyValuesOverlay?.isEnabled ?: false
-        overlayLocation?.isEnabled = isEnable ?: overlayLocation?.isEnabled ?: false
-        appearanceCategory?.isEnabled = isEnable ?: appearanceCategory?.isEnabled ?: false
-        overlayCategory?.isEnabled = isEnable ?: overlayCategory?.isEnabled ?: false
+        onlyValuesOverlay?.isEnabled = (isEnable ?: onlyValuesOverlay?.isEnabled) == true
+        overlayLocation?.isEnabled = (isEnable ?: overlayLocation?.isEnabled) == true
+        appearanceCategory?.isEnabled = (isEnable ?: appearanceCategory?.isEnabled) == true
+        overlayCategory?.isEnabled = (isEnable ?: overlayCategory?.isEnabled) == true
     }
 }

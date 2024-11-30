@@ -6,8 +6,8 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.preference.PreferenceManager
 import com.jacktor.batterylab.R
-import com.jacktor.batterylab.utilities.PreferencesKeys.AUTO_DARK_MODE
-import com.jacktor.batterylab.utilities.PreferencesKeys.DARK_MODE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_DARK_MODE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DARK_MODE
 
 object ThemeHelper {
 

@@ -8,14 +8,14 @@ import android.net.Uri
 import android.os.PowerManager
 import android.provider.Settings
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.R
 
 interface BatteryOptimizationsInterface {
 
     fun MainActivity.isIgnoringBatteryOptimizations(): Boolean {
         val powerManager = getSystemService(Context.POWER_SERVICE) as? PowerManager
-        return powerManager?.isIgnoringBatteryOptimizations(packageName) ?: false
+        return powerManager?.isIgnoringBatteryOptimizations(packageName) == true
     }
 
     fun MainActivity.showRequestIgnoringBatteryOptimizationsDialog() {

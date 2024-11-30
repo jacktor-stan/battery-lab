@@ -14,15 +14,21 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.widget.Toast
 import com.jacktor.batterylab.R
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AC_CONNECTED_SOUND
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CUSTOM_VIBRATE_DURATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DISCONNECTED_SOUND
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLE_TOAST
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLE_VIBRATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SOUND_DELAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.USB_CONNECTED_SOUND
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.VIBRATE_MODE
+import com.jacktor.batterylab.utilities.preferences.Prefs
 
 class PowerConnectionReceiver : BroadcastReceiver() {
     private lateinit var prefs: Prefs
 
     override fun onReceive(context: Context, intent: Intent) {
         init(context)
-
-        if (!prefs.getBoolean("power_connection_service", false)) return
 
         when (intent.action) {
             Intent.ACTION_POWER_CONNECTED -> handlePowerChange(
@@ -36,11 +42,11 @@ class PowerConnectionReceiver : BroadcastReceiver() {
     }
 
     private fun handlePowerChange(context: Context, isConnected: Boolean) {
-        val vibrationMode = prefs.getString("vibrate_mode", "disconnected")
-        val duration = prefs.getString("custom_vibrate_duration", "450")!!.toLong()
-        val delay = prefs.getString("sound_delay", "550")!!.toLong()
+        val vibrationMode = prefs.getString(VIBRATE_MODE, "disconnected")
+        val duration = prefs.getString(CUSTOM_VIBRATE_DURATION, "450")!!.toLong()
+        val delay = prefs.getString(SOUND_DELAY, "550")!!.toLong()
 
-        if (prefs.getBoolean("enable_vibration", true)) {
+        if (prefs.getBoolean(ENABLE_VIBRATION, true)) {
             handleVibration(context, duration, isConnected, vibrationMode)
         }
 
@@ -52,7 +58,7 @@ class PowerConnectionReceiver : BroadcastReceiver() {
             }
         }, delay)
 
-        if (prefs.getBoolean("enable_toast", false)) {
+        if (prefs.getBoolean(ENABLE_TOAST, false)) {
             showToast(context, isConnected)
         }
     }
@@ -88,12 +94,12 @@ class PowerConnectionReceiver : BroadcastReceiver() {
 
     private fun playPowerConnectedSound(context: Context) {
         val isAcConnected = isAcConnected(context)
-        val prefKey = if (isAcConnected) "ac_connected_sound" else "usb_connected_sound"
+        val prefKey = if (isAcConnected) AC_CONNECTED_SOUND else USB_CONNECTED_SOUND
         playSound(context, prefKey)
     }
 
     private fun playPowerDisconnectedSound(context: Context) {
-        playSound(context, "disconnected_sound")
+        playSound(context, DISCONNECTED_SOUND)
     }
 
     private fun playSound(context: Context, prefKey: String) {

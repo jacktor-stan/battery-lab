@@ -13,8 +13,8 @@ import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.TextAppearanceHelper
 import com.jacktor.batterylab.interfaces.RecyclerKernelCheckedChangeListener
 import com.jacktor.batterylab.interfaces.RecyclerKernelClickListener
-import com.jacktor.batterylab.utilities.PreferencesKeys
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.views.KernelModel
 
 class KernelAdapter(

@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.preference.PreferenceManager
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
 import com.jacktor.batterylab.R
@@ -17,15 +17,15 @@ import com.jacktor.batterylab.interfaces.NotificationInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.utilities.Constants
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_TO
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_WITH
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
-import com.jacktor.batterylab.utilities.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_WITH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
 
 class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
 
@@ -43,7 +43,7 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
                     BatteryLabService.instance?.isPluggedOrUnplugged = true
 
                     val isCheckedUpdateFromGooglePlay =
-                        MainActivity.instance?.isCheckUpdateFromGooglePlay ?: false
+                        MainActivity.instance?.isCheckUpdateFromGooglePlay == true
 
                     MainActivity.instance?.isCheckUpdateFromGooglePlay =
                         !isCheckedUpdateFromGooglePlay

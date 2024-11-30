@@ -12,16 +12,16 @@ import com.jacktor.batterylab.helpers.TimeHelper
 import com.jacktor.batterylab.utilities.Constants.CHARGING_VOLTAGE_WATT
 import com.jacktor.batterylab.utilities.Constants.NOMINAL_BATTERY_VOLTAGE
 import com.jacktor.batterylab.utilities.Constants.NUMBER_OF_CYCLES_PATH
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.ONLY_VALUES_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_CHARGE_DISCHARGE_CURRENT
-import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.VOLTAGE_UNIT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_IN_WH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DESIGN_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ONLY_VALUES_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UNIT_OF_CHARGE_DISCHARGE_CURRENT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.VOLTAGE_UNIT
 import com.topjohnwu.superuser.Shell
 import java.io.BufferedReader
 import java.io.File
@@ -89,7 +89,7 @@ interface BatteryInfoInterface {
         } else {
             batteryIntent?.getIntExtra(BatteryManager.EXTRA_LEVEL, 0)
         }
-    } catch (e: RuntimeException) {
+    } catch (_: RuntimeException) {
 
         val batteryIntent = try {
             context.registerReceiver(
@@ -97,7 +97,7 @@ interface BatteryInfoInterface {
                     Intent.ACTION_BATTERY_CHANGED
                 )
             )
-        } catch (e: RuntimeException) {
+        } catch (_: RuntimeException) {
             null
         }
 
@@ -130,7 +130,7 @@ interface BatteryInfoInterface {
             getMaxAverageMinChargeDischargeCurrent(status, chargeCurrent)
 
             chargeCurrent
-        } catch (e: RuntimeException) {
+        } catch (_: RuntimeException) {
 
             val status = batteryIntent?.getIntExtra(
                 BatteryManager.EXTRA_STATUS,
@@ -258,7 +258,7 @@ interface BatteryInfoInterface {
                     chargingCurrentLimit = ((chargingCurrentLimit?.toInt() ?: 0) / 1000).toString()
 
                 chargingCurrentLimit
-            } catch (e: IOException) {
+            } catch (_: IOException) {
                 chargingCurrentLimit
             }
         } else null
@@ -361,7 +361,7 @@ interface BatteryInfoInterface {
 
                 else -> currentCapacity
             }
-        } catch (e: RuntimeException) {
+        } catch (_: RuntimeException) {
             0.001
         }
 
@@ -782,7 +782,7 @@ interface BatteryInfoInterface {
         var numberOfCyclesRoot = 0
 
         val result = Shell.cmd("cat $NUMBER_OF_CYCLES_PATH").exec()
-        if (result.out.size != 0) {
+        if (result.out.isNotEmpty()) {
             numberOfCyclesRoot = result.out[0].toInt()
         }
 

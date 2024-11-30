@@ -1,4 +1,4 @@
-package com.jacktor.batterylab
+package com.jacktor.batterylab.activity
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -26,9 +26,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isGooglePlay
 import com.jacktor.batterylab.MainApp.Companion.isInstalledGooglePlay
+import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ActivityMainBinding
 import com.jacktor.batterylab.fragments.AboutFragment
 import com.jacktor.batterylab.fragments.BackupSettingsFragment
@@ -61,21 +63,21 @@ import com.jacktor.batterylab.utilities.AdMob
 import com.jacktor.batterylab.utilities.Constants
 import com.jacktor.batterylab.utilities.Constants.IMPORT_RESTORE_SETTINGS_EXTRA
 import com.jacktor.batterylab.utilities.Constants.POST_NOTIFICATIONS_PERMISSION_REQUEST_CODE
-import com.jacktor.batterylab.utilities.PreferencesKeys.AUTO_START_OPEN_APP
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_TO
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_WITH
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.ENABLED_OVERLAY
-import com.jacktor.batterylab.utilities.PreferencesKeys.IS_REQUEST_RATE_THE_APP
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_FULL_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_START_OPEN_APP
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_WITH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DESIGN_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLED_OVERLAY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.IS_REQUEST_RATE_THE_APP
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_FULL_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.views.CenteredTopAppBar
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -151,7 +153,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
         //ADS
         if (!isPremium) loadAds()
 
-        MainApp.currentTheme = ThemeHelper.currentTheme(resources.configuration)
+        MainApp.Companion.currentTheme = ThemeHelper.currentTheme(resources.configuration)
 
         fragment = tempFragment
 
@@ -170,7 +172,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
         topAppBar = findViewById(R.id.topAppBar)
         navigation = binding.navigation
 
-        prefArrays = MainApp.getSerializable(
+        prefArrays = MainApp.Companion.getSerializable(
             this, IMPORT_RESTORE_SETTINGS_EXTRA,
             HashMap::class.java
         )
@@ -336,7 +338,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
             ) > 0.0
 
 
-        val prefArrays = MainApp.getSerializable(
+        val prefArrays = MainApp.Companion.getSerializable(
             this, IMPORT_RESTORE_SETTINGS_EXTRA,
             HashMap::class.java
         )
@@ -388,7 +390,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                 newConfig.uiMode and Configuration.UI_MODE_NIGHT_YES or
                 newConfig.uiMode and Configuration.UI_MODE_NIGHT_NO
 
-        if (newTheme != MainApp.currentTheme) {
+        if (newTheme != MainApp.Companion.currentTheme) {
 
             tempFragment = fragment
 
@@ -607,7 +609,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                         )
                     )
                     pref!!.setBoolean(IS_REQUEST_RATE_THE_APP, false)
-                } catch (e: ActivityNotFoundException) {
+                } catch (_: ActivityNotFoundException) {
                     Toast.makeText(
                         this@MainActivity, getString(
                             R.string.unknown_error

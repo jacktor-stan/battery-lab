@@ -5,7 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.widget.Toast
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.R
 import xyz.kumaraswamy.autostart.Autostart
 import xyz.kumaraswamy.autostart.Utils
@@ -54,7 +54,7 @@ interface ManufacturerInterface {
 
                         showXiaomiBackgroundActivityControlDialog()
                     }
-                    catch (e: ActivityNotFoundException) {
+                    catch (_: ActivityNotFoundException) {
                         startActivity(Intent().setClassName("com.miui.securitycenter",
                             "com.miui.permcenter.autostart.AutoStartManagementActivity"))
 

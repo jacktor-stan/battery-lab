@@ -10,8 +10,8 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.MainActivity
-import com.jacktor.batterylab.PremiumActivity
+import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.activity.PremiumActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ShowScriptDialogBinding
 import com.jacktor.batterylab.fragments.ChargeDischargeFragment
@@ -24,8 +24,8 @@ import com.jacktor.batterylab.interfaces.KernelInterface.Companion.getKernelFrom
 import com.jacktor.batterylab.interfaces.KernelInterface.Companion.resetScript
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
-import com.jacktor.batterylab.utilities.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.EXECUTE_SCRIPT_ON_BOOT
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.utilities.RootChecker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

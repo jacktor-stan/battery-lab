@@ -23,7 +23,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.StatusBarHelper
@@ -43,17 +43,17 @@ import com.jacktor.batterylab.utilities.Constants.OPEN_APP_REQUEST_CODE
 import com.jacktor.batterylab.utilities.Constants.OVERHEAT_OVERCOOL_CHANNEL_ID
 import com.jacktor.batterylab.utilities.Constants.SERVICE_CHANNEL_ID
 import com.jacktor.batterylab.utilities.Constants.STOP_SERVICE_REQUEST_CODE
-import com.jacktor.batterylab.utilities.PreferencesKeys
-import com.jacktor.batterylab.utilities.PreferencesKeys.BYPASS_DND
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_IN_WH
-import com.jacktor.batterylab.utilities.PreferencesKeys.IS_SHOW_BATTERY_INFORMATION
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERCOOL_DEGREES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERHEAT_DEGREES
-import com.jacktor.batterylab.utilities.PreferencesKeys.SERVICE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_BATTERY_INFORMATION
-import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_EXPANDED_NOTIFICATION
-import com.jacktor.batterylab.utilities.PreferencesKeys.SHOW_STOP_SERVICE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BYPASS_DND
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_IN_WH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.IS_SHOW_BATTERY_INFORMATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERCOOL_DEGREES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERHEAT_DEGREES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SERVICE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SHOW_BATTERY_INFORMATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SHOW_EXPANDED_NOTIFICATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.SHOW_STOP_SERVICE
 import java.text.DecimalFormat
 
 @SuppressLint("StaticFieldLeak")
@@ -1136,7 +1136,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                 R.id.battery_level_service_notification, context.getString(
                     R.string.battery_level_with_title, try {
                         "${getBatteryLevel(context)}%"
-                    } catch (e: RuntimeException) {
+                    } catch (_: RuntimeException) {
                         R.string.unknown
                     }
                 )
@@ -1272,7 +1272,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                 R.id.battery_level_service_notification, context.getString(
                     R.string.battery_level_with_title, try {
                         "${getBatteryLevel(context)}%"
-                    } catch (e: RuntimeException) {
+                    } catch (_: RuntimeException) {
                         R.string.unknown
                     }
                 )
@@ -1407,7 +1407,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                 R.id.battery_level_service_notification, context.getString(
                     R.string.battery_level_with_title, try {
                         "${getBatteryLevel(context)}%"
-                    } catch (e: RuntimeException) {
+                    } catch (_: RuntimeException) {
                         R.string.unknown
                     }
                 )
@@ -1538,7 +1538,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                 R.id.battery_level_service_notification, context.getString(
                     R.string.battery_level_with_title, try {
                         "${getBatteryLevel(context)}%"
-                    } catch (e: RuntimeException) {
+                    } catch (_: RuntimeException) {
                         R.string.unknown
                     }
                 )
@@ -1660,7 +1660,7 @@ interface NotificationInterface : BatteryInfoInterface, PremiumInterface {
                 R.id.battery_level_service_notification, context.getString(
                     R.string.battery_level_with_title, try {
                         "${getBatteryLevel(context)}%"
-                    } catch (e: RuntimeException) {
+                    } catch (_: RuntimeException) {
                         R.string.unknown
                     }
                 )

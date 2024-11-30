@@ -26,7 +26,7 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ChangeBatteryIsChargedDischargedVoltageDialogBinding
 import com.jacktor.batterylab.helpers.ServiceHelper
@@ -36,19 +36,19 @@ import com.jacktor.batterylab.services.FullChargeReminderJobService
 import com.jacktor.batterylab.utilities.Constants
 import com.jacktor.batterylab.utilities.Constants.EXPORT_NOTIFICATION_SOUNDS_REQUEST_CODE
 import com.jacktor.batterylab.utilities.Constants.POST_NOTIFICATIONS_PERMISSION_REQUEST_CODE
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_NOTIFY_DISCHARGED_VOLTAGE
-import com.jacktor.batterylab.utilities.PreferencesKeys.FULL_CHARGE_REMINDER_FREQUENCY
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED_VOLTAGE
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_FULL_CHARGE_REMINDER
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_OVERHEAT_OVERCOOL
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERCOOL_DEGREES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERHEAT_DEGREES
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_NOTIFY_DISCHARGED_VOLTAGE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FULL_CHARGE_REMINDER_FREQUENCY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED_VOLTAGE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_FULL_CHARGE_REMINDER
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_OVERHEAT_OVERCOOL
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERCOOL_DEGREES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERHEAT_DEGREES
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -262,7 +262,7 @@ class BatteryStatusInformationFragment : PreferenceFragmentCompat() {
                 NotificationInterface.NOTIFICATION_FULLY_CHARGED_ID
             )
 
-            val isChecked = (newValue as? Boolean) ?: false
+            val isChecked = (newValue as? Boolean) == true
 
             notifyFullChargeReminder?.isEnabled = isChecked
             fullChargeReminderFrequency?.isEnabled = isChecked &&
@@ -278,7 +278,7 @@ class BatteryStatusInformationFragment : PreferenceFragmentCompat() {
 
         notifyFullChargeReminder?.setOnPreferenceChangeListener { _, newValue ->
 
-            val isChecked = (newValue as? Boolean) ?: false
+            val isChecked = (newValue as? Boolean) == true
 
             fullChargeReminderFrequency?.isEnabled = isChecked
 

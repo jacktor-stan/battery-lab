@@ -16,7 +16,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.utilities.FileUtils
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.Prefs
 
 class PowerConnectionSettingsFragment : PreferenceFragmentCompat(), PremiumInterface {
 
@@ -87,7 +87,7 @@ class PowerConnectionSettingsFragment : PreferenceFragmentCompat(), PremiumInter
 
     private fun setupListeners() {
         preferencesMap["enablePowerConnection"]?.setOnPreferenceChangeListener { _, newValue ->
-            val isEnabled = newValue as? Boolean ?: false
+            val isEnabled = newValue as? Boolean == true
             togglePreferences(isEnabled)
             true
         }

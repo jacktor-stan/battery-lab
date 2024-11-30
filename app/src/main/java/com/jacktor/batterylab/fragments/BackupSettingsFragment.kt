@@ -13,7 +13,7 @@ import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.HistoryHelper
 import com.jacktor.batterylab.interfaces.BackupSettingsInterface
 import com.jacktor.batterylab.utilities.Constants
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.Prefs
 
 
 class BackupSettingsFragment : PreferenceFragmentCompat(), BackupSettingsInterface {

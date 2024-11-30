@@ -16,7 +16,7 @@ import com.jacktor.batterylab.helpers.TextAppearanceHelper
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.isPremium
-import com.jacktor.batterylab.utilities.PreferencesKeys
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys
 import java.text.DecimalFormat
 
 class HistoryAdapter(private var historyList: MutableList<History>) :

@@ -6,7 +6,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import androidx.core.content.ContextCompat
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
 import com.jacktor.batterylab.R
@@ -33,7 +33,7 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
                     BatteryLabService.instance?.isPluggedOrUnplugged = true
 
                     val isCheckedUpdateFromGooglePlay =
-                        MainActivity.instance?.isCheckUpdateFromGooglePlay ?: false
+                        MainActivity.instance?.isCheckUpdateFromGooglePlay == true
 
                     MainActivity.instance?.isCheckUpdateFromGooglePlay = !isCheckedUpdateFromGooglePlay
 

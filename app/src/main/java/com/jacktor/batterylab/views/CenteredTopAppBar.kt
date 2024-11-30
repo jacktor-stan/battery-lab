@@ -36,7 +36,7 @@ class CenteredTopAppBar : MaterialToolbar {
 
     override fun setSubtitle(subtitle: CharSequence) {
 
-        tvSubtitle?.visibility = View.VISIBLE
+        tvSubtitle?.visibility = VISIBLE
         tvSubtitle?.text = subtitle
     }
 

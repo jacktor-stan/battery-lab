@@ -4,16 +4,16 @@ import android.app.backup.BackupAgent
 import android.app.backup.BackupDataInput
 import android.app.backup.BackupDataOutput
 import android.os.ParcelFileDescriptor
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_TO
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_WITH
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_WITH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DESIGN_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.Prefs
 
 class ApplicationBackup : BackupAgent() {
 

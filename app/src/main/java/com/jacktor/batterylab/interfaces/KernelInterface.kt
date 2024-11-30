@@ -17,7 +17,7 @@ import com.jacktor.batterylab.databinding.ChangeKernelValueDialogBinding
 import com.jacktor.batterylab.databinding.ShellDialogBinding
 import com.jacktor.batterylab.fragments.tab.KernelFragment
 import com.jacktor.batterylab.utilities.Constants.SCRIPT_FILE_NAME
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.topjohnwu.superuser.Shell
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -199,6 +199,6 @@ interface KernelInterface {
 // Extension function for reading text from a file safely
 private fun File.readTextOrEmpty(): String = try {
     this.readText()
-} catch (e: IOException) {
+} catch (_: IOException) {
     ""
 }

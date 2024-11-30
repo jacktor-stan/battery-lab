@@ -15,7 +15,6 @@ import com.jacktor.batterylab.databinding.KernelFragmentBinding
 import com.jacktor.batterylab.interfaces.KernelInterface
 import com.jacktor.batterylab.interfaces.RecyclerKernelCheckedChangeListener
 import com.jacktor.batterylab.interfaces.RecyclerKernelClickListener
-import com.jacktor.batterylab.utilities.Prefs
 import com.jacktor.batterylab.utilities.RootUtils
 import com.jacktor.batterylab.views.KernelModel
 import com.topjohnwu.superuser.Shell
@@ -31,7 +30,7 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), KernelInterface,
     private lateinit var binding: KernelFragmentBinding
     private val data = mutableListOf<KernelModel>()
     private var adapter: KernelAdapter? = null
-    private var pref: Prefs? = null
+    //private var pref: Prefs? = null
     private val coroutineScope = CoroutineScope(Dispatchers.Main)
 
     companion object {
@@ -49,7 +48,7 @@ class KernelFragment : Fragment(R.layout.kernel_fragment), KernelInterface,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         instance = this
-        pref = Prefs(requireContext())
+        //pref = Prefs(requireContext())
 
         setupRecyclerView()
         setupRefreshListeners()

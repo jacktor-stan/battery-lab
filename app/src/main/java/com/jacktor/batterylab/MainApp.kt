@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.helpers.ThemeHelper
 import com.jacktor.batterylab.interfaces.PremiumInterface
@@ -114,7 +115,7 @@ class MainApp : Application(), PremiumInterface {
 
         if (newTheme != currentTheme) {
 
-            MainActivity.apply {
+            MainActivity.Companion.apply {
                 tempFragment = instance?.fragment
 
                 isRecreate = true
@@ -136,7 +137,7 @@ class MainApp : Application(), PremiumInterface {
             else packageManager.getPackageInfo(Constants.GOOGLE_PLAY_PACKAGE_NAME, 0)
 
             true
-        } catch (e: PackageManager.NameNotFoundException) {
+        } catch (_: PackageManager.NameNotFoundException) {
             false
         }
     }

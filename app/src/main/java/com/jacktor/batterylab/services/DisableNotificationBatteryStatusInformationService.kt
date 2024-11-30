@@ -6,7 +6,7 @@ import android.os.IBinder
 import androidx.preference.PreferenceManager
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.NotificationInterface
-import com.jacktor.batterylab.utilities.PreferencesKeys
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys
 
 class DisableNotificationBatteryStatusInformationService : Service() {
 

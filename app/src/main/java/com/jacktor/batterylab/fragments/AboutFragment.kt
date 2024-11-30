@@ -26,7 +26,7 @@ import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.RecyclerTeamInterface
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK_BATTERY_CAPCITY
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.views.TeamModel
 import org.json.JSONObject
 import java.io.IOException

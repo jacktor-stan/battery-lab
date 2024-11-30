@@ -19,7 +19,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.AddCustomHistoryDialogBinding
 import com.jacktor.batterylab.databinding.AddPrefKeyDialogBinding
@@ -32,38 +32,38 @@ import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.helpers.ThemeHelper
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.Constants
-import com.jacktor.batterylab.utilities.PreferencesKeys.AUTO_DARK_MODE
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_TO
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_WITH
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_NOTIFY_DISCHARGED_VOLTAGE
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.DARK_MODE
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.ENABLED_DEBUG_OPTIONS
-import com.jacktor.batterylab.utilities.PreferencesKeys.FORCIBLY_SHOW_RATE_THE_APP
-import com.jacktor.batterylab.utilities.PreferencesKeys.FULL_CHARGE_REMINDER_FREQUENCY
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_FULL_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_FONT
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_LOCATION
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_OPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_SIZE
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_TEXT_COLOR
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERLAY_TEXT_STYLE
-import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
-import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_FONT
-import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_SIZE
-import com.jacktor.batterylab.utilities.PreferencesKeys.TEXT_STYLE
-import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_CHARGE_DISCHARGE_CURRENT
-import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.VOLTAGE_UNIT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_DARK_MODE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_WITH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_NOTIFY_DISCHARGED_VOLTAGE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DARK_MODE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DESIGN_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.ENABLED_DEBUG_OPTIONS
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FORCIBLY_SHOW_RATE_THE_APP
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FULL_CHARGE_REMINDER_FREQUENCY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_FULL_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_FONT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_LOCATION
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_OPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_SIZE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_TEXT_COLOR
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERLAY_TEXT_STYLE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TEXT_FONT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TEXT_SIZE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TEXT_STYLE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UNIT_OF_CHARGE_DISCHARGE_CURRENT
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.VOLTAGE_UNIT
 import com.jacktor.batterylab.utilities.Premium.TOKEN_PREF
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -952,7 +952,7 @@ interface DebugOptionsInterface {
 
             dialogCreate.getButton(DialogInterface.BUTTON_POSITIVE).isEnabled = try {
                 historyCount.text?.toString()!!.toInt() > 0 && !HistoryHelper.isHistoryMax(context)
-            } catch (e: NumberFormatException) {
+            } catch (_: NumberFormatException) {
                 false
             } catch (e: Exception) {
                 Toast.makeText(
@@ -981,7 +981,7 @@ interface DebugOptionsInterface {
                             .isHistoryEmpty(context) && s.isNotEmpty() && s.toString().toInt() > 0
                                 && HistoryHelper.getHistoryCount(context) + s.toString().toInt() <=
                                 Constants.HISTORY_COUNT_MAX)
-                    } catch (e: NumberFormatException) {
+                    } catch (_: NumberFormatException) {
                         false
                     } catch (e: Exception) {
                         Toast.makeText(

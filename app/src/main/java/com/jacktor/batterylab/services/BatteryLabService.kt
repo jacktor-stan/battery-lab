@@ -11,7 +11,7 @@ import android.view.Display
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
@@ -46,32 +46,34 @@ import com.jacktor.batterylab.utilities.Constants.CHECK_PREMIUM_JOB_ID
 import com.jacktor.batterylab.utilities.Constants.NOMINAL_BATTERY_VOLTAGE
 import com.jacktor.batterylab.utilities.Constants.NOTIFY_FULL_CHARGE_REMINDER_JOB_ID
 import com.jacktor.batterylab.utilities.Constants.SERVICE_WAKELOCK_TIMEOUT
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_TO
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_LEVEL_WITH
-import com.jacktor.batterylab.utilities.PreferencesKeys.BATTERY_NOTIFY_DISCHARGED_VOLTAGE
-import com.jacktor.batterylab.utilities.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.DESIGN_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.FAST_CHARGE_SETTING
-import com.jacktor.batterylab.utilities.PreferencesKeys.FULL_CHARGE_REMINDER_FREQUENCY
-import com.jacktor.batterylab.utilities.PreferencesKeys.LAST_CHARGE_TIME
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED_VOLTAGE
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
-import com.jacktor.batterylab.utilities.PreferencesKeys.NOTIFY_OVERHEAT_OVERCOOL
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_CYCLES
-import com.jacktor.batterylab.utilities.PreferencesKeys.NUMBER_OF_FULL_CHARGES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERCOOL_DEGREES
-import com.jacktor.batterylab.utilities.PreferencesKeys.OVERHEAT_DEGREES
-import com.jacktor.batterylab.utilities.PreferencesKeys.PERCENT_ADDED
-import com.jacktor.batterylab.utilities.PreferencesKeys.RESIDUAL_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
-import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
-import com.jacktor.batterylab.utilities.Prefs
-import com.jacktor.batterylab.utilities.RegisterReceiver
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_WITH
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_NOTIFY_DISCHARGED_VOLTAGE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.DESIGN_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FAST_CHARGE_SETTING
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.FULL_CHARGE_REMINDER_FREQUENCY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_DISCHARGED_VOLTAGE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_BATTERY_IS_FULLY_CHARGED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NOTIFY_OVERHEAT_OVERCOOL
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_FULL_CHARGES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERCOOL_DEGREES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.OVERHEAT_DEGREES
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.POWER_CONNECTION_SERVICE
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
+import com.jacktor.batterylab.utilities.Receiver
+import com.jacktor.batterylab.utilities.preferences.PreferenceChangeListener
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -83,8 +85,9 @@ import kotlin.time.Duration.Companion.seconds
 
 class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface {
 
-    private lateinit var powerConnectionReceiver: PowerConnectionReceiver
     private lateinit var pref: Prefs
+    private lateinit var powerConnectionReceiver: PowerConnectionReceiver
+
     private var screenTimeJob: Job? = null
     private var jobService: Job? = null
     private var powerManager: PowerManager? = null
@@ -92,6 +95,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
     private var isScreenTimeJob = false
     private var isJob = false
     private var currentCapacity = 0
+    private var isReceiverRegistered = false
 
     var isFull = false
     var isStopService = false
@@ -102,22 +106,36 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
     var screenTime = 0L
     var secondsFullCharge = 0
 
-    companion object {
+    private val preferenceChangeListener =
+        PreferenceChangeListener { prefs, key ->
+            if (key == POWER_CONNECTION_SERVICE) {
+                val isEnabled = prefs.getBoolean(key, false)
+                if (isEnabled) {
+                    registerPowerConnectionReceiver()
+                } else {
+                    unregisterPowerConnectionReceiver()
+                }
+            }
+        }
 
+    companion object {
         var instance: BatteryLabService? = null
     }
 
     override fun onBind(p0: Intent?): IBinder? = null
 
     override fun onCreate() {
-
         if (instance == null) {
 
             super.onCreate()
 
             instance = this
+            pref = Prefs(this)
 
-            pref = Prefs(applicationContext)
+            pref.addOnPreferenceChangeListener(preferenceChangeListener)
+
+            // Register PowerConnectionReceiver
+            powerConnectionReceiver = PowerConnectionReceiver()
 
             screenTime = if (MainApp.tempScreenTime > 0L) MainApp.tempScreenTime
             else if (MainApp.isUpdateApp) pref.getLong(UPDATE_TEMP_SCREEN_TIME, 0L)
@@ -196,16 +214,13 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
-        // Register receiver (ConnectedDisconnectedSound)
-        val powerConnectionReceiver = PowerConnectionReceiver()
-
-        RegisterReceiver.register(this, powerConnectionReceiver, Intent.ACTION_POWER_CONNECTED)
-        RegisterReceiver.register(
-            this,
-            powerConnectionReceiver,
-            Intent.ACTION_POWER_DISCONNECTED
-        )
-
+        // Register PowerConnectionReceiver
+        var powerConnectionService = pref.getBoolean(POWER_CONNECTION_SERVICE, false)
+        if (!isReceiverRegistered && powerConnectionService) {
+            registerPowerConnectionReceiver()
+        } else if (isReceiverRegistered && !powerConnectionService) {
+            unregisterPowerConnectionReceiver()
+        }
 
         if (screenTimeJob == null) screenTimeJob = CoroutineScope(Dispatchers.Default).launch {
 
@@ -358,7 +373,12 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
     }
 
     override fun onDestroy() {
-        unregisterReceiver(powerConnectionReceiver)
+        pref.removeOnPreferenceChangeListener(preferenceChangeListener)
+
+        if (isReceiverRegistered) {
+            Receiver.unregister(this, powerConnectionReceiver)
+        }
+
         instance = null
         isScreenTimeJob = false
         isJob = false
@@ -418,7 +438,11 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
 
             pref.apply {
 
-                if (pref.getString(UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh") == "μAh") setInt(
+                if (pref.getString(
+                        UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY,
+                        "μAh"
+                    ) == "μAh"
+                ) setInt(
                     RESIDUAL_CAPACITY, (getCurrentCapacity(applicationContext) * 1000.0).toInt()
                 )
                 else setInt(
@@ -541,14 +565,18 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
         else pref.getInt(RESIDUAL_CAPACITY, 0) / 100
 
         val residualCapacity =
-            if (residualCapacityCurrent in 1..maxChargeCurrent || isTurboCharge(applicationContext) || pref.getBoolean(
+            if (residualCapacityCurrent in 1..maxChargeCurrent || isTurboCharge(
+                    applicationContext
+                ) || pref.getBoolean(
                     FAST_CHARGE_SETTING, resources.getBoolean(R.bool.fast_charge_setting)
                 )
             ) (currentCapacity.toDouble() + ((NOMINAL_BATTERY_VOLTAGE / 100.0) * designCapacity)).toInt()
             else currentCapacity
 
         val currentDate = DateHelper.getDate(
-            DateHelper.getCurrentDay(), DateHelper.getCurrentMonth(), DateHelper.getCurrentYear()
+            DateHelper.getCurrentDay(),
+            DateHelper.getCurrentMonth(),
+            DateHelper.getCurrentYear()
         )
 
         if (pref.getBoolean(
@@ -625,7 +653,8 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                     } else {
                         HistoryFragment.instance?.binding?.historyRecyclerView?.visibility =
                             View.GONE
-                        HistoryFragment.instance?.binding?.refreshHistory?.visibility = View.GONE
+                        HistoryFragment.instance?.binding?.refreshHistory?.visibility =
+                            View.GONE
                         HistoryFragment.instance?.binding?.emptyHistoryLayout?.visibility =
                             View.VISIBLE
                         HistoryFragment.instance?.binding?.refreshEmptyHistory?.visibility =
@@ -638,9 +667,11 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                             false
                     }
                 } else {
-                    HistoryFragment.instance?.binding?.historyRecyclerView?.visibility = View.GONE
+                    HistoryFragment.instance?.binding?.historyRecyclerView?.visibility =
+                        View.GONE
                     HistoryFragment.instance?.binding?.refreshHistory?.visibility = View.GONE
-                    HistoryFragment.instance?.binding?.emptyHistoryLayout?.visibility = View.VISIBLE
+                    HistoryFragment.instance?.binding?.emptyHistoryLayout?.visibility =
+                        View.VISIBLE
                     HistoryFragment.instance?.binding?.refreshEmptyHistory?.visibility =
                         View.VISIBLE
                     HistoryFragment.instance?.binding?.emptyHistoryText?.text =
@@ -670,5 +701,19 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
             if (wakeLock?.isHeld == true) wakeLock?.release()
         } catch (_: RuntimeException) {
         }
+    }
+
+    fun registerPowerConnectionReceiver() {
+        val filter = IntentFilter().apply {
+            addAction(Intent.ACTION_POWER_CONNECTED)
+            addAction(Intent.ACTION_POWER_DISCONNECTED)
+        }
+        Receiver.register(this, powerConnectionReceiver, filter)
+        isReceiverRegistered = true
+    }
+
+    fun unregisterPowerConnectionReceiver() {
+        Receiver.unregister(this, powerConnectionReceiver)
+        isReceiverRegistered = false
     }
 }

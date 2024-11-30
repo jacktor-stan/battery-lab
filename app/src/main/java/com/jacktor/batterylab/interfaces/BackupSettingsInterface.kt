@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
-import com.jacktor.batterylab.MainActivity
+import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.BackupSettingsFragment
@@ -14,9 +14,9 @@ import com.jacktor.batterylab.helpers.HistoryHelper
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.OverlayService
-import com.jacktor.batterylab.utilities.PreferencesKeys
-import com.jacktor.batterylab.utilities.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
-import com.jacktor.batterylab.utilities.Prefs
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.utilities.Premium.TOKEN_PREF
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
