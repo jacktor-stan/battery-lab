@@ -1,4 +1,4 @@
-package com.jacktor.batterylab.activity
+package com.jacktor.batterylab
 
 import android.Manifest
 import android.content.ActivityNotFoundException
@@ -26,11 +26,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isGooglePlay
 import com.jacktor.batterylab.MainApp.Companion.isInstalledGooglePlay
-import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ActivityMainBinding
 import com.jacktor.batterylab.fragments.AboutFragment
 import com.jacktor.batterylab.fragments.BackupSettingsFragment

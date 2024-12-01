@@ -11,7 +11,7 @@ import android.view.Display
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected

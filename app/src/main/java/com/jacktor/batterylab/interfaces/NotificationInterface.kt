@@ -23,7 +23,7 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE
 import androidx.core.content.ContextCompat
 import androidx.preference.PreferenceManager
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.StatusBarHelper

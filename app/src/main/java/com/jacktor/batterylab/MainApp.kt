@@ -7,7 +7,6 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.os.Build
-import com.jacktor.batterylab.activity.MainActivity
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.helpers.ThemeHelper
 import com.jacktor.batterylab.interfaces.PremiumInterface

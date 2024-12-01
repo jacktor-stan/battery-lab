@@ -26,7 +26,7 @@ import androidx.preference.SeekBarPreference
 import androidx.preference.SwitchPreferenceCompat
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ChangeBatteryIsChargedDischargedVoltageDialogBinding
 import com.jacktor.batterylab.helpers.ServiceHelper

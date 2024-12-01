@@ -13,7 +13,7 @@ import com.google.android.play.core.install.model.AppUpdateType
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.android.play.core.ktx.isFlexibleUpdateAllowed
 import com.google.android.play.core.ktx.isImmediateUpdateAllowed
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.AboutFragment
 import com.jacktor.batterylab.services.BatteryLabService

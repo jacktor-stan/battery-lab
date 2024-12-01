@@ -19,7 +19,7 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.AddCustomHistoryDialogBinding
 import com.jacktor.batterylab.databinding.AddPrefKeyDialogBinding

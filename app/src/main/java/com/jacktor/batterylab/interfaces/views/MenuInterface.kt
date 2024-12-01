@@ -10,7 +10,7 @@ import android.view.LayoutInflater
 import android.widget.Toast
 import androidx.appcompat.content.res.AppCompatResources
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.activity.PremiumActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.databinding.ShowScriptDialogBinding

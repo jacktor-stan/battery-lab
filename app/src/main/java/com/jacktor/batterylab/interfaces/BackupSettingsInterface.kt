@@ -6,7 +6,7 @@ import android.widget.Toast
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.Preference
 import androidx.preference.PreferenceManager
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.BackupSettingsFragment

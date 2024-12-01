@@ -25,6 +25,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import com.google.common.collect.ImmutableList
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.adapters.PremiumAdapter

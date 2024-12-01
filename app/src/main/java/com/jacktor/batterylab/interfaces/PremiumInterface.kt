@@ -23,7 +23,7 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchaseHistoryParams
 import com.android.billingclient.api.queryPurchaseHistory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.activity.MainActivity
+import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.activity.PremiumActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.HistoryFragment
