@@ -29,8 +29,7 @@ import com.jacktor.batterylab.adapters.ContributorsAdapter
 import com.jacktor.batterylab.interfaces.CheckUpdateInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.RecyclerContributorsInterface
-import com.jacktor.batterylab.utilities.Constants.GITHUB_API_CONTRIBUTORS
-import com.jacktor.batterylab.utilities.Constants.GITHUB_API_USER
+import com.jacktor.batterylab.utilities.Constants.BACKEND_API_CONTRIBUTORS
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK_BATTERY_CAPCITY
 import com.jacktor.batterylab.utilities.preferences.Prefs
@@ -40,7 +39,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONArray
-import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -65,7 +63,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerCont
     private lateinit var progressBar: LinearProgressIndicator
 
     // Contributors list
-    private var contributorsModelArrayList = ArrayList<ContributorsModel>()
+    private var contributorsModelArrayList: ArrayList<ContributorsModel> = ArrayList()
     private var currentPage = 0
     private val pageSize = 5
     private var totalPages = 0
@@ -244,6 +242,9 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerCont
 
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
+        // Reset data untuk menghindari duplikasi
+        contributorsModelArrayList.clear()
+
         if (isNetworkAvailable()) {
             fetchContributors()
         } else {
@@ -276,7 +277,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerCont
         CoroutineScope(Dispatchers.IO).launch {
             try {
                 val contributorsConnection =
-                    URL(GITHUB_API_CONTRIBUTORS).openConnection() as HttpURLConnection
+                    URL(BACKEND_API_CONTRIBUTORS).openConnection() as HttpURLConnection
                 contributorsConnection.connectTimeout = 5000
                 contributorsConnection.readTimeout = 5000
                 contributorsConnection.requestMethod = "GET"
@@ -285,20 +286,17 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerCont
                     val response =
                         contributorsConnection.inputStream.bufferedReader().use { it.readText() }
                     val contributorsArray = JSONArray(response)
-                    val contributorsDetails = ArrayList<ContributorsModel>()
 
                     for (i in 0 until contributorsArray.length()) {
                         val contributor = contributorsArray.getJSONObject(i)
                         val username = contributor.getString("login")
                         val avatarUrl = contributor.optString("avatar_url", "")
                         val contributions = contributor.optInt("contributions", 0)
+                        val name = contributor.optString("name", username)
 
-                        // Fetch nama dari username
-                        val name = fetchContributorName(username)
-
-                        contributorsDetails.add(
+                        contributorsModelArrayList.add(
                             ContributorsModel(
-                                name = name ?: username,
+                                name = name,
                                 username = username,
                                 avatarUrl = avatarUrl,
                                 contributions = contributions
@@ -306,21 +304,15 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerCont
                         )
                     }
 
-                    // Urutkan berdasarkan kontribusi
-                    contributorsDetails.sortByDescending { it.contributions }
+                    contributorsModelArrayList.sortByDescending { it.contributions }
+                    totalPages = (contributorsModelArrayList.size + pageSize - 1) / pageSize
 
-                    // Tentukan jumlah total halaman
-                    totalPages = (contributorsDetails.size + pageSize - 1) / pageSize
-
-                    // Atur halaman pertama
                     withContext(Dispatchers.Main) {
                         progressBar.visibility = View.GONE
-                        contributorsModelArrayList = contributorsDetails
                         currentPage = 0
                         displayPage()
                     }
 
-                    // Periksa apakah data lebih dari "pageSize" untuk menampilkan tombol Next/Prev
                     if (contributorsModelArrayList.size > pageSize) {
                         nextButton.visibility = View.VISIBLE
                         prevButton.visibility = View.VISIBLE
@@ -344,27 +336,6 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerCont
                     noInternetText.visibility = View.VISIBLE
                 }
             }
-        }
-    }
-
-    private fun fetchContributorName(username: String): String? {
-        return try {
-            val userDetailsConnection =
-                URL(GITHUB_API_USER + username).openConnection() as HttpURLConnection
-            userDetailsConnection.connectTimeout = 5000
-            userDetailsConnection.readTimeout = 5000
-            userDetailsConnection.requestMethod = "GET"
-
-            if (userDetailsConnection.responseCode == HttpURLConnection.HTTP_OK) {
-                val response =
-                    userDetailsConnection.inputStream.bufferedReader().use { it.readText() }
-                val userDetails = JSONObject(response)
-                userDetails.optString("name")
-            } else {
-                null
-            }
-        } catch (_: Exception) {
-            null
         }
     }
 
