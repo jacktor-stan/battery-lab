@@ -11,6 +11,9 @@ object Constants {
         "https://play.google.com/store/apps/details?id=com.jacktor.batterylab"
     const val GITHUB_LINK = "https://github.com/jacktor-stan/battery-lab"
     const val GITHUB_LINK_BATTERY_CAPCITY = "https://github.com/Ph03niX-X/CapacityInfo"
+    const val GITHUB_API_CONTRIBUTORS =
+        "https://api.github.com/repos/jacktor-stan/battery-lab/contributors"
+    const val GITHUB_API_USER = "https://api.github.com/users/"
     const val TELEGRAM_DEVELOPER_LINK = "https://t.me/deniliandi"
     const val GOOGLE_PLAY_PACKAGE_NAME = "com.android.vending"
     const val SERVICE_CHANNEL_ID = "service_channel"

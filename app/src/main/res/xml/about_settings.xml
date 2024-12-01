@@ -33,10 +33,10 @@
         app:singleLineTitle="false"
         app:title="@string/check_update" />
     <Preference
-        android:key="team"
+        android:key="contributors"
         app:icon="@drawable/ic_group_work_24dp"
         app:singleLineTitle="false"
-        app:title="Team" />
+        app:title="@string/contributors" />
 
     <Preference
         android:key="github"

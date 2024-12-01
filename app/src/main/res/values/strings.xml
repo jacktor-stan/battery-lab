@@ -371,7 +371,6 @@
     <string name="kernel_0" translatable="false">kernel: 0</string>
     <string name="text_font">Text Font</string>
     <string name="text_style">Text Style</string>
-    <string name="team">Team</string>
     <string name="ok">OK</string>
     <string name="username" translatable="false">\@%1$s</string>
     <string name="name">Name</string>
@@ -464,4 +463,10 @@
     <string name="text_size">Text Size</string>
     <string name="calibration">Calibration</string>
     <string name="tools">Tools</string>
+    <string name="previous">Previous</string>
+    <string name="next">Next</string>
+    <string name="failed_to_load_data">Failed to load data: %1$s</string>
+    <string name="failed_to_fetch_data_response_code">Failed to fetch data. Response Code: %1$s</string>
+    <string name="contributions">%1$s contributions</string>
+    <string name="contributors">Contributors</string>
 </resources>

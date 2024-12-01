@@ -4,9 +4,12 @@ import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.pm.PackageInfoCompat
@@ -14,24 +17,34 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.progressindicator.LinearProgressIndicator
+import com.google.android.material.textview.MaterialTextView
 import com.jacktor.batterylab.BuildConfig
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.isInstalledGooglePlay
 import com.jacktor.batterylab.R
-import com.jacktor.batterylab.adapters.TeamAdapter
+import com.jacktor.batterylab.adapters.ContributorsAdapter
 import com.jacktor.batterylab.interfaces.CheckUpdateInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
-import com.jacktor.batterylab.interfaces.RecyclerTeamInterface
+import com.jacktor.batterylab.interfaces.RecyclerContributorsInterface
+import com.jacktor.batterylab.utilities.Constants.GITHUB_API_CONTRIBUTORS
+import com.jacktor.batterylab.utilities.Constants.GITHUB_API_USER
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK
 import com.jacktor.batterylab.utilities.Constants.GITHUB_LINK_BATTERY_CAPCITY
 import com.jacktor.batterylab.utilities.preferences.Prefs
-import com.jacktor.batterylab.views.TeamModel
+import com.jacktor.batterylab.views.ContributorsModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONArray
 import org.json.JSONObject
-import java.io.IOException
+import java.net.HttpURLConnection
+import java.net.URL
 
-class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeamInterface,
+class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerContributorsInterface,
     CheckUpdateInterface {
 
     var pref: Prefs? = null
@@ -43,9 +56,19 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
     private var github: Preference? = null
     private var githubBC: Preference? = null
     private var betaTester: Preference? = null
-    private var team: Preference? = null
+    private var contributors: Preference? = null
 
-    private lateinit var teamModelArrayList: ArrayList<TeamModel>
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var noInternetText: MaterialTextView
+    private lateinit var nextButton: MaterialButton
+    private lateinit var prevButton: MaterialButton
+    private lateinit var progressBar: LinearProgressIndicator
+
+    // Contributors list
+    private var contributorsModelArrayList = ArrayList<ContributorsModel>()
+    private var currentPage = 0
+    private val pageSize = 5
+    private var totalPages = 0
 
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
@@ -77,7 +100,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
             }
         }
 
-        team = findPreference("team")
+        contributors = findPreference("contributors")
 
         betaTester?.isVisible = isInstalledGooglePlay
 
@@ -200,74 +223,182 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
             true
         }
 
-
-
-        team?.setOnPreferenceClickListener {
-            val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.TeamDialog)
-            val inflater = layoutInflater
-            val customView = inflater.inflate(R.layout.team_dialog, null)
-            val recyclerView = customView.findViewById<RecyclerView>(R.id.team_recycler)
-            val progressBar = customView.findViewById<LinearProgressIndicator>(R.id.progressBar)
-
-
-            //Offline atau gagal
-            val obj = JSONObject(fetchingLocalJson(requireContext(), "team.json")!!)
-            teamModelArrayList = ArrayList()
-            val dataArray = obj.getJSONArray("data")
-
-            for (i in 0 until dataArray.length()) {
-
-                val teamModel = TeamModel()
-                val dataObj = dataArray.getJSONObject(i)
-
-                teamModel.setNames(dataObj.getString("name"))
-                teamModel.setUsernames(dataObj.getString("username"))
-                teamModel.setStatus(dataObj.getBoolean("inProject"))
-                teamModel.setimgURLs(dataObj.getString("imgURL"))
-
-                teamModelArrayList.add(teamModel)
-
-            }
-
-            if (isAdded) {
-                recyclerView!!.adapter =
-                    TeamAdapter(requireContext(), teamModelArrayList, this)
-                recyclerView.layoutManager =
-                    LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            }
-
-            progressBar?.visibility = View.GONE
-
-            dialog.setTitle(getString(R.string.team))
-            dialog.setView(customView)
-                .setCancelable(false)
-                .setPositiveButton(getString(R.string.ok)) { dialogBtn, _ ->
-                    // Respond to neutral button press
-                    dialogBtn.cancel()
-                }
-                .show()
+        // Contributors list
+        contributors?.setOnPreferenceClickListener {
+            showContributorsDialog()
             true
         }
     }
 
-    @Suppress("SameParameterValue")
-    private fun fetchingLocalJson(context: Context, filename: String): String? {
-        val json: String
-        try {
-            val inputStream = context.assets.open(filename)
-            val size = inputStream.available()
-            val buffer = ByteArray(size)
-            inputStream.use { it.read(buffer) }
-            json = String(buffer)
-        } catch (ioException: IOException) {
-            ioException.printStackTrace()
-            return null
+
+    private fun showContributorsDialog() {
+        val dialog = MaterialAlertDialogBuilder(requireContext(), R.style.ContributorsDialog)
+        val inflater = LayoutInflater.from(requireContext())
+        val customView = inflater.inflate(R.layout.contributors_dialog, null)
+
+        recyclerView = customView.findViewById(R.id.contributors_recycler)
+        noInternetText = customView.findViewById(R.id.no_internet_text)
+        nextButton = customView.findViewById(R.id.next_button)
+        prevButton = customView.findViewById(R.id.prev_button)
+        progressBar = customView.findViewById(R.id.progressBar)
+
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+        if (isNetworkAvailable()) {
+            fetchContributors()
+        } else {
+            showNoInternetMessage()
         }
-        return json
+
+        dialog.setView(customView)
+            .setTitle(getString(R.string.contributors))
+            .setCancelable(false)
+            .setPositiveButton(getString(R.string.close)) { dialogBtn, _ -> dialogBtn.dismiss() }
+            .show()
+
+        prevButton.setOnClickListener {
+            if (currentPage > 0) {
+                currentPage--
+                displayPage()
+            }
+        }
+
+        nextButton.setOnClickListener {
+            if (currentPage < totalPages - 1) {
+                currentPage++
+                displayPage()
+            }
+        }
+    }
+
+    private fun fetchContributors() {
+        progressBar.visibility = View.VISIBLE
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val contributorsConnection =
+                    URL(GITHUB_API_CONTRIBUTORS).openConnection() as HttpURLConnection
+                contributorsConnection.connectTimeout = 5000
+                contributorsConnection.readTimeout = 5000
+                contributorsConnection.requestMethod = "GET"
+
+                if (contributorsConnection.responseCode == HttpURLConnection.HTTP_OK) {
+                    val response =
+                        contributorsConnection.inputStream.bufferedReader().use { it.readText() }
+                    val contributorsArray = JSONArray(response)
+                    val contributorsDetails = ArrayList<ContributorsModel>()
+
+                    for (i in 0 until contributorsArray.length()) {
+                        val contributor = contributorsArray.getJSONObject(i)
+                        val username = contributor.getString("login")
+                        val avatarUrl = contributor.optString("avatar_url", "")
+                        val contributions = contributor.optInt("contributions", 0)
+
+                        // Fetch nama dari username
+                        val name = fetchContributorName(username)
+
+                        contributorsDetails.add(
+                            ContributorsModel(
+                                name = name ?: username,
+                                username = username,
+                                avatarUrl = avatarUrl,
+                                contributions = contributions
+                            )
+                        )
+                    }
+
+                    // Urutkan berdasarkan kontribusi
+                    contributorsDetails.sortByDescending { it.contributions }
+
+                    // Tentukan jumlah total halaman
+                    totalPages = (contributorsDetails.size + pageSize - 1) / pageSize
+
+                    // Atur halaman pertama
+                    withContext(Dispatchers.Main) {
+                        progressBar.visibility = View.GONE
+                        contributorsModelArrayList = contributorsDetails
+                        currentPage = 0
+                        displayPage()
+                    }
+
+                    // Periksa apakah data lebih dari "pageSize" untuk menampilkan tombol Next/Prev
+                    if (contributorsModelArrayList.size > pageSize) {
+                        nextButton.visibility = View.VISIBLE
+                        prevButton.visibility = View.VISIBLE
+                    } else {
+                        nextButton.visibility = View.GONE
+                        prevButton.visibility = View.GONE
+                    }
+                } else {
+                    throw Exception(
+                        getString(
+                            R.string.failed_to_fetch_data_response_code,
+                            contributorsConnection.responseCode.toString()
+                        )
+                    )
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    progressBar.visibility = View.GONE
+                    noInternetText.text =
+                        getString(R.string.failed_to_load_data, e.localizedMessage)
+                    noInternetText.visibility = View.VISIBLE
+                }
+            }
+        }
+    }
+
+    private fun fetchContributorName(username: String): String? {
+        return try {
+            val userDetailsConnection =
+                URL(GITHUB_API_USER + username).openConnection() as HttpURLConnection
+            userDetailsConnection.connectTimeout = 5000
+            userDetailsConnection.readTimeout = 5000
+            userDetailsConnection.requestMethod = "GET"
+
+            if (userDetailsConnection.responseCode == HttpURLConnection.HTTP_OK) {
+                val response =
+                    userDetailsConnection.inputStream.bufferedReader().use { it.readText() }
+                val userDetails = JSONObject(response)
+                userDetails.optString("name")
+            } else {
+                null
+            }
+        } catch (_: Exception) {
+            null
+        }
+    }
+
+    private fun displayPage() {
+        // Ambil data untuk halaman saat ini
+        val startIndex = currentPage * pageSize
+        val endIndex = minOf((currentPage + 1) * pageSize, contributorsModelArrayList.size)
+        val pageData = contributorsModelArrayList.subList(startIndex, endIndex)
+
+        // Set adapter untuk recycler view
+        recyclerView.adapter = ContributorsAdapter(requireContext(), pageData, this)
+        recyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+
+        // Mengatur tombol Next dan Prev apakah aktif atau tidak
+        prevButton.isEnabled = currentPage > 0
+        nextButton.isEnabled = currentPage < totalPages - 1
+    }
+
+    private fun showNoInternetMessage() {
+        noInternetText.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
+    }
+
+    private fun isNetworkAvailable(): Boolean {
+        val connectivityManager =
+            requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+        return activeNetwork.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
     }
 
     //Visit Profile
-    override fun onItemClick(data: TeamModel) {
+    override fun onItemClick(data: ContributorsModel) {
         val openURL = Intent(Intent.ACTION_VIEW)
         MaterialAlertDialogBuilder(requireContext())
             .setTitle(getString(R.string.visit_this_profile))
@@ -280,7 +411,7 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
             // Respond to negative button press
             //}
             .setPositiveButton(getString(R.string.yes_continue)) { _, _ ->
-                openURL.data = Uri.parse("https://jacktor.com/members/" + data.username + "/")
+                openURL.data = Uri.parse("https://github.com/" + data.username + "/")
                 startActivity(openURL)
             }
             .show()
@@ -294,4 +425,5 @@ class AboutFragment : PreferenceFragmentCompat(), PremiumInterface, RecyclerTeam
 
         betaTester?.isVisible = isInstalledGooglePlay
     }
+
 }

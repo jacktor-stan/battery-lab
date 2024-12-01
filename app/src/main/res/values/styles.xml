@@ -62,7 +62,7 @@
         <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button</item>
     </style>
 
-    <style name="TeamDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
+    <style name="ContributorsDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="android:background">#f5f5f5</item>
         <item name="materialAlertDialogTitlePanelStyle">@style/TitlePanelStyleCenter</item>
         <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyleCenter</item>
