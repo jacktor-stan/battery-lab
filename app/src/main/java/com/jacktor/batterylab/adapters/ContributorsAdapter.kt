@@ -8,14 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.jacktor.batterylab.R
-import com.jacktor.batterylab.interfaces.RecyclerContributorsInterface
+import com.jacktor.batterylab.interfaces.ContributorsInterface
 import com.jacktor.batterylab.views.ContributorsModel
 import com.squareup.picasso.Picasso
 
 class ContributorsAdapter(
     private val context: Context,
     private val list: List<ContributorsModel>,
-    private val recyclerViewClickListener: RecyclerContributorsInterface
+    private val recyclerViewClickListener: ContributorsInterface
 ) : RecyclerView.Adapter<ContributorsAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -26,7 +26,8 @@ class ContributorsAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.about_contributors_item, parent, false)
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.about_contributors_item, parent, false)
         return ViewHolder(view)
     }
 
