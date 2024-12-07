@@ -32,7 +32,6 @@
         <item name="colorPrimaryInverse">@color/md_theme_inversePrimary</item>
     </style>
 
-
     <style name="AppTheme" parent="ColorAppTheme">
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="o_mr1">true</item>
@@ -44,18 +43,17 @@
         <item name="chipChoiceStyle">@style/ChipChoice</item>
         <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 
-        <!-- AndroidX PreferenceScreen (MD3) -->
+        <!-- PreferenceScreen (MD3) -->
         <item name="colorAccent">?attr/colorPrimary</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
         <item name="switchPreferenceCompatStyle">
             @style/SwitchPreferenceCompat
         </item>
     </style>
 
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
-        <item name="colorPrimary">?attr/colorSurface</item>
+        <item name="android:background">?attr/colorSurface</item>
         <item name="dialogCornerRadius">28dp</item>
-        <item name="cornerFamily">rounded</item>
-        <item name="android:colorBackground">?attr/colorSurface</item>
         <item name="materialAlertDialogTitleIconStyle">@style/IconTint</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
@@ -66,9 +64,14 @@
         <item name="android:background">#f5f5f5</item>
         <item name="materialAlertDialogTitlePanelStyle">@style/TitlePanelStyleCenter</item>
         <item name="materialAlertDialogTitleTextStyle">@style/TitleTextStyleCenter</item>
+        <item name="materialAlertDialogTitleIconStyle">@style/IconTint</item>
         <item name="buttonBarPositiveButtonStyle">@style/Widget.App.Button</item>
         <item name="buttonBarNegativeButtonStyle">@style/Widget.App.Button</item>
         <item name="buttonBarNeutralButtonStyle">@style/Widget.App.Button</item>
+    </style>
+
+    <style name="SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
+        <item name="android:widgetLayout">@layout/preference_widget_material_switch</item>
     </style>
 
     <style name="IconTint" parent="MaterialAlertDialog.Material3.Title.Icon">
@@ -87,7 +90,6 @@
         <item name="android:textStyle">bold</item>
         <item name="android:textSize">20sp</item>
     </style>
-
 
     <style name="AppTheme.NestedScrollBarStyle">
         <item name="android:fadeScrollbars">true</item>
@@ -109,15 +111,7 @@
         <item name="android:textColor">@color/menu_text</item>
     </style>
 
-    <!-- Override of the MD3 Chip style to make text all caps -->
     <style name="ChipChoice" parent="Widget.Material3.Chip.Filter.Elevated">
         <item name="android:textAllCaps">true</item>
     </style>
-
-    <!-- Override the default switch preference style to use the MD3 switch -->
-    <style name="SwitchPreferenceCompat" parent="Preference.SwitchPreferenceCompat.Material">
-        <item name="android:widgetLayout">@layout/preference_widget_material_switch</item>
-    </style>
-
-
 </resources>

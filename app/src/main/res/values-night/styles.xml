@@ -39,9 +39,11 @@
         <item name="android:scrollbarThumbVertical">@color/scrollbar_thumb_vertical</item>
         <item name="textAllCaps">false</item>
         <item name="chipChoiceStyle">@style/ChipChoice</item>
+        <item name="materialAlertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
 
-        <!-- AndroidX PreferenceScreen (MD3) -->
+        <!-- PreferenceScreen (MD3) -->
         <item name="colorAccent">?attr/colorPrimary</item>
+        <item name="alertDialogTheme">@style/ThemeOverlay.App.MaterialAlertDialog</item>
         <item name="switchPreferenceCompatStyle">
             @style/SwitchPreferenceCompat
         </item>
@@ -49,8 +51,7 @@
 
     <style name="ThemeOverlay.App.MaterialAlertDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
         <item name="dialogCornerRadius">28dp</item>
-        <item name="cornerFamily">rounded</item>
-        <item name="android:colorBackground">?attr/colorSurface</item>
+        <item name="android:background">?attr/colorSurface</item>
     </style>
 
     <style name="ContributorsDialog" parent="ThemeOverlay.Material3.MaterialAlertDialog">
@@ -59,10 +60,4 @@
     </style>
 
     <style name="TitlePanelStyleCenter" parent="MaterialAlertDialog.Material3.Title.Panel.CenterStacked" />
-
-    <style name="TitleTextStyleCenter" parent="MaterialAlertDialog.Material3.Title.Text.CenterStacked">
-        <item name="android:textStyle">bold</item>
-        <item name="android:textSize">20sp</item>
-    </style>
-
 </resources>
