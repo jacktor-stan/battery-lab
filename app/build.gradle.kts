@@ -90,10 +90,10 @@ fun getBuildDate(): String {
 
 dependencies {
     // Firebase and Google Services
-    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation(platform("com.google.firebase:firebase-bom:33.7.0"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.android.gms:play-services-ads:23.5.0")
+    implementation("com.google.android.gms:play-services-ads:23.6.0")
     implementation("com.google.android.material:material:1.12.0")
     implementation("com.google.android.play:app-update-ktx:2.1.0")
 
