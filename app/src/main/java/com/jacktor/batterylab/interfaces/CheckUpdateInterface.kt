@@ -16,6 +16,7 @@ import com.google.android.play.core.ktx.isImmediateUpdateAllowed
 import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.fragments.AboutFragment
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
 
@@ -59,8 +60,8 @@ interface CheckUpdateInterface {
             val updateType = if (appUpdateInfo.isImmediateUpdateAllowed) AppUpdateType.IMMEDIATE
             else AppUpdateType.FLEXIBLE
             if (isUpdateDeveloperTriggered(appUpdateInfo)) {
-                val updateFlowResultLauncher = MainActivity.instance?.updateFlowResultLauncher
-                MainActivity.instance?.intentResultStarter()
+                val updateFlowResultLauncher = mainActivityRef?.get()?.updateFlowResultLauncher
+                mainActivityRef?.get()?.intentResultStarter()
                 val appUpdateOptions =
                     AppUpdateOptions.newBuilder(updateType).setAllowAssetPackDeletion(false).build()
                 startUpdate(
@@ -73,8 +74,8 @@ interface CheckUpdateInterface {
                     UPDATE_TEMP_SCREEN_TIME,
                     BatteryLabService.instance?.screenTime ?: 0L
                 )
-                MainActivity.instance?.intentResultStarter()
-                val updateFlowResultLauncher = MainActivity.instance?.updateFlowResultLauncher
+                mainActivityRef?.get()?.intentResultStarter()
+                val updateFlowResultLauncher = mainActivityRef?.get()?.updateFlowResultLauncher
                 val appUpdateOptions =
                     AppUpdateOptions.newBuilder(updateType).setAllowAssetPackDeletion(false).build()
                 startUpdate(
@@ -86,7 +87,7 @@ interface CheckUpdateInterface {
                     if (contains(UPDATE_TEMP_SCREEN_TIME))
                         remove(UPDATE_TEMP_SCREEN_TIME)
                 }
-                MainActivity.instance?.isCheckUpdateFromGooglePlay = true
+                mainActivityRef?.get()?.isCheckUpdateFromGooglePlay = true
                 Toast.makeText(requireContext(), R.string.update_not_found, Toast.LENGTH_LONG)
                     .show()
             }

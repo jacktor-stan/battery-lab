@@ -1,5 +1,6 @@
 package com.jacktor.batterylab.fragments
 
+import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Build
@@ -54,8 +55,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-class SettingsFragment : PreferenceFragmentCompat(), SettingsInterface, DebugOptionsInterface,
+class SettingsFragment() : PreferenceFragmentCompat(),
+    SettingsInterface, DebugOptionsInterface,
     BatteryInfoInterface, PremiumInterface, NavigationInterface {
+
+    override var premiumContext: Context? = null
 
     private lateinit var pref: SharedPreferences
 

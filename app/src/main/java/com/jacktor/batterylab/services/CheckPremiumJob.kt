@@ -2,11 +2,14 @@ package com.jacktor.batterylab.services
 
 import android.app.job.JobParameters
 import android.app.job.JobService
+import android.content.Context
 import androidx.work.Configuration
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.interfaces.PremiumInterface
 
-class CheckPremiumJob : JobService(), PremiumInterface {
+class CheckPremiumJob() : JobService(), PremiumInterface {
+
+    override var premiumContext: Context? = null
 
     companion object {
         var isCheckPremiumJob = false

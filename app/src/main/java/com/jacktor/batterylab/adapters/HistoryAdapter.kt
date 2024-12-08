@@ -1,5 +1,6 @@
 package com.jacktor.batterylab.adapters
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.view.LayoutInflater
@@ -22,12 +23,14 @@ import java.text.DecimalFormat
 class HistoryAdapter(private var historyList: MutableList<History>) :
     RecyclerView.Adapter<HistoryViewHolder>(), PremiumInterface, BatteryInfoInterface {
 
+    override var premiumContext: Context? = null
+
     private lateinit var binding: HistoryRecyclerListItemBinding
 
     private lateinit var pref: SharedPreferences
 
     companion object {
-
+        @SuppressLint("StaticFieldLeak")
         var instance: HistoryAdapter? = null
     }
 

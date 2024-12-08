@@ -99,28 +99,34 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
 
         resetScreenTime?.setOnPreferenceClickListener {
 
-            if((BatteryLabService.instance?.screenTime ?: 0L) > 0L) {
+            if ((BatteryLabService.instance?.screenTime ?: 0L) > 0L) {
 
                 try {
                     BatteryLabService.instance!!.screenTime = 0L
-                    Toast.makeText(requireContext(), getString(R.string.success),
-                        Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        requireContext(), getString(R.string.success),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } catch (_: KotlinNullPointerException) {
+                    Toast.makeText(
+                        requireContext(), getString(R.string.error),
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                catch (_: KotlinNullPointerException) {
-                    Toast.makeText(requireContext(), getString(R.string.error),
-                        Toast.LENGTH_LONG).show()
-                }
-            }
-            else Toast.makeText(requireContext(), getString(R.string.error),
-                Toast.LENGTH_LONG).show()
+            } else Toast.makeText(
+                requireContext(), getString(R.string.error),
+                Toast.LENGTH_LONG
+            ).show()
 
             true
         }
 
         addCustomHistory?.setOnPreferenceClickListener {
 
-            onAddCustomHistory(pref, arrayListOf(it, addHistory, addTenHistory, addFiftyHistory),
-                historyCount)
+            onAddCustomHistory(
+                pref, arrayListOf(it, addHistory, addTenHistory, addFiftyHistory),
+                historyCount
+            )
 
             true
         }
@@ -132,12 +138,20 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
             addTenHistory?.isEnabled = false
             addFiftyHistory?.isEnabled = false
 
-            val designCapacity = pref.getInt(DESIGN_CAPACITY, resources.getInteger(
-                R.integer.min_design_capacity))
-            val date =  DateHelper.getDate((1..31).random(), (1..12).random(),
-                DateHelper.getCurrentYear())
-            val residualCapacity = if(pref.getString(PreferencesKeys
-                    .UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh") == "μAh") ((
+            val designCapacity = pref.getInt(
+                DESIGN_CAPACITY, resources.getInteger(
+                    R.integer.min_design_capacity
+                )
+            )
+            val date = DateHelper.getDate(
+                (1..31).random(), (1..12).random(),
+                DateHelper.getCurrentYear()
+            )
+            val residualCapacity = if (pref.getString(
+                    PreferencesKeys
+                        .UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh"
+                ) == "μAh"
+            ) ((
                     designCapacity * 0.01).toInt() * 1000..(designCapacity + (
                     (designCapacity / 1000) * 5)) * 1000).random()
             else ((designCapacity * 0.01).toInt() * 100..(designCapacity + (
@@ -147,9 +161,11 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
 
             val historyDB = HistoryDB(requireContext()).readDB()
 
-            if(historyDB.isNotEmpty() && historyDB[historyDB.size - 1].date == date)
-                Toast.makeText(requireContext(), "$date: $residualCapacity",
-                    Toast.LENGTH_LONG).show()
+            if (historyDB.isNotEmpty() && historyDB[historyDB.size - 1].date == date)
+                Toast.makeText(
+                    requireContext(), "$date: $residualCapacity",
+                    Toast.LENGTH_LONG
+                ).show()
             else Toast.makeText(requireContext(), "0.0.0: 0", Toast.LENGTH_LONG).show()
 
             addCustomHistory?.isEnabled = !HistoryHelper.isHistoryMax(requireContext())
@@ -170,16 +186,24 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
 
             CoroutineScope(Dispatchers.IO).launch {
 
-                for(i in 1..10) {
+                for (i in 1..10) {
 
-                    if(HistoryHelper.isHistoryMax(requireContext())) break
+                    if (HistoryHelper.isHistoryMax(requireContext())) break
 
-                    val designCapacity = pref.getInt(DESIGN_CAPACITY, resources.getInteger(
-                        R.integer.min_design_capacity))
-                    val date =  DateHelper.getDate((1..31).random(), (1..12).random(),
-                        DateHelper.getCurrentYear())
-                    val residualCapacity = if(pref.getString(PreferencesKeys
-                            .UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh") == "μAh") ((
+                    val designCapacity = pref.getInt(
+                        DESIGN_CAPACITY, resources.getInteger(
+                            R.integer.min_design_capacity
+                        )
+                    )
+                    val date = DateHelper.getDate(
+                        (1..31).random(), (1..12).random(),
+                        DateHelper.getCurrentYear()
+                    )
+                    val residualCapacity = if (pref.getString(
+                            PreferencesKeys
+                                .UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh"
+                        ) == "μAh"
+                    ) ((
                             designCapacity * 0.01).toInt() * 1000..(designCapacity + (
                             (designCapacity / 1000) * 5)) * 1000).random()
                     else ((designCapacity * 0.01).toInt() * 100..(designCapacity + (
@@ -190,13 +214,18 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
                     val historyDB = HistoryDB(requireContext()).readDB()
 
                     withContext(Dispatchers.Main) {
-                        if(i == 10 && historyDB.isNotEmpty() && historyDB[historyDB.size - 1]
-                                .date == date)
-                            Toast.makeText(requireContext(), "$date: $residualCapacity",
-                                Toast.LENGTH_LONG).show()
-                        else if(historyDB.isEmpty() || historyDB[historyDB.size - 1].date != date) {
-                            Toast.makeText(requireContext(), "$i: 0.0.0: 0",
-                                Toast.LENGTH_LONG).show()
+                        if (i == 10 && historyDB.isNotEmpty() && historyDB[historyDB.size - 1]
+                                .date == date
+                        )
+                            Toast.makeText(
+                                requireContext(), "$date: $residualCapacity",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        else if (historyDB.isEmpty() || historyDB[historyDB.size - 1].date != date) {
+                            Toast.makeText(
+                                requireContext(), "$i: 0.0.0: 0",
+                                Toast.LENGTH_LONG
+                            ).show()
                             delay(3.5.seconds)
                         }
                     }
@@ -224,16 +253,24 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
 
             CoroutineScope(Dispatchers.IO).launch {
 
-                for(i in 1..50) {
+                for (i in 1..50) {
 
-                    if(HistoryHelper.isHistoryMax(requireContext())) break
+                    if (HistoryHelper.isHistoryMax(requireContext())) break
 
-                    val designCapacity = pref.getInt(DESIGN_CAPACITY, resources.getInteger(
-                        R.integer.min_design_capacity))
-                    val date =  DateHelper.getDate((1..31).random(), (1..12).random(),
-                        DateHelper.getCurrentYear())
-                    val residualCapacity = if(pref.getString(PreferencesKeys
-                            .UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh") == "μAh") ((
+                    val designCapacity = pref.getInt(
+                        DESIGN_CAPACITY, resources.getInteger(
+                            R.integer.min_design_capacity
+                        )
+                    )
+                    val date = DateHelper.getDate(
+                        (1..31).random(), (1..12).random(),
+                        DateHelper.getCurrentYear()
+                    )
+                    val residualCapacity = if (pref.getString(
+                            PreferencesKeys
+                                .UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY, "μAh"
+                        ) == "μAh"
+                    ) ((
                             designCapacity * 0.01).toInt() * 1000..(designCapacity + (
                             (designCapacity / 1000) * 5)) * 1000).random()
                     else ((designCapacity * 0.01).toInt() * 100..(designCapacity + (
@@ -244,13 +281,18 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
                     val historyDB = HistoryDB(requireContext()).readDB()
 
                     withContext(Dispatchers.Main) {
-                        if(i == 10 && historyDB.isNotEmpty() && historyDB[historyDB.size - 1]
-                                .date == date)
-                            Toast.makeText(requireContext(), "$date: $residualCapacity",
-                                Toast.LENGTH_LONG).show()
-                        else if(historyDB.isEmpty() || historyDB[historyDB.size - 1].date != date) {
-                            Toast.makeText(requireContext(), "$i: 0.0.0: 0",
-                                Toast.LENGTH_LONG).show()
+                        if (i == 10 && historyDB.isNotEmpty() && historyDB[historyDB.size - 1]
+                                .date == date
+                        )
+                            Toast.makeText(
+                                requireContext(), "$date: $residualCapacity",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        else if (historyDB.isEmpty() || historyDB[historyDB.size - 1].date != date) {
+                            Toast.makeText(
+                                requireContext(), "$i: 0.0.0: 0",
+                                Toast.LENGTH_LONG
+                            ).show()
                             delay(3.5.seconds)
                         }
                     }
@@ -438,8 +480,13 @@ class DebugFragment : PreferenceFragmentCompat(), DebugOptionsInterface {
 
         restartOverlayService?.isEnabled = OverlayService.instance != null
 
-        if(!pref.getBoolean(PreferencesKeys.ENABLED_DEBUG_OPTIONS, resources.getBoolean(R.bool
-                .enabled_debug_options)))
+        if (!pref.getBoolean(
+                PreferencesKeys.ENABLED_DEBUG_OPTIONS, resources.getBoolean(
+                    R.bool
+                        .enabled_debug_options
+                )
+            )
+        )
             requireActivity().onBackPressedDispatcher.onBackPressed()
     }
 }

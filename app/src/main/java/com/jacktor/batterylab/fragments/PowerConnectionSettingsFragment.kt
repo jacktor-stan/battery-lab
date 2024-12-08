@@ -2,6 +2,7 @@ package com.jacktor.batterylab.fragments
 
 import android.Manifest
 import android.app.Activity.RESULT_OK
+import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -18,8 +19,9 @@ import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.utilities.FileUtils
 import com.jacktor.batterylab.utilities.preferences.Prefs
 
-class PowerConnectionSettingsFragment : PreferenceFragmentCompat(), PremiumInterface {
+class PowerConnectionSettingsFragment() : PreferenceFragmentCompat(), PremiumInterface {
 
+    override var premiumContext: Context? = null
     private lateinit var pref: Prefs
 
     // Preferences

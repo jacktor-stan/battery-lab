@@ -4,7 +4,6 @@ import android.content.Context
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
-import android.view.View
 import androidx.annotation.StringRes
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.appcompat.widget.LinearLayoutCompat
@@ -59,7 +58,7 @@ class CenteredTopAppBar : MaterialToolbar {
         tvSubtitle?.ellipsize = TextUtils.TruncateAt.END
         tvSubtitle?.setTextAppearance(R.style.SubtitleTheme)
 
-        tvSubtitle?.visibility = View.GONE
+        tvSubtitle?.visibility = GONE
 
         val lp = LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT)
         lp.gravity = Gravity.CENTER

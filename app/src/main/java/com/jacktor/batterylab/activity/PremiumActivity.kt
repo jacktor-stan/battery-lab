@@ -1,7 +1,7 @@
 package com.jacktor.batterylab.activity
 
-import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -15,6 +15,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
+import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
@@ -31,37 +32,39 @@ import com.jacktor.batterylab.R
 import com.jacktor.batterylab.adapters.PremiumAdapter
 import com.jacktor.batterylab.databinding.ActivityPremiumBinding
 import com.jacktor.batterylab.interfaces.PremiumInterface
+import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.billingClient
 import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.isPremium
+import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.mProductDetailsList
+import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.premiumActivityRef
 import com.jacktor.batterylab.interfaces.RecyclerPremiumInterface
-import com.jacktor.batterylab.utilities.preferences.Prefs
 import com.jacktor.batterylab.utilities.Premium.PREMIUM_ID
+import com.jacktor.batterylab.utilities.preferences.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import kotlin.time.Duration.Companion.seconds
 
 
-class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumInterface {
+class PremiumActivity() : AppCompatActivity(), RecyclerPremiumInterface, PremiumInterface {
+
+    override var premiumContext: Context? = null
 
     private var activity: Activity? = null
     private var pref: Prefs? = null
     private var handler: Handler? = null
     private var adapter: PremiumAdapter? = null
+    private var firebaseAnalytics: FirebaseAnalytics? = null
+    private var connectionState = 0
 
     private lateinit var binding: ActivityPremiumBinding
 
-    private var firebaseAnalytics: FirebaseAnalytics? = null
-
-    private var connectionState = 0
-
-    companion object {
-        @SuppressLint("StaticFieldLeak")
-        var instance: PremiumActivity? = null
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Menetapkan referensi weak ke PremiumActivity
+        premiumActivityRef = WeakReference(this)
 
         binding = ActivityPremiumBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -72,13 +75,13 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
         activity = this
         handler = Handler(Looper.getMainLooper())
         pref = Prefs(this)
-        PremiumInterface.mProductDetailsList = ArrayList()
+        mProductDetailsList = ArrayList()
 
         initiateBilling(false)
 
         binding.restoreFab.hide()
 
-        connectionState = PremiumInterface.billingClient?.connectionState!!
+        connectionState = billingClient?.connectionState!!
 
         CoroutineScope(Dispatchers.Main).launch {
             delay(5.seconds)
@@ -150,20 +153,20 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
                 .setProductType(BillingClient.ProductType.INAPP).build()
         )
         val params = QueryProductDetailsParams.newBuilder().setProductList(productList).build()
-        PremiumInterface.billingClient!!.queryProductDetailsAsync(
+        billingClient!!.queryProductDetailsAsync(
             params
         ) { _: BillingResult?, prodDetailsList: List<ProductDetails>? ->
             // Process the result
-            PremiumInterface.mProductDetailsList!!.clear()
+            mProductDetailsList!!.clear()
             handler!!.postDelayed({
                 connectionState = 2
                 binding.restoreFab.show()
                 binding.loadProducts.visibility = View.GONE
-                PremiumInterface.mProductDetailsList!!.addAll(prodDetailsList!!)
+                mProductDetailsList!!.addAll(prodDetailsList!!)
                 //Log.d(TAG, productDetailsList!!.size.toString() + " number of products")
                 adapter = PremiumAdapter(
                     applicationContext,
-                    PremiumInterface.mProductDetailsList!!,
+                    mProductDetailsList!!,
                     this as RecyclerPremiumInterface
                 )
                 binding.recyclerview.setHasFixedSize(true)
@@ -177,10 +180,10 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
 
     private fun restorePurchases() {
         @Suppress("DEPRECATION")
-        PremiumInterface.billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases()
             .setListener { _: BillingResult?, _: List<Purchase?>? -> }.build()
-        val finalBillingClient: BillingClient = PremiumInterface.billingClient as BillingClient
-        PremiumInterface.billingClient!!.startConnection(object : BillingClientStateListener {
+        val finalBillingClient: BillingClient = billingClient as BillingClient
+        billingClient!!.startConnection(object : BillingClientStateListener {
             override fun onBillingServiceDisconnected() {
                 startConnection(false)
             }
@@ -244,12 +247,28 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
         } else {
             showSnackbar(binding.restoreFab, getString(R.string.wait), Snackbar.LENGTH_LONG)
             if (MainApp.Companion.isGooglePlay(this)) {
-                if (PremiumInterface.billingClient?.isReady == true) {
-                    launchPurchaseFlow(PremiumInterface.mProductDetailsList!![pos])
+                if (billingClient?.isReady == true) {
+                    launchPurchaseFlow(mProductDetailsList!![pos])
                 } else {
                     initiateBilling(true)
                 }
             } else showInstallAppFromGooglePlayDialog(this)
+        }
+    }
+
+    fun launchPurchaseFlow(productDetails: ProductDetails?) {
+
+        if (!mProductDetailsList.isNullOrEmpty()) {
+            val productDetailsParamsList = listOf(
+                BillingFlowParams.ProductDetailsParams
+                    .newBuilder().setProductDetails(productDetails!!).build()
+            )
+
+            val billingFlowParams = BillingFlowParams.newBuilder()
+                .setProductDetailsParamsList(productDetailsParamsList)
+                .build()
+
+            billingClient?.launchBillingFlow(this, billingFlowParams)
         }
     }
 
@@ -262,14 +281,11 @@ class PremiumActivity : AppCompatActivity(), RecyclerPremiumInterface, PremiumIn
             putString(FirebaseAnalytics.Param.SCREEN_NAME, "Premium")
         }
         firebaseAnalytics!!.logEvent(FirebaseAnalytics.Event.SCREEN_VIEW, bundle)
-
-        if (instance == null) instance = this
     }
 
 
     override fun onDestroy() {
-        instance = null
-
+        premiumActivityRef?.clear()
         super.onDestroy()
     }
 }

@@ -2,6 +2,7 @@ package com.jacktor.batterylab
 
 import android.Manifest
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.PackageManager
@@ -49,10 +50,9 @@ import com.jacktor.batterylab.interfaces.BatteryOptimizationsInterface
 import com.jacktor.batterylab.interfaces.CheckUpdateInterface
 import com.jacktor.batterylab.interfaces.ManufacturerInterface
 import com.jacktor.batterylab.interfaces.NavigationInterface
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.isPremium
-import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.premiumActivity
-import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.premiumContext
 import com.jacktor.batterylab.interfaces.SettingsInterface
 import com.jacktor.batterylab.interfaces.views.MenuInterface
 import com.jacktor.batterylab.services.BatteryLabService
@@ -83,9 +83,11 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.seconds
 
-class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterface,
+class MainActivity() : AppCompatActivity(), BatteryInfoInterface, SettingsInterface,
     PremiumInterface, MenuInterface, ManufacturerInterface, NavigationInterface,
     CheckUpdateInterface, BatteryOptimizationsInterface {
+
+    override var premiumContext: Context? = null
 
     var pref: Prefs? = null
     private var isDoubleBackToExitPressedOnce = false
@@ -118,7 +120,6 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
     private var adsCounter = 0
 
     companion object {
-        var instance: MainActivity? = null
         var tempFragment: Fragment? = null
         var isLoadChargeDischarge = false
         var isLoadKernel = false
@@ -146,7 +147,6 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
         ThemeHelper.setTheme(this)
 
         if (premiumContext == null) premiumContext = this
-        premiumActivity = this
 
         //ADS
         if (!isPremium) loadAds()
@@ -264,8 +264,6 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
 
         if (isRecreate) isRecreate = false
 
-        if (instance == null) instance = this
-
         batteryIntent = registerReceiver(
             null, IntentFilter(
                 Intent.ACTION_BATTERY_CHANGED
@@ -350,7 +348,7 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
                     R.bool
                         .auto_start_open_app
                 )
-            ) && BatteryLabService.instance == null &&
+            ) &&  BatteryLabService.instance == null &&
             !ServiceHelper.isStartedBatteryLabService()
         )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && ContextCompat
@@ -422,12 +420,9 @@ class MainActivity : AppCompatActivity(), BatteryInfoInterface, SettingsInterfac
     }
 
     override fun onDestroy() {
-
-        instance = null
-
+        mainActivityRef?.clear()
         fragment = null
 
-        premiumActivity = null
         showFaqDialog = null
 
         if (!isRecreate) {

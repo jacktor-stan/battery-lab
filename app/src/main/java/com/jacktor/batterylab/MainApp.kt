@@ -9,8 +9,8 @@ import android.content.res.Configuration
 import android.os.Build
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.helpers.ThemeHelper
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.interfaces.PremiumInterface
-import com.jacktor.batterylab.interfaces.PremiumInterface.Companion.premiumContext
 import com.jacktor.batterylab.utilities.Constants
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -76,6 +76,8 @@ class MainApp : Application(), PremiumInterface {
         }
     }
 
+    override var premiumContext: Context? = null
+
     override fun onCreate() {
 
         super.onCreate()
@@ -115,11 +117,11 @@ class MainApp : Application(), PremiumInterface {
         if (newTheme != currentTheme) {
 
             MainActivity.Companion.apply {
-                tempFragment = instance?.fragment
+                tempFragment = mainActivityRef?.get()?.fragment
 
                 isRecreate = true
 
-                instance?.recreate()
+                mainActivityRef?.get()?.recreate()
             }
         }
     }

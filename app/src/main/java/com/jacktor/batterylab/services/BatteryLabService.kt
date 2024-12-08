@@ -1,6 +1,8 @@
 package com.jacktor.batterylab.services
 
+import android.annotation.SuppressLint
 import android.app.Service
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.hardware.display.DisplayManager
@@ -11,7 +13,6 @@ import android.view.Display
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
@@ -30,6 +31,7 @@ import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.maxCharg
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.percentAdded
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.tempBatteryLevelWith
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.tempCurrentCapacity
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.interfaces.NotificationInterface
 import com.jacktor.batterylab.interfaces.NotificationInterface.Companion.isBatteryCharged
 import com.jacktor.batterylab.interfaces.NotificationInterface.Companion.isBatteryDischarged
@@ -46,6 +48,8 @@ import com.jacktor.batterylab.utilities.Constants.CHECK_PREMIUM_JOB_ID
 import com.jacktor.batterylab.utilities.Constants.NOMINAL_BATTERY_VOLTAGE
 import com.jacktor.batterylab.utilities.Constants.NOTIFY_FULL_CHARGE_REMINDER_JOB_ID
 import com.jacktor.batterylab.utilities.Constants.SERVICE_WAKELOCK_TIMEOUT
+import com.jacktor.batterylab.utilities.Receiver
+import com.jacktor.batterylab.utilities.preferences.PreferenceChangeListener
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_CHARGED
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_NOTIFY_DISCHARGED
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
@@ -71,8 +75,6 @@ import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.POWER_CONNEC
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESIDUAL_CAPACITY
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UNIT_OF_MEASUREMENT_OF_CURRENT_CAPACITY
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.UPDATE_TEMP_SCREEN_TIME
-import com.jacktor.batterylab.utilities.Receiver
-import com.jacktor.batterylab.utilities.preferences.PreferenceChangeListener
 import com.jacktor.batterylab.utilities.preferences.Prefs
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -83,7 +85,10 @@ import kotlinx.coroutines.withContext
 import kotlin.time.Duration.Companion.minutes
 import kotlin.time.Duration.Companion.seconds
 
-class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface {
+class BatteryLabService() : Service(), NotificationInterface,
+    BatteryInfoInterface, PremiumInterface {
+
+    override var premiumContext: Context? = null
 
     private lateinit var pref: Prefs
     private lateinit var powerConnectionReceiver: PowerConnectionReceiver
@@ -119,6 +124,7 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
         }
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         var instance: BatteryLabService? = null
     }
 
@@ -170,15 +176,15 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                         BatteryManager.EXTRA_STATUS, BatteryManager.BATTERY_STATUS_UNKNOWN
                     ) ?: BatteryManager.BATTERY_STATUS_UNKNOWN
 
-                    if (MainActivity.instance?.fragment != null) {
+                    if (mainActivityRef?.get()?.fragment != null) {
 
-                        if (MainActivity.instance?.fragment is ChargeDischargeFragment) MainActivity.instance?.topAppBar?.title =
+                        if (mainActivityRef?.get()?.fragment is ChargeDischargeFragment) mainActivityRef?.get()?.topAppBar?.title =
                             getString(
                                 if (status == BatteryManager.BATTERY_STATUS_CHARGING) R.string.charge else R.string.discharge
                             )
 
                         val chargeDischargeNavigation =
-                            MainActivity.instance?.navigation?.menu?.findItem(R.id.charge_discharge_navigation)
+                            mainActivityRef?.get()?.navigation?.menu?.findItem(R.id.charge_discharge_navigation)
 
                         chargeDischargeNavigation?.title = getString(
                             if (status == BatteryManager.BATTERY_STATUS_CHARGING) R.string.charge else R.string.discharge
@@ -628,9 +634,9 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                         historyFragment?.binding?.historyRecyclerView?.visibility = View.VISIBLE
                         historyFragment?.binding?.refreshHistory?.visibility = View.VISIBLE
 
-                        MainActivity.instance?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
+                        mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
                             false
-                        MainActivity.instance?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
+                        mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
                             true
 
                         if (HistoryHelper.getHistoryCount(applicationContext) == 1L) {
@@ -638,9 +644,11 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                                 HistoryDB(applicationContext)
                             }
                             historyFragment?.historyAdapter =
-                                HistoryAdapter(withContext(Dispatchers.IO) {
-                                    historyDB.readDB()
-                                })
+                                HistoryAdapter(
+                                    withContext(Dispatchers.IO) {
+                                        historyDB.readDB()
+                                    }
+                                )
                             historyFragment?.historyAdapter?.itemCount?.let {
                                 historyFragment.binding?.historyRecyclerView?.setItemViewCacheSize(
                                     it
@@ -661,9 +669,9 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                             View.VISIBLE
                         HistoryFragment.instance?.binding?.emptyHistoryText?.text =
                             resources.getText(R.string.empty_history_text)
-                        MainActivity.instance?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
+                        mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
                             false
-                        MainActivity.instance?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
+                        mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
                             false
                     }
                 } else {
@@ -676,9 +684,9 @@ class BatteryLabService : Service(), NotificationInterface, BatteryInfoInterface
                         View.VISIBLE
                     HistoryFragment.instance?.binding?.emptyHistoryText?.text =
                         resources.getText(R.string.history_premium_feature)
-                    MainActivity.instance?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
+                    mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
                         true
-                    MainActivity.instance?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
+                    mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
                         false
                 }
             }

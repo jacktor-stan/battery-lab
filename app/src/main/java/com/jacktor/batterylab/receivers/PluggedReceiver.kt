@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
 import androidx.core.content.ContextCompat
-import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
 import com.jacktor.batterylab.R
@@ -15,11 +14,14 @@ import com.jacktor.batterylab.helpers.BatteryLevelHelper
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.tempBatteryLevelWith
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.tempCurrentCapacity
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.interfaces.NotificationInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.services.BatteryLabService
 
-class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterface {
+class PluggedReceiver() : BroadcastReceiver(), BatteryInfoInterface, PremiumInterface {
+
+    override var premiumContext: Context? = null
 
     override fun onReceive(context: Context, intent: Intent) {
 
@@ -30,12 +32,13 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
 
                     isPowerConnected = true
 
-                    BatteryLabService.instance?.isPluggedOrUnplugged = true
+                    BatteryLabService.instance!!.isPluggedOrUnplugged = true
 
                     val isCheckedUpdateFromGooglePlay =
-                        MainActivity.instance?.isCheckUpdateFromGooglePlay == true
+                        mainActivityRef?.get()?.isCheckUpdateFromGooglePlay == true
 
-                    MainActivity.instance?.isCheckUpdateFromGooglePlay = !isCheckedUpdateFromGooglePlay
+                    mainActivityRef?.get()?.isCheckUpdateFromGooglePlay =
+                        !isCheckedUpdateFromGooglePlay
 
                     batteryIntent = context.registerReceiver(
                         null, IntentFilter(
@@ -50,10 +53,10 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
                     ) ?: BatteryManager.BATTERY_STATUS_UNKNOWN
 
 
-                    BatteryLabService.instance?.batteryLevelWith = BatteryLabService.instance
+                    BatteryLabService.instance!!.batteryLevelWith = BatteryLabService.instance
                         ?.getBatteryLevel(context) ?: 0
 
-                    tempBatteryLevelWith = BatteryLabService.instance?.batteryLevelWith ?: 0
+                    tempBatteryLevelWith = BatteryLabService.instance!!.batteryLevelWith
 
                     tempCurrentCapacity = BatteryLabService.instance
                         ?.getCurrentCapacity(context) ?: 0.0
@@ -68,10 +71,11 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
                     BatteryInfoInterface.averageTemperature = 0.0
                     BatteryInfoInterface.minimumTemperature = 0.0
 
-                    BatteryLabService.instance?.isSaveNumberOfCharges = true
+                    BatteryLabService.instance!!.isSaveNumberOfCharges = true
 
                     NotificationInterface.notificationManager?.cancel(
-                        NotificationInterface.NOTIFICATION_FULLY_CHARGED_ID)
+                        NotificationInterface.NOTIFICATION_FULLY_CHARGED_ID
+                    )
 
                     NotificationInterface.notificationManager?.cancel(
                         NotificationInterface.NOTIFICATION_BATTERY_STATUS_ID
@@ -87,17 +91,17 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
                     NotificationInterface.isBatteryDischarged = true
                     NotificationInterface.isBatteryDischargedVoltage = true
 
-                    if (MainActivity.instance?.fragment != null) {
+                    if (mainActivityRef?.get()?.fragment != null) {
 
-                        if (MainActivity.instance?.fragment is ChargeDischargeFragment)
-                            MainActivity.instance?.topAppBar?.title = context.getString(
+                        if (mainActivityRef?.get()?.fragment is ChargeDischargeFragment)
+                            mainActivityRef?.get()?.topAppBar?.title = context.getString(
                                 if (status ==
                                     BatteryManager.BATTERY_STATUS_CHARGING
                                 ) R.string.charge else
                                     R.string.discharge
                             )
 
-                        val chargeDischargeNavigation = MainActivity.instance?.navigation
+                        val chargeDischargeNavigation = mainActivityRef?.get()?.navigation
                             ?.menu?.findItem(R.id.charge_discharge_navigation)
 
                         chargeDischargeNavigation?.title = context.getString(
@@ -116,7 +120,7 @@ class PluggedReceiver : BroadcastReceiver(), BatteryInfoInterface, PremiumInterf
                             }
                     }
 
-                    BatteryLabService.instance?.isPluggedOrUnplugged = false
+                    BatteryLabService.instance!!.isPluggedOrUnplugged = false
                 }
             }
     }

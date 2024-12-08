@@ -1,7 +1,5 @@
 package com.jacktor.batterylab.interfaces
 
-import android.annotation.SuppressLint
-import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
@@ -14,7 +12,6 @@ import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClient.BillingResponseCode
 import com.android.billingclient.api.BillingClient.ProductType
 import com.android.billingclient.api.BillingClientStateListener
-import com.android.billingclient.api.BillingFlowParams
 import com.android.billingclient.api.BillingResult
 import com.android.billingclient.api.ProductDetails
 import com.android.billingclient.api.Purchase
@@ -23,16 +20,19 @@ import com.android.billingclient.api.QueryProductDetailsParams
 import com.android.billingclient.api.QueryPurchaseHistoryParams
 import com.android.billingclient.api.queryPurchaseHistory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jacktor.batterylab.MainActivity
-import com.jacktor.batterylab.activity.PremiumActivity
 import com.jacktor.batterylab.R
+import com.jacktor.batterylab.activity.PremiumActivity
 import com.jacktor.batterylab.fragments.HistoryFragment
 import com.jacktor.batterylab.helpers.HistoryHelper
 import com.jacktor.batterylab.helpers.ServiceHelper
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.CheckPremiumJob
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.Constants
+import com.jacktor.batterylab.utilities.Premium.PREMIUM_ID
+import com.jacktor.batterylab.utilities.Premium.TOKEN_COUNT
+import com.jacktor.batterylab.utilities.Premium.TOKEN_PREF
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BYPASS_DND
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_IN_WH
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CHARGING_DISCHARGE_CURRENT_IN_WATT
@@ -49,30 +49,22 @@ import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.STOP_THE_SER
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TAB_ON_APPLICATION_LAUNCH
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.TEXT_FONT
 import com.jacktor.batterylab.utilities.preferences.Prefs
-import com.jacktor.batterylab.utilities.Premium.PREMIUM_ID
-import com.jacktor.batterylab.utilities.Premium.TOKEN_COUNT
-import com.jacktor.batterylab.utilities.Premium.TOKEN_PREF
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.lang.ref.WeakReference
 import kotlin.time.Duration.Companion.seconds
 
-
-@SuppressLint("StaticFieldLeak")
 interface PremiumInterface : PurchasesUpdatedListener {
+    var premiumContext: Context?
 
     companion object {
-
-        var mProductDetailsList: MutableList<ProductDetails>? = null
-        var premiumContext: Context? = null
-        var premiumActivity: Activity? = null
+        var premiumActivityRef: WeakReference<PremiumActivity>? = null
         var billingClient: BillingClient? = null
-
+        var mProductDetailsList: MutableList<ProductDetails>? = null
         var isPremium = false
-
-
     }
 
     override fun onPurchasesUpdated(billingResult: BillingResult, purchases: List<Purchase>?) {
@@ -115,9 +107,10 @@ interface PremiumInterface : PurchasesUpdatedListener {
             override fun onBillingSetupFinished(billingResult: BillingResult) {
                 if (billingResult.responseCode == BillingResponseCode.OK) {
                     querySkuDetails()
-                    if (isPurchasePremium) launchPurchaseFlow(mProductDetailsList!![0])
+                    if (isPurchasePremium) premiumActivityRef?.get()
+                        ?.launchPurchaseFlow(mProductDetailsList!![0])
 
-                    PremiumActivity.instance?.showProducts()
+                    premiumActivityRef?.get()?.showProducts()
                 }
             }
 
@@ -163,11 +156,11 @@ interface PremiumInterface : PurchasesUpdatedListener {
                 val tokenPref = pref.getString(TOKEN_PREF, null)
                 isPremium = tokenPref != null && tokenPref.count() == TOKEN_COUNT
 
-                PremiumActivity.instance?.reloadScreen()
+                premiumActivityRef?.get()?.reloadScreen()
                 //MainActivity.instance?.topAppBar?.menu?.findItem(R.id.premium)?.isVisible = false
-                MainActivity.instance?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
+                mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.history_premium)?.isVisible =
                     false
-                MainActivity.instance?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
+                mainActivityRef?.get()?.topAppBar?.menu?.findItem(R.id.clear_history)?.isVisible =
                     true
                 ServiceHelper.checkPremiumJobSchedule(premiumContext!!)
             }
@@ -209,22 +202,6 @@ interface PremiumInterface : PurchasesUpdatedListener {
             show()
         }
     }*/
-
-    fun launchPurchaseFlow(productDetails: ProductDetails?) {
-
-        if (!mProductDetailsList.isNullOrEmpty()) {
-            val productDetailsParamsList = listOf(
-                BillingFlowParams.ProductDetailsParams
-                    .newBuilder().setProductDetails(productDetails!!).build()
-            )
-
-            val billingFlowParams = BillingFlowParams.newBuilder()
-                .setProductDetailsParamsList(productDetailsParamsList)
-                .build()
-
-            billingClient?.launchBillingFlow(premiumActivity!!, billingFlowParams)
-        }
-    }
 
 
     fun checkPremium() {
@@ -309,9 +286,9 @@ interface PremiumInterface : PurchasesUpdatedListener {
     }
 
     private fun premiumFeaturesUnlocked(context: Context) {
-        PremiumActivity.instance?.reloadScreen()
+        premiumActivityRef?.get()?.reloadScreen()
 
-        val mainActivity = MainActivity.instance
+        val mainActivity = mainActivityRef?.get()
         val historyFragment = HistoryFragment.instance
         val isHistoryNotEmpty = HistoryHelper.isHistoryNotEmpty(context)
 
@@ -322,15 +299,15 @@ interface PremiumInterface : PurchasesUpdatedListener {
         }
 
         historyFragment?.binding?.apply {
-           refreshEmptyHistory.visibility =
+            refreshEmptyHistory.visibility =
                 if (isHistoryNotEmpty) View.GONE else View.VISIBLE
             emptyHistoryLayout.visibility =
                 if (isHistoryNotEmpty) View.GONE else View.VISIBLE
             historyRecyclerView.visibility =
                 if (!isHistoryNotEmpty) View.GONE else View.VISIBLE
-           refreshHistory.visibility =
+            refreshHistory.visibility =
                 if (!isHistoryNotEmpty) View.GONE else View.VISIBLE
-           emptyHistoryText.text =
+            emptyHistoryText.text =
                 if (!isHistoryNotEmpty) context.resources?.getText(R.string.empty_history_text) else null
         }
     }

@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import androidx.preference.PreferenceManager
-import com.jacktor.batterylab.MainActivity
 import com.jacktor.batterylab.MainApp.Companion.batteryIntent
 import com.jacktor.batterylab.MainApp.Companion.isPowerConnected
 import com.jacktor.batterylab.R
@@ -13,6 +12,7 @@ import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.capacityAdded
 import com.jacktor.batterylab.interfaces.BatteryInfoInterface.Companion.percentAdded
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.interfaces.NotificationInterface
 import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.services.BatteryLabService
@@ -20,14 +20,16 @@ import com.jacktor.batterylab.utilities.Constants
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_TO
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.BATTERY_LEVEL_WITH
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.CAPACITY_ADDED
-import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
-import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.LAST_CHARGE_TIME
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CHARGES
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.NUMBER_OF_CYCLES
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.PERCENT_ADDED
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL
+import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.STOP_THE_SERVICE_WHEN_THE_CD
 
-class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
+class UnpluggedReceiver() : BroadcastReceiver(), PremiumInterface {
+
+    override var premiumContext: Context? = null
 
     override fun onReceive(context: Context, intent: Intent) {
 
@@ -40,22 +42,21 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
 
                     isPowerConnected = false
 
-                    BatteryLabService.instance?.isPluggedOrUnplugged = true
+                    BatteryLabService.instance!!.isPluggedOrUnplugged = true
 
                     val isCheckedUpdateFromGooglePlay =
-                        MainActivity.instance?.isCheckUpdateFromGooglePlay == true
+                        mainActivityRef?.get()?.isCheckUpdateFromGooglePlay == true
 
-                    MainActivity.instance?.isCheckUpdateFromGooglePlay =
+                    mainActivityRef?.get()?.isCheckUpdateFromGooglePlay =
                         !isCheckedUpdateFromGooglePlay
 
 
                     val isPremium = PremiumInterface.isPremium
 
-                    val seconds = BatteryLabService.instance?.seconds ?: 0
 
-                    val batteryLevel = BatteryLabService.instance?.getBatteryLevel(context) ?: 0
+                    val batteryLevel = BatteryLabService.instance!!.getBatteryLevel(context) ?: 0
 
-                    val batteryLevelWith = BatteryLabService.instance?.batteryLevelWith ?: 0
+                    val batteryLevelWith = BatteryLabService.instance!!.batteryLevelWith
 
                     val numberOfCycles = if (batteryLevel == batteryLevelWith) pref.getFloat(
                         NUMBER_OF_CYCLES, 0f
@@ -66,13 +67,13 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
 
                     pref.edit().apply {
 
-                        if ((BatteryLabService.instance?.isFull != true) && seconds > 1) {
+                        if ((BatteryLabService.instance!!.isFull != true) && BatteryLabService.instance!!.seconds > 1) {
 
                             val numberOfCharges = pref.getLong(NUMBER_OF_CHARGES, 0)
 
                             putLong(NUMBER_OF_CHARGES, numberOfCharges + 1).apply()
 
-                            putInt(LAST_CHARGE_TIME, seconds)
+                            putInt(LAST_CHARGE_TIME, BatteryLabService.instance!!.seconds)
 
                             putInt(
                                 BATTERY_LEVEL_WITH, BatteryLabService.instance
@@ -81,7 +82,7 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
 
                             putInt(BATTERY_LEVEL_TO, batteryLevel)
 
-                            if (BatteryLabService.instance?.isSaveNumberOfCharges != false)
+                            if (BatteryLabService.instance!!.isSaveNumberOfCharges != false)
                                 putFloat(NUMBER_OF_CYCLES, numberOfCycles)
 
                             if (capacityAdded > 0) putFloat(CAPACITY_ADDED, capacityAdded.toFloat())
@@ -103,7 +104,7 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
                         )
                     )
 
-                    BatteryLabService.instance?.seconds = 0
+                    BatteryLabService.instance!!.seconds = 0
 
                     if (isPremium && (batteryLevel >= 90 || pref.getBoolean(
                             RESET_SCREEN_TIME_AT_ANY_CHARGE_LEVEL, context.resources.getBoolean(
@@ -111,7 +112,7 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
                             )
                         ))
                     )
-                        BatteryLabService.instance?.screenTime = 0L
+                        BatteryLabService.instance!!.screenTime = 0L
 
                     BatteryInfoInterface.batteryLevel = 0
 
@@ -125,8 +126,8 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
                     BatteryInfoInterface.averageTemperature = 0.0
                     BatteryInfoInterface.minimumTemperature = 0.0
 
-                    BatteryLabService.instance?.secondsFullCharge = 0
-                    BatteryLabService.instance?.isFull = false
+                    BatteryLabService.instance!!.secondsFullCharge = 0
+                    BatteryLabService.instance!!.isFull = false
 
                     if (isPremium && pref.getBoolean(
                             STOP_THE_SERVICE_WHEN_THE_CD,
@@ -156,8 +157,8 @@ class UnpluggedReceiver : BroadcastReceiver(), PremiumInterface {
 
                     ServiceHelper.cancelJob(context, Constants.NOTIFY_FULL_CHARGE_REMINDER_JOB_ID)
 
-                    BatteryLabService.instance?.isPluggedOrUnplugged = false
-                    BatteryLabService.instance?.wakeLockRelease()
+                    BatteryLabService.instance!!.isPluggedOrUnplugged = false
+                    BatteryLabService.instance!!.wakeLockRelease()
                 }
             }
     }

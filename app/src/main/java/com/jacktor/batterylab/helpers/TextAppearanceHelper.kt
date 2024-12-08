@@ -208,4 +208,8 @@ object TextAppearanceHelper : PremiumInterface {
             }
         }
     }
+
+    override var premiumContext: Context?
+        get() = null
+        set(_) {}
 }

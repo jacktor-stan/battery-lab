@@ -30,6 +30,7 @@ import com.jacktor.batterylab.helpers.DateHelper
 import com.jacktor.batterylab.helpers.HistoryHelper
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.helpers.ThemeHelper
+import com.jacktor.batterylab.interfaces.NavigationInterface.Companion.mainActivityRef
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.Constants
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_DARK_MODE
@@ -387,7 +388,7 @@ interface DebugOptionsInterface {
                 DESIGN_CAPACITY, LAST_CHARGE_TIME, BATTERY_LEVEL_WITH, BATTERY_LEVEL_TO,
                 RESIDUAL_CAPACITY, PERCENT_ADDED, BATTERY_LEVEL_NOTIFY_CHARGED,
                 BATTERY_LEVEL_NOTIFY_DISCHARGED, BATTERY_NOTIFY_DISCHARGED_VOLTAGE
-                -> addChangeSetting(pref, key, value.toString().toInt())
+                    -> addChangeSetting(pref, key, value.toString().toInt())
 
                 CAPACITY_ADDED, NUMBER_OF_CYCLES -> addChangeSetting(
                     pref, key,
@@ -750,7 +751,7 @@ interface DebugOptionsInterface {
             ThemeHelper.setTheme(context)
         else if (key == FORCIBLY_SHOW_RATE_THE_APP) {
 
-            MainActivity.tempFragment = MainActivity.instance?.fragment
+            MainActivity.tempFragment = mainActivityRef?.get()?.fragment
 
             MainActivity.isRecreate = !MainActivity.isRecreate
 
@@ -791,7 +792,7 @@ interface DebugOptionsInterface {
 
                 FORCIBLY_SHOW_RATE_THE_APP -> {
 
-                    MainActivity.tempFragment = MainActivity.instance?.fragment
+                    MainActivity.tempFragment = mainActivityRef?.get()?.fragment
 
                     MainActivity.isRecreate = !MainActivity.isRecreate
 
@@ -894,6 +895,7 @@ interface DebugOptionsInterface {
             CoroutineScope(Dispatchers.Default).launch {
                 for (count in 1..(
                         binding.historyCountEdit.text?.toString()?.toInt() ?: 1)) {
+                    count.hashCode()
                     val designCapacity = pref.getInt(
                         DESIGN_CAPACITY, resources.getInteger(
                             R.integer.min_design_capacity

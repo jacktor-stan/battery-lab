@@ -7,7 +7,6 @@ import com.jacktor.batterylab.MainApp
 import com.jacktor.batterylab.R
 import com.jacktor.batterylab.helpers.ServiceHelper
 import com.jacktor.batterylab.interfaces.OverlayInterface
-import com.jacktor.batterylab.interfaces.PremiumInterface
 import com.jacktor.batterylab.services.BatteryLabService
 import com.jacktor.batterylab.services.OverlayService
 import com.jacktor.batterylab.utilities.preferences.PreferencesKeys.AUTO_START_UPDATE_APP
@@ -27,8 +26,6 @@ class UpdateApplicationReceiver : BroadcastReceiver() {
                 val pref = Prefs(context)
 
                 MainApp.isUpdateApp = true
-
-                PremiumInterface.premiumContext = context
 
                 removeOldPreferences(context)
 
